@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ouze Supermercados - Feira de Santana - BA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #FF6B35;
+            --secondary: #F7931E;
+            --accent: #E91E8C;
+            --purple: #7B2FBE;
+            --green: #00C897;
+            --blue: #00B4D8;
+            --dark: #1A1A2E;
+            --light: #FFF8F0;
+            --gradient-1: linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #E91E8C 100%);
+            --gradient-2: linear-gradient(135deg, #7B2FBE 0%, #E91E8C 100%);
+            --gradient-3: linear-gradient(135deg, #00C897 0%, #00B4D8 100%);
+            --gradient-rainbow: linear-gradient(135deg, #FF6B6B 0%, #FFA500 25%, #FFD700 50%, #00C897 75%, #7B2FBE 100%);
+            --shadow: 0 10px 40px rgba(233, 30, 140, 0.15);
+            --shadow-hover: 0 20px 60px rgba(233, 30, 140, 0.25);
+        }
+        body { font-family: 'Poppins', sans-serif; background: #f5f5f5; color: var(--dark); overflow-x: hidden; }
+
+        /* Top Bar */
+        .top-bar { background: var(--gradient-2); color: white; padding: 8px 0; font-size: 0.85rem; }
+        .top-bar .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+        .top-bar a { color: white; text-decoration: none; transition: opacity 0.3s; }
+        .top-bar a:hover { opacity: 0.8; }
+        .top-bar .social-links { display: flex; gap: 15px; }
+
+        /* Header */
+        .header { background: white; box-shadow: 0 2px 20px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 1000; }
+        .header .container { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; gap: 20px; max-width: 1400px; margin: 0 auto; }
+        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; flex-shrink: 0; cursor: pointer; user-select: none; }
+        .logo-icon { width: 50px; height: 50px; background: var(--gradient-1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; font-weight: 900; }
+        .logo-text { display: flex; flex-direction: column; }
+        .logo-text .brand { font-size: 1.6rem; font-weight: 800; background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
+        .logo-text .sub { font-size: 0.7rem; color: #888; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; }
+        .search-bar { flex: 1; max-width: 500px; position: relative; }
+        .search-bar input { width: 100%; padding: 12px 50px 12px 20px; border: 2px solid #eee; border-radius: 50px; font-size: 0.95rem; font-family: 'Poppins', sans-serif; transition: all 0.3s; outline: none; }
+        .search-bar input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(233, 30, 140, 0.1); }
+        .search-bar button { position: absolute; right: 5px; top: 50%; transform: translateY(-50%); background: var(--gradient-1); border: none; color: white; width: 38px; height: 38px; border-radius: 50%; cursor: pointer; transition: transform 0.3s; }
+        .header-actions { display: flex; align-items: center; gap: 20px; }
+        .header-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; color: var(--dark); font-size: 0.75rem; font-weight: 500; transition: color 0.3s; position: relative; cursor: pointer; }
+        .header-btn:hover { color: var(--accent); }
+        .header-btn i { font-size: 1.4rem; }
+        .cart-count { position: absolute; top: -8px; right: -8px; background: var(--accent); color: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; }
+        .btn-whatsapp { background: #25D366; color: white !important; padding: 10px 20px; border-radius: 50px; font-weight: 600; display: flex; align-items: center; gap: 8px; text-decoration: none; transition: transform 0.3s, box-shadow 0.3s; }
+        .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4); }
+
+        /* Navigation */
+        .nav { background: white; border-top: 1px solid #f0f0f0; overflow-x: auto; }
+        .nav .container { display: flex; gap: 5px; padding: 0 20px; max-width: 1400px; margin: 0 auto; }
+        .nav a { padding: 15px 20px; text-decoration: none; color: var(--dark); font-weight: 500; font-size: 0.9rem; white-space: nowrap; border-bottom: 3px solid transparent; transition: all 0.3s; }
+        .nav a:hover, .nav a.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+        /* Hero Banner */
+        .hero { margin: 20px auto; max-width: 1400px; padding: 0 20px; }
+        .hero-slider { position: relative; height: 280px; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1s; display: flex; align-items: center; padding: 40px 60px; }
+        .hero-slide.active { opacity: 1; }
+        .hero-slide:nth-child(1) { background: linear-gradient(135deg, #FFD700 0%, #FFA500 40%, #FF6347 100%); }
+        .hero-slide:nth-child(2) { background: linear-gradient(135deg, #FF6B35 0%, #E91E8C 50%, #7B2FBE 100%); }
+        .hero-slide:nth-child(3) { background: linear-gradient(135deg, #00C897 0%, #00B4D8 50%, #7B2FBE 100%); }
+        .hero-content { color: white; max-width: 500px; z-index: 2; }
+        .hero-content .badge { display: inline-block; background: rgba(255,255,255,0.25); backdrop-filter: blur(10px); padding: 6px 16px; border-radius: 50px; font-size: 0.75rem; font-weight: 600; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 1px; }
+        .hero-content h1 { font-size: 2.2rem; font-weight: 800; line-height: 1.1; margin-bottom: 10px; text-transform: uppercase; }
+        .hero-content h1 span { display: block; font-size: 2.8rem; color: #fff; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+        .hero-content p { font-size: 0.95rem; opacity: 0.95; margin-bottom: 20px; line-height: 1.5; }
+        .hero-btn { display: inline-flex; align-items: center; gap: 10px; background: white; color: var(--accent); padding: 12px 28px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: all 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .hero-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
+        .hero-dots { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 3; }
+        .hero-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; transition: all 0.3s; }
+        .hero-dot.active { background: white; width: 25px; border-radius: 5px; }
+
+        /* Categories Scroll */
+        .categories-scroll { background: white; padding: 20px 0; margin: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .categories-scroll .container { display: flex; gap: 15px; overflow-x: auto; padding: 0 20px; max-width: 1400px; margin: 0 auto; scrollbar-width: thin; }
+        .categories-scroll .container::-webkit-scrollbar { height: 6px; }
+        .categories-scroll .container::-webkit-scrollbar-thumb { background: var(--gradient-1); border-radius: 3px; }
+        .cat-item { display: flex; align-items: center; gap: 10px; padding: 12px 20px; background: #f8f8f8; border-radius: 50px; text-decoration: none; color: var(--dark); font-weight: 500; font-size: 0.9rem; white-space: nowrap; transition: all 0.3s; border: 2px solid transparent; }
+        .cat-item:hover { background: white; border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(233, 30, 140, 0.15); }
+        .cat-item i { font-size: 1.2rem; color: var(--accent); }
+
+        /* Products Section */
+        .products-section { padding: 30px 0; }
+        .products-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 0 20px; max-width: 1400px; margin-left: auto; margin-right: auto; }
+        .products-header h2 { font-size: 1.5rem; font-weight: 700; color: var(--dark); }
+        .products-header .ver-mais { display: flex; align-items: center; gap: 10px; color: var(--dark); text-decoration: none; font-weight: 500; font-size: 0.9rem; }
+        .products-header .ver-mais:hover { color: var(--accent); }
+        .nav-arrows { display: flex; gap: 8px; }
+        .nav-arrow { width: 32px; height: 32px; border-radius: 50%; background: #f0f0f0; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s; color: var(--dark); }
+        .nav-arrow:hover { background: var(--accent); color: white; }
+        .products-scroll { display: flex; gap: 15px; overflow-x: auto; padding: 10px 20px 20px; scroll-behavior: smooth; scrollbar-width: thin; max-width: 1400px; margin: 0 auto; }
+        .products-scroll::-webkit-scrollbar { height: 6px; }
+        .products-scroll::-webkit-scrollbar-thumb { background: var(--gradient-1); border-radius: 3px; }
+
+        /* Product Card */
+        .product-card { min-width: 200px; max-width: 200px; background: white; border-radius: 12px; padding: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); transition: all 0.3s; position: relative; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.12); }
+        .product-img { width: 100%; height: 140px; background: #f8f8f8; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin-bottom: 12px; overflow: hidden; }
+        .product-img img { width: 100%; height: 100%; object-fit: cover; }
+        .product-name { font-size: 0.75rem; font-weight: 600; color: var(--dark); margin-bottom: 8px; line-height: 1.3; height: 2.6em; overflow: hidden; text-transform: uppercase; }
+        .product-price { display: flex; align-items: baseline; gap: 5px; margin-bottom: 4px; }
+        .price-current { font-size: 1.2rem; font-weight: 800; color: var(--dark); }
+        .price-unit { font-size: 0.75rem; color: #888; font-weight: 500; }
+        .product-unit-tag { display: inline-block; padding: 3px 8px; background: #f0f0f0; border-radius: 4px; font-size: 0.7rem; color: #666; margin-bottom: 10px; }
+
+        /* Quantity Selector */
+        .qty-quick { display: flex; gap: 4px; margin-bottom: 8px; flex-wrap: wrap; }
+        .qty-quick-btn { flex: 1; min-width: 40px; padding: 4px 6px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 6px; font-size: 0.7rem; font-weight: 600; cursor: pointer; transition: all 0.2s; color: var(--dark); font-family: 'Poppins', sans-serif; }
+        .qty-quick-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        .qty-quick-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .qty-control { display: none; align-items: center; gap: 6px; margin-bottom: 8px; background: #f8f8f8; border-radius: 8px; padding: 4px; }
+        .qty-control.show { display: flex; }
+        .qty-btn-small { width: 28px; height: 28px; border-radius: 6px; border: none; background: var(--primary); color: white; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; font-family: 'Poppins', sans-serif; }
+        .qty-btn-small:hover { background: var(--accent); }
+        .qty-input { flex: 1; text-align: center; border: none; background: transparent; font-weight: 700; font-size: 0.9rem; font-family: 'Poppins', sans-serif; outline: none; width: 40px; }
+        .btn-add-cart-primo { width: 100%; padding: 8px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.3s; font-family: 'Poppins', sans-serif; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .btn-add-cart-primo:hover { background: var(--accent); transform: scale(1.02); }
+        .btn-add-cart-primo.added { background: var(--green); }
+
+        /* FORMULÁRIO DE PEDIDO - SOFISTICADO E COLORIDO */
+        .order-section { padding: 60px 20px; background: var(--gradient-rainbow); position: relative; overflow: hidden; }
+        .order-section::before { content: ''; position: absolute; top: -50%; right: -20%; width: 500px; height: 500px; background: rgba(255,255,255,0.1); border-radius: 50%; }
+        .order-section::after { content: ''; position: absolute; bottom: -30%; left: -10%; width: 400px; height: 400px; background: rgba(255,255,255,0.08); border-radius: 50%; }
+        .order-container { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+        .order-header { text-align: center; margin-bottom: 40px; }
+        .order-header h2 { font-size: 2.5rem; font-weight: 900; color: white; text-shadow: 2px 2px 8px rgba(0,0,0,0.2); margin-bottom: 10px; }
+        .order-header p { color: white; font-size: 1.1rem; opacity: 0.95; }
+        .order-form-card { background: white; border-radius: 24px; padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+        .form-section-title { font-size: 1.3rem; font-weight: 700; color: var(--dark); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .form-section-title i { color: var(--accent); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 6px; color: var(--dark); font-size: 0.9rem; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 16px; border: 2px solid #eee; border-radius: 10px; font-size: 0.95rem; font-family: 'Poppins', sans-serif; outline: none; transition: border-color 0.3s; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(233, 30, 140, 0.1); }
+        .form-group textarea { resize: vertical; min-height: 80px; }
+
+        /* Order Items List */
+        .order-items-list { background: #f8f9fa; border-radius: 16px; padding: 20px; margin-bottom: 20px; max-height: 400px; overflow-y: auto; }
+        .order-item-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee; gap: 15px; }
+        .order-item-row:last-child { border-bottom: none; }
+        .order-item-info { flex: 1; }
+        .order-item-name { font-weight: 600; font-size: 0.9rem; color: var(--dark); }
+        .order-item-price { font-size: 0.8rem; color: #888; }
+        .order-item-qty { display: flex; align-items: center; gap: 8px; }
+        .order-item-qty button { width: 28px; height: 28px; border-radius: 50%; border: none; background: var(--primary); color: white; cursor: pointer; font-weight: 700; transition: all 0.2s; }
+        .order-item-qty button:hover { background: var(--accent); transform: scale(1.1); }
+        .order-item-qty span { font-weight: 700; min-width: 30px; text-align: center; }
+        .order-item-remove { background: none; border: none; color: #dc3545; cursor: pointer; font-size: 1.1rem; transition: transform 0.2s; }
+        .order-item-remove:hover { transform: scale(1.2); }
+        .order-empty { text-align: center; padding: 30px; color: #999; }
+        .order-empty i { font-size: 3rem; margin-bottom: 10px; color: #ddd; }
+
+        /* Order Total */
+        .order-total-box { background: var(--gradient-1); border-radius: 16px; padding: 20px; color: white; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .order-total-box .label { font-size: 1.1rem; font-weight: 600; }
+        .order-total-box .value { font-size: 2rem; font-weight: 900; }
+
+        /* Submit Button */
+        .btn-submit-order { width: 100%; padding: 18px; background: #25D366; color: white; border: none; border-radius: 16px; font-weight: 800; font-size: 1.2rem; cursor: pointer; font-family: 'Poppins', sans-serif; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 12px; box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3); }
+        .btn-submit-order:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(37, 211, 102, 0.4); }
+        .btn-submit-order:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        /* Newsletter */
+        .newsletter { background: linear-gradient(135deg, #8B0000 0%, #A52A2A 50%, #8B0000 100%); padding: 40px 20px; margin: 40px 0; }
+        .newsletter .container { display: flex; align-items: center; justify-content: space-between; gap: 30px; flex-wrap: wrap; max-width: 1400px; margin: 0 auto; }
+        .newsletter-content { color: white; max-width: 400px; }
+        .newsletter-content h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; }
+        .newsletter-content p { font-size: 0.95rem; opacity: 0.9; }
+        .newsletter-form { display: flex; gap: 12px; flex: 1; max-width: 600px; }
+        .newsletter-form input { flex: 1; padding: 16px 24px; border: none; border-radius: 8px; font-size: 1rem; font-family: 'Poppins', sans-serif; outline: none; background: white; }
+        .newsletter-form button { background: #FFD700; color: var(--dark); border: none; padding: 16px 32px; border-radius: 8px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.3s; font-family: 'Poppins', sans-serif; white-space: nowrap; text-transform: uppercase; }
+        .newsletter-form button:hover { background: #FFC700; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+
+        /* Features */
+        .features { padding: 40px 0; background: white; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+        .feature-card { padding: 30px; border-radius: 16px; text-align: center; transition: all 0.3s; border: 2px solid #f0f0f0; }
+        .feature-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); border-color: var(--accent); }
+        .feature-icon { width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 1.8rem; color: white; background: var(--gradient-1); }
+        .feature-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+        .feature-card p { color: #666; font-size: 0.9rem; line-height: 1.5; }
+
+        /* Footer */
+        .footer { background: var(--dark); color: white; padding: 60px 0 20px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 40px; margin-bottom: 40px; max-width: 1400px; margin-left: auto; margin-right: auto; padding: 0 20px; }
+        .footer-col h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; color: white; }
+        .footer-col p, .footer-col a { color: #aaa; font-size: 0.9rem; line-height: 1.8; text-decoration: none; display: block; transition: color 0.3s; }
+        .footer-col a:hover { color: var(--accent); }
+        .footer-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
+        .footer-logo .logo-icon { width: 45px; height: 45px; }
+        .footer-logo .brand { font-size: 1.4rem; font-weight: 800; background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .footer-social { display: flex; gap: 12px; margin-top: 15px; }
+        .footer-social a { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.1rem; transition: all 0.3s; }
+        .footer-social a:hover { background: var(--gradient-1); transform: translateY(-3px); }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; text-align: center; color: #666; font-size: 0.85rem; }
+
+        /* WhatsApp Float */
+        .whatsapp-float { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.8rem; text-decoration: none; box-shadow: 0 5px 25px rgba(37, 211, 102, 0.4); z-index: 999; transition: all 0.3s; animation: pulse 2s infinite; }
+        .whatsapp-float:hover { transform: scale(1.1); }
+        @keyframes pulse { 0%, 100% { box-shadow: 0 5px 25px rgba(37, 211, 102, 0.4); } 50% { box-shadow: 0 5px 35px rgba(37, 211, 102, 0.7); } }
+
+        /* Cart Modal */
+        .cart-modal { position: fixed; top: 0; right: -450px; width: 420px; max-width: 100%; height: 100vh; background: white; box-shadow: -10px 0 40px rgba(0,0,0,0.15); z-index: 10000; transition: right 0.4s; display: flex; flex-direction: column; }
+        .cart-modal.open { right: 0; }
+        .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; opacity: 0; visibility: hidden; transition: all 0.3s; }
+        .cart-overlay.open { opacity: 1; visibility: visible; }
+        .cart-header { padding: 20px; background: var(--gradient-1); color: white; display: flex; justify-content: space-between; align-items: center; }
+        .cart-header h3 { font-size: 1.2rem; font-weight: 700; }
+        .cart-close { background: rgba(255,255,255,0.2); border: none; color: white; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; }
+        .cart-items { flex: 1; overflow-y: auto; padding: 20px; }
+        .cart-item { display: flex; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee; }
+        .cart-item-img { width: 60px; height: 60px; background: #f5f5f5; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; overflow: hidden; }
+        .cart-item-img img { width: 100%; height: 100%; object-fit: cover; }
+        .cart-item-info { flex: 1; }
+        .cart-item-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 5px; }
+        .cart-item-price { color: var(--accent); font-weight: 700; }
+        .cart-item-remove { background: none; border: none; color: #999; cursor: pointer; font-size: 1.2rem; }
+        .cart-empty { text-align: center; padding: 40px 20px; color: #999; }
+        .cart-empty i { font-size: 3rem; margin-bottom: 15px; color: #ddd; }
+        .cart-footer { padding: 20px; border-top: 2px solid #f0f0f0; }
+        .cart-total { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 1.1rem; font-weight: 700; }
+        .cart-total span:last-child { color: var(--accent); font-size: 1.3rem; }
+        .btn-checkout { width: 100%; background: var(--gradient-1); color: white; border: none; padding: 15px; border-radius: 50px; font-weight: 700; font-size: 1rem; cursor: pointer; font-family: 'Poppins', sans-serif; transition: all 0.3s; }
+        .btn-checkout:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+
+        /* Toast */
+        .toast { position: fixed; bottom: 100px; right: 30px; background: var(--dark); color: white; padding: 15px 25px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 10001; transform: translateX(150%); transition: transform 0.4s; display: flex; align-items: center; gap: 10px; }
+        .toast.show { transform: translateX(0); }
+        .toast i { color: var(--green); font-size: 1.2rem; }
+
+        /* ADMIN PANEL - OCULTO */
+        .admin-panel { position: fixed; top: 0; left: -100%; width: 100%; max-width: 800px; height: 100vh; background: white; box-shadow: 10px 0 40px rgba(0,0,0,0.15); z-index: 10002; transition: left 0.4s; overflow-y: auto; }
+        .admin-panel.open { left: 0; }
+        .admin-header { background: var(--gradient-1); color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10; }
+        .admin-header h2 { font-size: 1.3rem; font-weight: 700; }
+        .admin-close { background: rgba(255,255,255,0.2); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.3rem; }
+        .admin-content { padding: 30px; }
+        .admin-login { max-width: 400px; margin: 50px auto; text-align: center; }
+        .admin-login h3 { font-size: 1.5rem; margin-bottom: 20px; color: var(--dark); }
+        .admin-login input { width: 100%; padding: 14px 20px; border: 2px solid #eee; border-radius: 12px; font-size: 1rem; font-family: 'Poppins', sans-serif; margin-bottom: 15px; outline: none; transition: border-color 0.3s; }
+        .admin-login input:focus { border-color: var(--accent); }
+        .admin-login button { width: 100%; background: var(--gradient-1); color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; font-family: 'Poppins', sans-serif; transition: all 0.3s; }
+        .admin-login button:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+        .admin-form { background: #f8f8f8; padding: 25px; border-radius: 16px; margin-bottom: 30px; }
+        .admin-form h3 { font-size: 1.2rem; margin-bottom: 20px; color: var(--dark); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .btn-admin { background: var(--gradient-1); color: white; border: none; padding: 12px 24px; border-radius: 10px; font-weight: 600; font-size: 0.95rem; cursor: pointer; font-family: 'Poppins', sans-serif; transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-admin:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+        .btn-admin.success { background: linear-gradient(135deg, #28a745, #20c997); }
+        .admin-products-list { margin-top: 30px; }
+        .admin-products-list h3 { font-size: 1.2rem; margin-bottom: 20px; color: var(--dark); }
+        .admin-product-item { display: flex; align-items: center; gap: 15px; padding: 15px; background: white; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .admin-product-img { width: 60px; height: 60px; background: #f0f0f0; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; overflow: hidden; }
+        .admin-product-img img { width: 100%; height: 100%; object-fit: cover; }
+        .admin-product-info { flex: 1; }
+        .admin-product-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; }
+        .admin-product-price { color: var(--accent); font-weight: 700; font-size: 0.95rem; }
+        .admin-product-actions { display: flex; gap: 8px; }
+        .admin-product-actions button { width: 36px; height: 36px; border-radius: 8px; border: none; cursor: pointer; font-size: 0.9rem; transition: all 0.3s; }
+        .btn-edit { background: #007bff; color: white; }
+        .btn-delete { background: #dc3545; color: white; }
+        .btn-edit:hover, .btn-delete:hover { transform: scale(1.1); }
+        .image-upload-area { border: 2px dashed #ddd; border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s; background: white; position: relative; }
+        .image-upload-area:hover { border-color: var(--accent); background: #fff5f8; }
+        .image-upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+        .image-upload-area i { font-size: 2rem; color: #ccc; margin-bottom: 8px; }
+        .image-upload-area p { color: #888; font-size: 0.85rem; }
+        .image-preview { max-width: 100%; max-height: 150px; border-radius: 8px; margin-top: 10px; display: none; }
+        .image-preview.show { display: block; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header .container { flex-wrap: wrap; }
+            .search-bar { order: 3; max-width: 100%; flex-basis: 100%; }
+            .hero-slider { height: 220px; }
+            .hero-content h1 { font-size: 1.5rem; }
+            .hero-content h1 span { font-size: 1.8rem; }
+            .hero-slide { padding: 30px; }
+            .newsletter .container { flex-direction: column; text-align: center; }
+            .newsletter-form { flex-direction: column; width: 100%; }
+            .product-card { min-width: 180px; max-width: 180px; }
+            .form-row { grid-template-columns: 1fr; }
+            .order-form-card { padding: 20px; }
+            .order-header h2 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div>
+                <i class="fas fa-map-marker-alt"></i> RUA SHALOM, Feira de Santana - BA | 
+                <i class="fas fa-phone"></i> (75) 3622-5504
+            </div>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="https://api.whatsapp.com/send?phone=5575981236160"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo" id="mainLogo">
+                <div class="logo-icon">O</div>
+                <div class="logo-text">
+                    <span class="brand">Ouze</span>
+                    <span class="sub">Supermercados</span>
+                </div>
+            </div>
+
+            <div class="search-bar">
+                <input type="text" placeholder="Buscar produtos, marcas e categorias..." id="searchInput">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+
+            <div class="header-actions">
+                <a href="#" class="header-btn">
+                    <i class="fas fa-user"></i>
+                    <span>Minha Conta</span>
+                </a>
+                <a href="#" class="header-btn" onclick="toggleCart(event)">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                    <span>Carrinho</span>
+                </a>
+                <a href="https://api.whatsapp.com/send?phone=5575981236160" class="btn-whatsapp" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>(75) 98123-6160</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container">
+            <a href="#" class="active">Início</a>
+            <a href="#mercearia">Mercearia</a>
+            <a href="#bebidas">Bebidas</a>
+            <a href="#hortifruti">Hortifruti</a>
+            <a href="#biscoitos">Biscoitos</a>
+            <a href="#frios">Frios e Laticínios</a>
+            <a href="#carnes">Carnes</a>
+            <a href="#congelados">Congelados</a>
+            <a href="#higiene">Higiene</a>
+            <a href="#limpeza">Limpeza</a>
+            <a href="#chocolate">Chocolate</a>
+            <a href="#diet">Diet e Light</a>
+            <a href="#zero-lactose">Zero Lactose</a>
+            <a href="#petshop">Petshop</a>
+        </div>
+    </nav>
+
+    <!-- Hero Banner -->
+    <section class="hero">
+        <div class="hero-slider">
+            <div class="hero-slide active">
+                <div class="hero-content">
+                    <span class="badge">🛒 OFERTAS DA SEMANA</span>
+                    <h1>FAÇA SUA PRIMEIRA <span>COMPRA E GANHE</span></h1>
+                    <p>Entrega grátis em compras acima de R$100. Aproveite!</p>
+                    <a href="#pedido" class="hero-btn">Fazer Pedido <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="hero-slide">
+                <div class="hero-content">
+                    <span class="badge"> CARNE & CIA</span>
+                    <h1>Carnes Frescas <span>Selecionadas</span></h1>
+                    <p>Cortes especiais com preços que cabem no seu bolso.</p>
+                    <a href="#carnes" class="hero-btn">Comprar Agora <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="hero-slide">
+                <div class="hero-content">
+                    <span class="badge">🚚 ENTREGA RÁPIDA</span>
+                    <h1>Peça pelo <span>WhatsApp</span></h1>
+                    <p>Receba suas compras no conforto da sua casa.</p>
+                    <a href="#pedido" class="hero-btn">Fazer Pedido <i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="hero-dots">
+            <span class="hero-dot active" onclick="goToSlide(0)"></span>
+            <span class="hero-dot" onclick="goToSlide(1)"></span>
+            <span class="hero-dot" onclick="goToSlide(2)"></span>
+        </div>
+    </section>
+
+    <!-- Categories Scroll -->
+    <section class="categories-scroll">
+        <div class="container">
+            <a href="#mercearia" class="cat-item"><i class="fas fa-shopping-basket"></i> Mercearia</a>
+            <a href="#bebidas" class="cat-item"><i class="fas fa-wine-bottle"></i> Bebidas</a>
+            <a href="#hortifruti" class="cat-item"><i class="fas fa-apple-alt"></i> Hortifruti</a>
+            <a href="#biscoitos" class="cat-item"><i class="fas fa-cookie"></i> Biscoitos</a>
+            <a href="#higiene" class="cat-item"><i class="fas fa-cheese"></i> Higiene e Perfumaria</a>
+            <a href="#limpeza" class="cat-item"><i class="fas fa-broom"></i> Limpeza</a>
+            <a href="#bazar" class="cat-item"><i class="fas fa-home"></i> Bazar</a>
+            <a href="#bomboniere" class="cat-item"><i class="fas fa-candy-cane"></i> Bomboniere</a>
+            <a href="#carnes" class="cat-item"><i class="fas fa-drumstick-bite"></i> Carne e Cia</a>
+            <a href="#diet" class="cat-item"><i class="fas fa-leaf"></i> Diet e Light</a>
+            <a href="#congelados" class="cat-item"><i class="fas fa-snowflake"></i> Congelados</a>
+            <a href="#frios" class="cat-item"><i class="fas fa-ice-cream"></i> Frios e Laticínios</a>
+            <a href="#petshop" class="cat-item"><i class="fas fa-paw"></i> Petshop</a>
+            <a href="#zero-lactose" class="cat-item"><i class="fas fa-glass-milk"></i> Zero Lactose</a>
+        </div>
+    </section>
+
+    <!-- Products Sections -->
+    <section class="products-section" id="carnes">
+        <div class="products-header">
+            <h2>Carne & Cia</h2>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <a href="#" class="ver-mais">Ver mais</a>
+                <div class="nav-arrows">
+                    <button class="nav-arrow" onclick="scrollProducts('carnes-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
+                    <button class="nav-arrow" onclick="scrollProducts('carnes-scroll', 1)"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="products-scroll" id="carnes-scroll"></div>
+    </section>
+
+    <section class="products-section" id="bebidas">
+        <div class="products-header">
+            <h2>Bebidas</h2>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <a href="#" class="ver-mais">Ver mais</a>
+                <div class="nav-arrows">
+                    <button class="nav-arrow" onclick="scrollProducts('bebidas-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
+                    <button class="nav-arrow" onclick="scrollProducts('bebidas-scroll', 1)"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="products-scroll" id="bebidas-scroll"></div>
+    </section>
+
+    <section class="products-section" id="frios">
+        <div class="products-header">
+            <h2>Frios e Laticínios</h2>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <a href="#" class="ver-mais">Ver mais</a>
+                <div class="nav-arrows">
+                    <button class="nav-arrow" onclick="scrollProducts('frios-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
+                    <button class="nav-arrow" onclick="scrollProducts('frios-scroll', 1)"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="products-scroll" id="frios-scroll"></div>
+    </section>
+
+    <section class="products-section" id="biscoitos">
+        <div class="products-header">
+            <h2>Biscoitos</h2>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <a href="#" class="ver-mais">Ver mais</a>
+                <div class="nav-arrows">
+                    <button class="nav-arrow" onclick="scrollProducts('biscoitos-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
+                    <button class="nav-arrow" onclick="scrollProducts('biscoitos-scroll', 1)"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="products-scroll" id="biscoitos-scroll"></div>
+    </section>
+
+    <section class="products-section" id="chocolate">
+        <div class="products-header">
+            <h2>Chocolate</h2>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <a href="#" class="ver-mais">Ver mais</a>
+                <div class="nav-arrows">
+                    <button class="nav-arrow" onclick="scrollProducts('chocolate-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
+                    <button class="nav-arrow" onclick="scrollProducts('chocolate-scroll', 1)"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="products-scroll" id="chocolate-scroll"></div>
+    </section>
+
+    <section class="products-section" id="zero-lactose">
+        <div class="products-header">
+            <h2>Zero Lactose</h2>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <a href="#" class="ver-mais">Ver mais</a>
+                <div class="nav-arrows">
+                    <button class="nav-arrow" onclick="scrollProducts('zero-lactose-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
+                    <button class="nav-arrow" onclick="scrollProducts('zero-lactose-scroll', 1)"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="products-scroll" id="zero-lactose-scroll"></div>
+    </section>
+
+    <section class="products-section" id="diet">
+        <div class="products-header">
+            <h2>Diet e Light</h2>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <a href="#" class="ver-mais">Ver mais</a>
+                <div class="nav-arrows">
+                    <button class="nav-arrow" onclick="scrollProducts('diet-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
+                    <button class="nav-arrow" onclick="scrollProducts('diet-scroll', 1)"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="products-scroll" id="diet-scroll"></div>
+    </section>
+
+    <section class="products-section" id="higiene">
+        <div class="products-header">
+            <h2>Higiene e Perfumaria</h2>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <a href="#" class="ver-mais">Ver mais</a>
+                <div class="nav-arrows">
+                    <button class="nav-arrow" onclick="scrollProducts('higiene-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
+                    <button class="nav-arrow" onclick="scrollProducts('higiene-scroll', 1)"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="products-scroll" id="higiene-scroll"></div>
+    </section>
+
+    <!-- FORMULÁRIO DE PEDIDO VIA WHATSAPP -->
+    <section class="order-section" id="pedido">
+        <div class="order-container">
+            <div class="order-header">
+                <h2>🛒 Faça Seu Pedido</h2>
+                <p>Preencha seus dados e envie pelo WhatsApp. Entrega rápida e segura!</p>
+            </div>
+            <div class="order-form-card">
+                <div class="form-section-title"><i class="fas fa-user"></i> Seus Dados</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nome Completo *</label>
+                        <input type="text" id="orderName" placeholder="Seu nome completo" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Telefone/WhatsApp *</label>
+                        <input type="tel" id="orderPhone" placeholder="(75) 99999-9999" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Endereço de Entrega *</label>
+                    <input type="text" id="orderAddress" placeholder="Rua, número, bairro, complemento" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Forma de Pagamento</label>
+                        <select id="orderPayment">
+                            <option value="Dinheiro"> Dinheiro</option>
+                            <option value="Cartão de Crédito">💳 Cartão de Crédito</option>
+                            <option value="Cartão de Débito">💳 Cartão de Débito</option>
+                            <option value="PIX">📱 PIX</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Troco para quanto?</label>
+                        <input type="text" id="orderChange" placeholder="Ex: R$ 50,00">
+                    </div>
+                </div>
+
+                <div class="form-section-title" style="margin-top: 30px;"><i class="fas fa-shopping-basket"></i> Itens do Pedido</div>
+                <div class="order-items-list" id="orderItemsList">
+                    <div class="order-empty">
+                        <i class="fas fa-shopping-basket"></i>
+                        <p>Nenhum item adicionado ainda</p>
+                        <p style="font-size: 0.85rem; margin-top: 5px;">Adicione produtos acima para montar seu pedido</p>
+                    </div>
+                </div>
+
+                <div class="order-total-box">
+                    <span class="label">Total do Pedido:</span>
+                    <span class="value" id="orderTotal">R$ 0,00</span>
+                </div>
+
+                <div class="form-group">
+                    <label>Observações (opcional)</label>
+                    <textarea id="orderNotes" placeholder="Alguma observação sobre o pedido?"></textarea>
+                </div>
+
+                <button class="btn-submit-order" id="btnSubmitOrder" onclick="submitOrder()" disabled>
+                    <i class="fab fa-whatsapp"></i> Enviar Pedido via WhatsApp
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2>Aproveite as nossas promoções!</h2>
+                <p>Cadastre seu e-mail e receba ofertas exclusivas.</p>
+            </div>
+            <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+                <input type="email" placeholder="Digite o seu e-mail" required>
+                <button type="submit">QUERO RECEBER</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-truck"></i></div>
+                <h3>Entrega Rápida</h3>
+                <p>Receba suas compras no conforto da sua casa com agilidade e segurança.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-tags"></i></div>
+                <h3>Melhores Preços</h3>
+                <p>Ofertas imperdíveis todos os dias para você economizar nas compras.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                <h3>Compra Segura</h3>
+                <p>Site protegido com certificados de segurança para sua tranquilidade.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-headset"></i></div>
+                <h3>Atendimento</h3>
+                <p>Equipe pronta para ajudar via WhatsApp e telefone todos os dias.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="footer-logo">
+                    <div class="logo-icon">O</div>
+                    <span class="brand">Ouze</span>
+                </div>
+                <p>Seu supermercado de confiança em Feira de Santana. Qualidade, variedade e preços baixos para toda a família.</p>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="https://api.whatsapp.com/send?phone=5575981236160"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h3>Institucional</h3>
+                <a href="#">Sobre Nós</a>
+                <a href="#">Nossas Lojas</a>
+                <a href="#">Trabalhe Conosco</a>
+                <a href="#">Fale Conosco</a>
+                <a href="#">Regulamento do E-commerce</a>
+            </div>
+            <div class="footer-col">
+                <h3>Departamentos</h3>
+                <a href="#mercearia">Mercearia</a>
+                <a href="#bebidas">Bebidas</a>
+                <a href="#hortifruti">Hortifruti</a>
+                <a href="#carnes">Carnes</a>
+                <a href="#frios">Frios e Laticínios</a>
+                <a href="#higiene">Higiene e Perfumaria</a>
+            </div>
+            <div class="footer-col">
+                <h3>Contato</h3>
+                <p><i class="fas fa-map-marker-alt"></i> RUA SHALOM, Feira de Santana - BA</p>
+                <p><i class="fas fa-phone"></i> (75) 3622-5504</p>
+                <p><i class="fab fa-whatsapp"></i> (75) 98123-6160</p>
+                <p><i class="fas fa-envelope"></i> contato@ouzesupermercados.com.br</p>
+                <p><i class="fas fa-clock"></i> Seg a Sáb: 7h às 22h | Dom: 7h às 20h</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Ouze Supermercados - CNPJ: 07.561.201/0001-07 | Todos os direitos reservados</p>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float -->
+    <a href="https://api.whatsapp.com/send?phone=5575981236160" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Cart Overlay -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+
+    <!-- Cart Modal -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-cart"></i> Meu Carrinho</h3>
+            <button class="cart-close" onclick="toggleCart()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <div class="cart-empty">
+                <i class="fas fa-shopping-basket"></i>
+                <p>Seu carrinho está vazio</p>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">R$ 0,00</span>
+            </div>
+            <button class="btn-checkout" onclick="goToOrderForm()">
+                <i class="fas fa-clipboard-list"></i> Ir para Formulário de Pedido
+            </button>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-header">
+            <h2><i class="fas fa-cog"></i> Painel Administrativo</h2>
+            <button class="admin-close" onclick="toggleAdmin()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="admin-content" id="adminContent">
+            <div class="admin-login" id="adminLogin">
+                <h3>🔐 Acesso Restrito</h3>
+                <p style="margin-bottom: 20px; color: #666;">Digite a senha para acessar o painel</p>
+                <input type="password" id="adminPassword" placeholder="Senha do administrador" autocomplete="off">
+                <button onclick="loginAdmin()">ENTRAR</button>
+                <p style="margin-top: 15px; font-size: 0.8rem; color: #999;" id="adminHint"></p>
+            </div>
+
+            <div id="adminDashboard" style="display: none;">
+                <div class="admin-form">
+                    <h3 id="formTitle"><i class="fas fa-plus-circle"></i> Cadastrar Novo Produto</h3>
+                    <input type="hidden" id="productId">
+                    <div class="form-group">
+                        <label>Nome do Produto *</label>
+                        <input type="text" id="productName" placeholder="Ex: Filé de Peito Frango Seara 1kg">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Preço (R$) *</label>
+                            <input type="number" id="productPrice" placeholder="0,00" step="0.01" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Unidade</label>
+                            <select id="productUnit">
+                                <option value="un">Unidade (un)</option>
+                                <option value="kg">Quilo (kg)</option>
+                                <option value="L">Litro (L)</option>
+                                <option value="cx">Caixa (cx)</option>
+                                <option value="pct">Pacote (pct)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Categoria</label>
+                            <select id="productCategory">
+                                <option value="carnes">Carne & Cia</option>
+                                <option value="bebidas">Bebidas</option>
+                                <option value="frios">Frios e Laticínios</option>
+                                <option value="biscoitos">Biscoitos</option>
+                                <option value="chocolate">Chocolate</option>
+                                <option value="zeroLactose">Zero Lactose</option>
+                                <option value="diet">Diet e Light</option>
+                                <option value="higiene">Higiene e Perfumaria</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Emoji/Ícone</label>
+                            <input type="text" id="productEmoji" placeholder="Ex: 🍗" maxlength="2">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Imagem do Produto</label>
+                        <div class="image-upload-area" id="uploadArea">
+                            <input type="file" id="productImageFile" accept="image/*" onchange="handleImageUpload(event)">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Clique ou arraste uma imagem aqui</p>
+                            <img class="image-preview" id="imagePreview" alt="Preview">
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn-admin success" onclick="saveProduct()">
+                            <i class="fas fa-save"></i> Salvar Produto
+                        </button>
+                        <button class="btn-admin" onclick="clearForm()" style="background: #6c757d;">
+                            <i class="fas fa-eraser"></i> Limpar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="admin-products-list">
+                    <h3><i class="fas fa-boxes"></i> Produtos Cadastrados</h3>
+                    <div id="adminProductsList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Produto adicionado!</span>
+    </div>
+
+    <script>
+        // ===== PRODUTOS PADRÃO =====
+        const defaultProducts = {
+            carnes: [
+                { id: 1, name: "Filé de Peito Frango Seara Bandeja 1kg", price: 24.49, unit: "un", emoji: "🍗" },
+                { id: 2, name: "Bisteca de Porco Congelada Sadia", price: 19.89, unit: "kg", emoji: "🥩" },
+                { id: 3, name: "Charque Ponta Agulha", price: 59.90, unit: "kg", emoji: "" },
+                { id: 4, name: "Salsicha Seara a Granel", price: 8.99, unit: "kg", emoji: "🌭" },
+                { id: 5, name: "Filé de Peito de Frango Avivip 1kg", price: 22.49, unit: "kg", emoji: "" },
+                { id: 6, name: "Toucinho Salgado", price: 25.75, unit: "kg", emoji: "🥓" },
+                { id: 7, name: "Coxinha da Asa Congelada Avivip 1kg", price: 19.75, unit: "un", emoji: "🍗" },
+                { id: 8, name: "Moela de Frango Congelado Avivip 1kg", price: 17.75, unit: "un", emoji: "🍗" },
+                { id: 9, name: "Filé de Peito de Frango Congelado Sadia 1kg", price: 23.99, unit: "un", emoji: "🍗" },
+                { id: 10, name: "Coxas de Frango Seara Bandeja 1kg", price: 14.89, unit: "un", emoji: "🍗" },
+                { id: 11, name: "Carvão Vegetal 0016", price: 6.99, unit: "un", emoji: "" },
+                { id: 12, name: "Sobrecoxa de Frango Assa Fácil Perdigão 1,2kg", price: 25.90, unit: "un", emoji: "🍗" }
+            ],
+            bebidas: [
+                { id: 13, name: "Licor Cremoso Arraiá do Quiabo Sabor Chocolate 900ml", price: 26.49, unit: "un", emoji: "🍾" },
+                { id: 14, name: "Refrigerante H2OH Limão 1,5L", price: 7.99, unit: "un", emoji: "🥤" },
+                { id: 15, name: "Licor Fino Arraiá do Quiabo Sabor Gengibre 900ml", price: 23.85, unit: "un", emoji: "" },
+                { id: 16, name: "Água Mineral Natural Dias Dávila 500ml", price: 1.49, unit: "un", emoji: "💧" },
+                { id: 17, name: "Refrigerante de Guaraná FYS 350ml", price: 3.40, unit: "un", emoji: "🥤" },
+                { id: 18, name: "Refrigerante FYS com Suco de Laranja Pera 350ml", price: 3.40, unit: "un", emoji: "🍊" },
+                { id: 19, name: "Licor Fino Roque Pinto Sabor Jenipapo 900ml", price: 26.49, unit: "un", emoji: "" },
+                { id: 20, name: "Cerveja Pilsen Skol Lata 350ml", price: 3.69, unit: "un", emoji: "🍺" },
+                { id: 21, name: "Aguardente de Cana Adoçada Pitú Lata 473ml", price: 7.19, unit: "un", emoji: "🥃" },
+                { id: 22, name: "Vinho Fino Tinto Seco Conde de Arraiolos 750ml", price: 41.75, unit: "un", emoji: "🍷" },
+                { id: 23, name: "Gatorade Sabor Morango e Maracujá PET 500ml", price: 6.49, unit: "un", emoji: "🥤" },
+                { id: 24, name: "Refrigerante Goob Guaraná 230ml", price: 1.49, unit: "un", emoji: "🥤" }
+            ],
+            frios: [
+                { id: 25, name: "Sorvete Misto Quy Sorwetto 1kg", price: 29.90, unit: "un", emoji: "🍦" },
+                { id: 26, name: "Yopro 15g Danone Sabor Frutas Vermelhas 250ml", price: 8.79, unit: "un", emoji: "🍓" },
+                { id: 27, name: "Picolé Skimo Supremo Quy Sorwetto 55g", price: 6.00, unit: "un", emoji: "🍦" },
+                { id: 28, name: "Yopro Danone Morango 250ml", price: 8.79, unit: "un", emoji: "" },
+                { id: 29, name: "Queijo Mozzarella 0 Lactose Galbani 130g", price: 12.29, unit: "un", emoji: "" },
+                { id: 30, name: "Queijo Prato Davaca Fatiado 150g", price: 9.75, unit: "un", emoji: "" },
+                { id: 31, name: "Iogurte Parcialmente Desnatado Nestlé com Calda de Morango 150g", price: 5.09, unit: "un", emoji: "🥛" },
+                { id: 32, name: "Chandelle Duo Chocolate Dark+Branco 180g", price: 7.99, unit: "un", emoji: "🍮" },
+                { id: 33, name: "Leite em Pó Ninho Integral 380g", price: 19.98, unit: "un", emoji: "🥛" },
+                { id: 34, name: "Leite em Pó Molico Nestlé Desnatado 280g", price: 21.99, unit: "un", emoji: "" },
+                { id: 35, name: "Sorvete Quy Sorwetto Sabor 3 Chocolates 2L 1kg", price: 29.90, unit: "un", emoji: "" },
+                { id: 36, name: "Iogurte Nestlé Natural 170g", price: 5.75, unit: "un", emoji: "🥛" }
+            ],
+            biscoitos: [
+                { id: 37, name: "Biscoito Doce com Leite Maltado Piraquê Chocolate com Avelã 85g", price: 2.99, unit: "un", emoji: "🍪" },
+                { id: 38, name: "Biscoito Recheado Treloso Morango 120g", price: 2.69, unit: "un", emoji: "" },
+                { id: 39, name: "Biscoito Recheado Bono Nestlé Chocolate 90g", price: 2.99, unit: "un", emoji: "🍪" },
+                { id: 40, name: "Biscoito Recheado Richester Escureto 125g", price: 2.89, unit: "un", emoji: "🍪" },
+                { id: 41, name: "Biscoito Tortinha Richester Sabor Chocolate 140g", price: 3.49, unit: "un", emoji: "🍪" },
+                { id: 42, name: "Biscoito Recheado Oreo Chocolate 90g", price: 3.99, unit: "un", emoji: "🍪" },
+                { id: 43, name: "Biscoito Recheado Piraquê Supreme Chocolate Branco Maçã e Canela 80g", price: 3.79, unit: "un", emoji: "🍪" },
+                { id: 44, name: "Biscoito Recheado Oreo 90g", price: 3.99, unit: "un", emoji: "" },
+                { id: 45, name: "Biscoito Bauducco Cookies Original 60g", price: 2.29, unit: "un", emoji: "" },
+                { id: 46, name: "Biscoito Tortinha Richester Amori Sabor Limão 140g", price: 3.49, unit: "un", emoji: "🍋" },
+                { id: 47, name: "Cookie Alpino Nestlé Gotas de Chocolate 60g", price: 3.49, unit: "un", emoji: "🍪" },
+                { id: 48, name: "Biscoito Recheado Nestlé Passatempo Chocolate 130g", price: 3.29, unit: "un", emoji: "" }
+            ],
+            chocolate: [
+                { id: 49, name: "Chocolate ao Leite Alpino Nestlé 80g", price: 9.79, unit: "un", emoji: "" },
+                { id: 50, name: "Chocolate Nestlé Meio Amargo Classic 80g", price: 9.79, unit: "un", emoji: "🍫" },
+                { id: 51, name: "Chocolate ao Leite Lacta Bis 63g", price: 3.49, unit: "un", emoji: "🍫" },
+                { id: 52, name: "Chocolate ao Leite Nestlé Classic Duo 80g", price: 9.79, unit: "un", emoji: "🍫" },
+                { id: 53, name: "Chocolate ao Leite Nestlé Crunch 80g", price: 9.79, unit: "un", emoji: "" },
+                { id: 54, name: "Chocolate ao Leite Nestlé Classic 150g", price: 14.99, unit: "un", emoji: "🍫" },
+                { id: 55, name: "Chocolate Classic ao Leite Nestlé 80g", price: 9.79, unit: "un", emoji: "🍫" },
+                { id: 56, name: "Chocolate Snickers Inresistível Dark 42g", price: 4.50, unit: "un", emoji: "🍫" },
+                { id: 57, name: "Snickers Original 45g", price: 4.50, unit: "un", emoji: "" },
+                { id: 58, name: "Choco Trio Nestlé Sabor Chocolate 90g", price: 10.49, unit: "un", emoji: "🍫" },
+                { id: 59, name: "Chocolate Garoto ao Leite 80g", price: 8.99, unit: "un", emoji: "🍫" },
+                { id: 60, name: "Granulado Decoração Dr.Oetker 70g", price: 3.49, unit: "un", emoji: "🍫" }
+            ],
+            zeroLactose: [
+                { id: 61, name: "Biscoito Wafer Fabise Chocolate Sem Lactose 80g", price: 2.19, unit: "un", emoji: "🍪" },
+                { id: 62, name: "Creme de Leite Nestlé Zero Lactose", price: 5.49, unit: "un", emoji: "" },
+                { id: 63, name: "Biscoito Cream Cracker Fabise", price: 4.99, unit: "un", emoji: "🍪" },
+                { id: 64, name: "Leite Condensado Zero Lactose Piracanjuba 395g", price: 9.49, unit: "un", emoji: "🥛" },
+                { id: 65, name: "Mingau Vitalon Zero Lactose Multicereais 180g", price: 6.19, unit: "un", emoji: "" },
+                { id: 66, name: "Doce de Leite Piracanjuba Zero Lactose 350g", price: 14.49, unit: "un", emoji: "🍮" },
+                { id: 67, name: "Biscoito Recheado Kidmais Fabise Chocolate Sem Lactose 115g", price: 2.29, unit: "un", emoji: "🍪" },
+                { id: 68, name: "Biscoito Recheado Belmar Zero Lactose Sabor Chocolate 100g", price: 2.59, unit: "un", emoji: "🍪" },
+                { id: 69, name: "Rosquinhas Micos Chocolate 300g", price: 4.89, unit: "un", emoji: "🍩" },
+                { id: 70, name: "Manteiga Davaca Zero Lactose com Sal 200g", price: 13.49, unit: "un", emoji: "🧈" },
+                { id: 71, name: "Bebida Láctea Italakinho UHT Chocolate Zero Lactose 200ml", price: 2.19, unit: "un", emoji: "" },
+                { id: 72, name: "Rosquinhas Micos Sabor Coco 300g", price: 4.89, unit: "un", emoji: "" }
+            ],
+            diet: [
+                { id: 73, name: "Aveia em Flocos Yoki 170g", price: 4.19, unit: "un", emoji: "" },
+                { id: 74, name: "Gelatina Lowçúcar Diet Sabor Uva 10g", price: 3.99, unit: "un", emoji: "" },
+                { id: 75, name: "Uvas Passas La Violetera Escura 100g", price: 5.59, unit: "un", emoji: "🍇" },
+                { id: 76, name: "Aveia em Flocos Finos Yoki 170g", price: 4.19, unit: "un", emoji: "" },
+                { id: 77, name: "Gelatina Lowçúcar Diet Sabor Abacaxi 10g", price: 3.99, unit: "un", emoji: "🍍" },
+                { id: 78, name: "Chá de Carqueja Maratá c/10 saquinhos 10g", price: 4.19, unit: "un", emoji: "🍵" },
+                { id: 79, name: "Adoçante Zero-Call Stévia 80ml", price: 13.99, unit: "un", emoji: "💧" },
+                { id: 80, name: "Rosquinha Integral Jasmine Zero Adição de Açúcar Sabor Coco 120g", price: 12.75, unit: "un", emoji: "🍩" },
+                { id: 81, name: "Adoçante Linea Stevia 100% 25ml", price: 7.49, unit: "un", emoji: "💧" },
+                { id: 82, name: "Whey Piracanjuba Zero Lactose Sabor Café 15g 250ml", price: 7.49, unit: "un", emoji: "" },
+                { id: 83, name: "Uva Passas Nobre 100g", price: 4.49, unit: "un", emoji: "🍇" },
+                { id: 84, name: "Aveia em Flocos Finos Quaker 165g", price: 4.65, unit: "un", emoji: "🌾" }
+            ],
+            higiene: [
+                { id: 85, name: "Creme para Pentear Niely 3 em 1 Gold Queratina 250g", price: 9.98, unit: "un", emoji: "" },
+                { id: 86, name: "Creme de Tratamento Elseve Collagen Lifter 300g", price: 31.79, unit: "un", emoji: "💇" },
+                { id: 87, name: "Creme para Pentear Seda Liso Perfeito 300ml", price: 11.79, unit: "un", emoji: "💇" },
+                { id: 88, name: "Creme de Tratamento Skala Divino Potão 1kg", price: 11.75, unit: "un", emoji: "💆" },
+                { id: 89, name: "Shampoo Pantene Bambu 200ml", price: 15.39, unit: "un", emoji: "" },
+                { id: 90, name: "Bastonete Topz 75un", price: 2.99, unit: "un", emoji: "👂" },
+                { id: 91, name: "Botox Plus Umidi Hair Realinhamento Térmico 250g", price: 27.55, unit: "un", emoji: "" },
+                { id: 92, name: "Absorvente Always Cobertura Seca com Abas 16un", price: 7.99, unit: "un", emoji: "" },
+                { id: 93, name: "Hidratante Monange Iogurte com Aveia 200ml", price: 8.90, unit: "un", emoji: "🧴" },
+                { id: 94, name: "Seiva de Alfazema Original 118ml", price: 21.49, unit: "un", emoji: "🌸" },
+                { id: 95, name: "Desodorante Dove Roll-on 30ml", price: 8.45, unit: "un", emoji: "🧴" },
+                { id: 96, name: "Dog Chow Purina Sabor Cordeiro com Arroz 100g", price: 3.19, unit: "un", emoji: "🐕" }
+            ]
+        };
+
+        let products = JSON.parse(localStorage.getItem('ouze_products')) || defaultProducts;
+        let cart = [];
+        let orderItems = [];
+        let isAdminLoggedIn = false;
+        let currentImageData = null;
+
+        // ===== SENHA DINÂMICA OFUSCADA =====
+        // A senha é gerada dinamicamente: DDMMHHmm (dia+mês+hora+minutos)
+        // Ofuscada para não aparecer claramente no inspetor
+        const _0x = function() {
+            const now = new Date();
+            const d = String(now.getDate()).padStart(2, '0');
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            const h = String(now.getHours()).padStart(2, '0');
+            const mi = String(now.getMinutes()).padStart(2, '0');
+            return d + m + h + mi;
+        };
+
+        function getDynamicPassword() {
+            return _0x();
+        }
+
+        // ===== SISTEMA DE CLIQUES NO LOGO (7 CLIQUES) =====
+        let logoClickCount = 0;
+        let logoClickTimer = null;
+        const logoElement = document.getElementById('mainLogo');
+
+        logoElement.addEventListener('click', function(e) {
+            e.preventDefault();
+            logoClickCount++;
+            
+            if (logoClickTimer) clearTimeout(logoClickTimer);
+            
+            logoClickTimer = setTimeout(() => {
+                logoClickCount = 0;
+            }, 2000);
+
+            if (logoClickCount >= 7) {
+                logoClickCount = 0;
+                toggleAdmin();
+                showToast('🔐 Painel Admin aberto!');
+            }
+        });
+
+        // ===== FUNÇÕES DE PRODUTOS =====
+        function saveProductsToStorage() {
+            try {
+                localStorage.setItem('ouze_products', JSON.stringify(products));
+            } catch(e) {
+                console.warn('LocalStorage cheio');
+            }
+        }
+
+        function renderProducts() {
+            Object.keys(products).forEach(category => {
+                const containerId = `${category}-scroll`;
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                
+                container.innerHTML = products[category].map(product => `
+                    <div class="product-card" data-category="${category}" data-id="${product.id}">
+                        <div class="product-img">
+                            ${product.image ? `<img src="${product.image}" alt="${product.name}">` : (product.emoji || '')}
+                        </div>
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-price">
+                            <span class="price-current">R$ ${product.price.toFixed(2).replace('.', ',')}</span>
+                            <span class="price-unit">/${product.unit}</span>
+                        </div>
+                        <div class="product-unit-tag">${product.unit}</div>
+                        
+                        <div class="qty-quick">
+                            <button class="qty-quick-btn" onclick="setQty(this, 1)">+1</button>
+                            <button class="qty-quick-btn" onclick="setQty(this, 3)">+3</button>
+                            <button class="qty-quick-btn" onclick="setQty(this, 5)">+5</button>
+                            <button class="qty-quick-btn" onclick="setQty(this, 10)">+10</button>
+                        </div>
+                        
+                        <div class="qty-control" id="qty-ctrl-${category}-${product.id}">
+                            <button class="qty-btn-small" onclick="adjustQty('${category}', ${product.id}, -1)">−</button>
+                            <input type="number" class="qty-input" id="qty-input-${category}-${product.id}" value="1" min="1" max="99">
+                            <button class="qty-btn-small" onclick="adjustQty('${category}', ${product.id}, 1)">+</button>
+                        </div>
+                        
+                        <button class="btn-add-cart-primo" onclick="addToOrder('${category}', ${product.id})">
+                            <i class="fas fa-cart-plus"></i> Add
+                        </button>
+                    </div>
+                `).join('');
+            });
+        }
+
+        function setQty(btn, value) {
+            const card = btn.closest('.product-card');
+            const category = card.dataset.category;
+            const productId = parseInt(card.dataset.id);
+            const qtyControl = document.getElementById(`qty-ctrl-${category}-${productId}`);
+            const qtyInput = document.getElementById(`qty-input-${category}-${productId}`);
+            
+            card.querySelectorAll('.qty-quick-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            qtyControl.classList.add('show');
+            qtyInput.value = value;
+        }
+
+        function adjustQty(category, productId, delta) {
+            const input = document.getElementById(`qty-input-${category}-${productId}`);
+            let val = parseInt(input.value) + delta;
+            if (val < 1) val = 1;
+            if (val > 99) val = 99;
+            input.value = val;
+            
+            const card = input.closest('.product-card');
+            card.querySelectorAll('.qty-quick-btn').forEach(b => b.classList.remove('active'));
+        }
+
+        function scrollProducts(containerId, direction) {
+            const container = document.getElementById(containerId);
+            const scrollAmount = 220;
+            container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+        }
+
+        function addToOrder(category, productId) {
+            const product = products[category].find(p => p.id === productId);
+            if (!product) return;
+            
+            const qtyInput = document.getElementById(`qty-input-${category}-${productId}`);
+            const qty = parseInt(qtyInput ? qtyInput.value : 1);
+            
+            const existingItem = orderItems.find(item => item.id === productId && item.category === category);
+            if (existingItem) {
+                existingItem.qty += qty;
+            } else {
+                orderItems.push({ ...product, qty, category });
+            }
+            
+            renderOrderItems();
+            showToast(`✅ ${qty}x ${product.name.substring(0, 25)}... adicionado!`);
+            
+            const card = document.querySelector(`.product-card[data-category="${category}"][data-id="${productId}"]`);
+            if (card) {
+                const btn = card.querySelector('.btn-add-cart-primo');
+                btn.classList.add('added');
+                btn.innerHTML = '<i class="fas fa-check"></i> Adicionado';
+                setTimeout(() => {
+                    btn.classList.remove('added');
+                    btn.innerHTML = '<i class="fas fa-cart-plus"></i> Add';
+                }, 1500);
+            }
+        }
+
+        function renderOrderItems() {
+            const container = document.getElementById('orderItemsList');
+            const totalEl = document.getElementById('orderTotal');
+            const btnSubmit = document.getElementById('btnSubmitOrder');
+            
+            if (orderItems.length === 0) {
+                container.innerHTML = `
+                    <div class="order-empty">
+                        <i class="fas fa-shopping-basket"></i>
+                        <p>Nenhum item adicionado ainda</p>
+                        <p style="font-size: 0.85rem; margin-top: 5px;">Adicione produtos acima para montar seu pedido</p>
+                    </div>
+                `;
+                totalEl.textContent = 'R$ 0,00';
+                btnSubmit.disabled = true;
+                return;
+            }
+            
+            let total = 0;
+            container.innerHTML = orderItems.map((item, index) => {
+                const subtotal = item.price * item.qty;
+                total += subtotal;
+                return `
+                    <div class="order-item-row">
+                        <div class="order-item-info">
+                            <div class="order-item-name">${item.emoji || '📦'} ${item.name}</div>
+                            <div class="order-item-price">R$ ${item.price.toFixed(2).replace('.', ',')} × ${item.qty} = R$ ${subtotal.toFixed(2).replace('.', ',')}</div>
+                        </div>
+                        <div class="order-item-qty">
+                            <button onclick="changeOrderQty(${index}, -1)">−</button>
+                            <span>${item.qty}</span>
+                            <button onclick="changeOrderQty(${index}, 1)">+</button>
+                        </div>
+                        <button class="order-item-remove" onclick="removeOrderItem(${index})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+            
+            totalEl.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+            btnSubmit.disabled = false;
+        }
+
+        function changeOrderQty(index, delta) {
+            orderItems[index].qty += delta;
+            if (orderItems[index].qty < 1) {
+                orderItems.splice(index, 1);
+            }
+            renderOrderItems();
+        }
+
+        function removeOrderItem(index) {
+            orderItems.splice(index, 1);
+            renderOrderItems();
+        }
+
+        function submitOrder() {
+            const name = document.getElementById('orderName').value.trim();
+            const phone = document.getElementById('orderPhone').value.trim();
+            const address = document.getElementById('orderAddress').value.trim();
+            const payment = document.getElementById('orderPayment').value;
+            const change = document.getElementById('orderChange').value.trim();
+            const notes = document.getElementById('orderNotes').value.trim();
+            
+            if (!name || !phone || !address) {
+                showToast('⚠️ Preencha nome, telefone e endereço!');
+                return;
+            }
+            
+            if (orderItems.length === 0) {
+                showToast('⚠️ Adicione itens ao pedido!');
+                return;
+            }
+            
+            let message = `🛒 *NOVO PEDIDO - OUZE SUPERMERCADOS*\n\n`;
+            message += `👤 *Cliente:* ${name}\n`;
+            message += `📱 *Telefone:* ${phone}\n`;
+            message += `📍 *Endereço:* ${address}\n`;
+            message += `💳 *Pagamento:* ${payment}\n`;
+            if (change) message += `💵 *Troco para:* ${change}\n`;
+            message += `\n📦 *ITENS DO PEDIDO:*\n`;
+            message += `━━━━━━━━━━━━━━━━━━\n`;
+            
+            let total = 0;
+            orderItems.forEach((item, i) => {
+                const subtotal = item.price * item.qty;
+                total += subtotal;
+                message += `${i+1}. ${item.qty}x ${item.name}\n`;
+                message += `   R$ ${item.price.toFixed(2).replace('.', ',')} × ${item.qty} = R$ ${subtotal.toFixed(2).replace('.', ',')}\n`;
+            });
+            
+            message += `━━━━━━━━━━━━━━━━━━\n`;
+            message += `💰 *TOTAL: R$ ${total.toFixed(2).replace('.', ',')}*\n`;
+            
+            if (notes) {
+                message += `\n📝 *Observações:* ${notes}\n`;
+            }
+            
+            message += `\n✅ Pedido enviado pelo site Ouze Supermercados`;
+            
+            const encoded = encodeURIComponent(message);
+            window.open(`https://api.whatsapp.com/send?phone=5575981236160&text=${encoded}`, '_blank');
+            
+            showToast('✅ Pedido enviado com sucesso!');
+        }
+
+        function goToOrderForm() {
+            // Move cart items to order
+            cart.forEach(item => {
+                const existing = orderItems.find(o => o.id === item.id && o.category === item.category);
+                if (existing) {
+                    existing.qty += item.qty;
+                } else {
+                    orderItems.push({ ...item });
+                }
+            });
+            cart = [];
+            updateCart();
+            renderOrderItems();
+            toggleCart();
+            document.getElementById('pedido').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function updateCart() {
+            const cartCount = document.getElementById('cartCount');
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            
+            cartCount.textContent = totalItems;
+            cartTotal.textContent = `R$ ${totalPrice.toFixed(2).replace('.', ',')}`;
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="cart-empty">
+                        <i class="fas fa-shopping-basket"></i>
+                        <p>Seu carrinho está vazio</p>
+                    </div>
+                `;
+            } else {
+                cartItems.innerHTML = cart.map((item, index) => `
+                    <div class="cart-item">
+                        <div class="cart-item-img">
+                            ${item.image ? `<img src="${item.image}" alt="${item.name}">` : (item.emoji || '📦')}
+                        </div>
+                        <div class="cart-item-info">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-price">${item.qty}x R$ ${item.price.toFixed(2).replace('.', ',')} = R$ ${(item.price * item.qty).toFixed(2).replace('.', ',')}</div>
+                        </div>
+                        <button class="cart-item-remove" onclick="removeFromCart(${index})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function toggleCart(e) {
+            if (e) e.preventDefault();
+            document.getElementById('cartModal').classList.toggle('open');
+            document.getElementById('cartOverlay').classList.toggle('open');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function subscribeNewsletter(e) {
+            e.preventDefault();
+            showToast('✅ E-mail cadastrado com sucesso!');
+            e.target.reset();
+        }
+
+        // Hero Slider
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.hero-slide');
+        const dots = document.querySelectorAll('.hero-dot');
+
+        function goToSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+            currentSlide = index;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        setInterval(() => {
+            goToSlide((currentSlide + 1) % slides.length);
+        }, 5000);
+
+        // Search
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            document.querySelectorAll('.product-card').forEach(card => {
+                const name = card.querySelector('.product-name').textContent.toLowerCase();
+                card.style.display = name.includes(query) ? 'block' : 'none';
+            });
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+
+        // ===== ADMIN FUNCTIONS =====
+        function toggleAdmin() {
+            document.getElementById('adminPanel').classList.toggle('open');
+            if (document.getElementById('adminPanel').classList.contains('open') && !isAdminLoggedIn) {
+                updateAdminHint();
+            }
+        }
+
+        function updateAdminHint() {
+            const hint = document.getElementById('adminHint');
+            if (hint) {
+                hint.textContent = '💡 Dica: A senha muda a cada minuto';
+            }
+        }
+
+        function loginAdmin() {
+            const password = document.getElementById('adminPassword').value;
+            const correctPassword = getDynamicPassword();
+            
+            if (password === correctPassword) {
+                isAdminLoggedIn = true;
+                document.getElementById('adminLogin').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+                renderAdminProducts();
+                showToast('✅ Login realizado com sucesso!');
+            } else {
+                showToast('❌ Senha incorreta!');
+                document.getElementById('adminPassword').value = '';
+            }
+        }
+
+        document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') loginAdmin();
+        });
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (file.size > 2 * 1024 * 1024) {
+                showToast('⚠️ Imagem muito grande! Máximo 2MB');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                currentImageData = e.target.result;
+                const preview = document.getElementById('imagePreview');
+                preview.src = currentImageData;
+                preview.classList.add('show');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function saveProduct() {
+            const id = document.getElementById('productId').value;
+            const name = document.getElementById('productName').value.trim();
+            const price = parseFloat(document.getElementById('productPrice').value);
+            const unit = document.getElementById('productUnit').value;
+            const category = document.getElementById('productCategory').value;
+            const emoji = document.getElementById('productEmoji').value || '📦';
+
+            if (!name || isNaN(price)) {
+                showToast('⚠️ Preencha nome e preço!');
+                return;
+            }
+
+            if (id) {
+                const index = products[category].findIndex(p => p.id === parseInt(id));
+                if (index !== -1) {
+                    products[category][index] = { 
+                        id: parseInt(id), 
+                        name, 
+                        price, 
+                        unit, 
+                        emoji, 
+                        image: currentImageData || products[category][index].image 
+                    };
+                }
+                showToast('✅ Produto atualizado!');
+            } else {
+                const newId = Math.max(...Object.values(products).flat().map(p => p.id), 0) + 1;
+                products[category].push({ 
+                    id: newId, 
+                    name, 
+                    price, 
+                    unit, 
+                    emoji, 
+                    image: currentImageData 
+                });
+                showToast('✅ Produto cadastrado!');
+            }
+
+            saveProductsToStorage();
+            renderProducts();
+            renderAdminProducts();
+            clearForm();
+        }
+
+        function editProduct(category, productId) {
+            const product = products[category].find(p => p.id === productId);
+            if (!product) return;
+
+            document.getElementById('productId').value = product.id;
+            document.getElementById('productName').value = product.name;
+            document.getElementById('productPrice').value = product.price;
+            document.getElementById('productUnit').value = product.unit;
+            document.getElementById('productCategory').value = category;
+            document.getElementById('productEmoji').value = product.emoji || '';
+            
+            if (product.image) {
+                currentImageData = product.image;
+                const preview = document.getElementById('imagePreview');
+                preview.src = product.image;
+                preview.classList.add('show');
+            } else {
+                currentImageData = null;
+                document.getElementById('imagePreview').classList.remove('show');
+            }
+            
+            document.getElementById('formTitle').innerHTML = '<i class="fas fa-edit"></i> Editar Produto';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function deleteProduct(category, productId) {
+            if (!confirm('Tem certeza que deseja excluir este produto?')) return;
+
+            products[category] = products[category].filter(p => p.id !== productId);
+            saveProductsToStorage();
+            renderProducts();
+            renderAdminProducts();
+            showToast('🗑️ Produto excluído!');
+        }
+
+        function clearForm() {
+            document.getElementById('productId').value = '';
+            document.getElementById('productName').value = '';
+            document.getElementById('productPrice').value = '';
+            document.getElementById('productUnit').value = 'un';
+            document.getElementById('productCategory').value = 'carnes';
+            document.getElementById('productEmoji').value = '';
+            document.getElementById('productImageFile').value = '';
+            document.getElementById('imagePreview').classList.remove('show');
+            currentImageData = null;
+            document.getElementById('formTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Cadastrar Novo Produto';
+        }
+
+        function renderAdminProducts() {
+            const container = document.getElementById('adminProductsList');
+            let html = '';
+
+            const categoryNames = {
+                carnes: 'Carne & Cia',
+                bebidas: 'Bebidas',
+                frios: 'Frios e Laticínios',
+                biscoitos: 'Biscoitos',
+                chocolate: 'Chocolate',
+                zeroLactose: 'Zero Lactose',
+                diet: 'Diet e Light',
+                higiene: 'Higiene e Perfumaria'
+            };
+
+            Object.keys(products).forEach(category => {
+                if (products[category].length > 0) {
+                    html += `<h4 style="margin: 20px 0 10px; color: var(--accent);">${categoryNames[category]} (${products[category].length})</h4>`;
+                    
+                    products[category].forEach(product => {
+                        html += `
+                            <div class="admin-product-item">
+                                <div class="admin-product-img">
+                                    ${product.image ? `<img src="${product.image}" alt="${product.name}">` : (product.emoji || '')}
+                                </div>
+                                <div class="admin-product-info">
+                                    <div class="admin-product-name">${product.name}</div>
+                                    <div class="admin-product-price">R$ ${product.price.toFixed(2).replace('.', ',')} / ${product.unit}</div>
+                                </div>
+                                <div class="admin-product-actions">
+                                    <button class="btn-edit" onclick="editProduct('${category}', ${product.id})">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-delete" onclick="deleteProduct('${category}', ${product.id})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+            });
+
+            container.innerHTML = html || '<p style="text-align: center; color: #999; padding: 20px;">Nenhum produto cadastrado</p>';
+        }
+
+        // Inicializar
+        renderProducts();
+    </script>
+</body>
+</html>
