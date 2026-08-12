@@ -182,91 +182,106 @@
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9998; opacity: 0; visibility: hidden; transition: all 0.3s; }
         .overlay.open { opacity: 1; visibility: visible; }
 
-        .cart-modal { position: fixed; top: 0; right: -450px; width: 420px; max-width: 100%; height: 100vh; background: white; box-shadow: -10px 0 40px rgba(0,0,0,0.15); z-index: 10000; transition: right 0.4s; display: flex; flex-direction: column; }
+        
+        /* === CARRINHO REFEITO - UX SIMPLES E FLUIDO === */
+        .cart-modal { position: fixed; top: 0; right: -480px; width: 440px; max-width: 100%; height: 100vh; height: 100dvh; background: white; box-shadow: -10px 0 40px rgba(0,0,0,0.15); z-index: 10000; transition: right 0.35s cubic-bezier(.4,0,.2,1); display: flex; flex-direction: column; overscroll-behavior: contain; }
         .cart-modal.open { right: 0; }
         body.modal-open { overflow: hidden; }
-        .cart-modal { overscroll-behavior: contain; }
-        .cart-checkout-data { max-height: 42vh; overflow-y: auto; overscroll-behavior: contain; border-bottom: 1px solid #eee; flex-shrink: 0; }
-        .cart-checkout-data::-webkit-scrollbar { width: 6px; }
-        .cart-checkout-data::-webkit-scrollbar-thumb { background: #ddd; border-radius: 10px; }
-        .cart-items { flex: 1; overflow-y: auto; overscroll-behavior: contain; }
-        .cart-footer { flex-shrink: 0; background: white; }
+        .cart-header { padding: 16px 18px; background: var(--gradient-1); color: white; display: flex; justify-content: space-between; align-items: center; flex-shrink:0; }
+        .cart-header h3 { font-size: 1.15rem; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+        .cart-close { background: rgba(255,255,255,0.22); border: none; color: white; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.1rem; transition:.2s; }
+        .cart-close:hover { background: rgba(255,255,255,0.32); transform: rotate(90deg); }
+        .cart-progress { display:flex; gap:6px; padding:10px 14px; background:#fafafa; border-bottom:1px solid #eee; flex-shrink:0; }
+        .cart-progress-step { flex:1; display:flex; align-items:center; justify-content:center; gap:5px; font-size:.72rem; font-weight:700; color:#bbb; background:white; padding:7px 6px; border-radius:20px; border:1px solid #eee; }
+        .cart-progress-step.active { color:var(--accent); border-color:#FFB3D1; background:#FFF0F6; }
+        .cart-scroll { flex:1; overflow-y:auto; overscroll-behavior:contain; display:flex; flex-direction:column; -webkit-overflow-scrolling:touch; }
+        .cart-items { padding:12px; display:flex; flex-direction:column; gap:10px; background:#f7f7f8; flex:0 0 auto; min-height:120px; }
+        .cart-item-card { display:flex; gap:12px; padding:12px; background:white; border-radius:14px; border:1px solid #f0f0f0; box-shadow:0 2px 8px rgba(0,0,0,.04); position:relative; }
+        .cart-item-img { width:64px; height:64px; background:#f8f8f8; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.7rem; overflow:hidden; flex-shrink:0; border:1px solid #f0f0f0; }
+        .cart-item-img img { width:100%; height:100%; object-fit:cover; }
+        .cart-item-info { flex:1; min-width:0; }
+        .cart-item-top { display:flex; justify-content:space-between; gap:8px; }
+        .cart-item-name { font-weight:700; font-size:.88rem; line-height:1.25; color:var(--dark); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; flex:1; }
+        .cart-item-remove { background:#FFF0F0; border:none; color:#ff6b6b; width:26px; height:26px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:.8rem; flex-shrink:0; }
+        .cart-item-remove:hover { background:#ff6b6b; color:white; }
+        .cart-item-bottom { display:flex; align-items:center; justify-content:space-between; margin-top:8px; }
+        .cart-qty-controls { display:flex; align-items:center; background:#f1f1f1; border-radius:22px; padding:3px; gap:2px; border:1px solid #eee; }
+        .qty-btn { width:28px; height:28px; border:none; background:white; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:.85rem; box-shadow:0 1px 3px rgba(0,0,0,.1); transition:.15s; }
+        .qty-btn:hover { background:var(--dark); color:white; }
+        .qty-value { min-width:30px; text-align:center; font-weight:800; font-size:.9rem; }
+        .cart-item-price-box { text-align:right; line-height:1.1; }
+        .cart-item-unit { font-size:.68rem; color:#999; }
+        .cart-item-total { color:var(--accent); font-weight:800; font-size:.92rem; }
+        .cart-empty { text-align:center; padding:36px 20px; color:#888; background:white; border-radius:16px; border:2px dashed #e5e5e5; margin:4px; }
+        .cart-empty i { font-size:2.8rem; color:#ddd; margin-bottom:12px; display:block; }
+        .cart-summary { background:#FFFBF5; border:1px solid #FFE4CC; border-radius:12px; padding:12px 14px; margin:0 12px 12px; }
+        .summary-line { display:flex; justify-content:space-between; font-size:.88rem; color:#666; margin:4px 0; }
+        .cart-total { display:flex; justify-content:space-between; font-weight:800; font-size:1.05rem; color:var(--dark); border-top:1px dashed #FFC9A0; margin-top:8px; padding-top:8px; }
+        .cart-total span:last-child { color:var(--accent); font-size:1.2rem; }
+        .cart-section { background:white; padding:14px 16px; border-top:1px solid #f0f0f0; }
+        .cart-section-title { font-weight:800; font-size:.9rem; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+        .cart-section-title i { color:var(--accent); }
+        .form-group { margin-bottom:10px; }
+        .form-group label { font-size:.78rem; font-weight:600; color:#555; margin-bottom:4px; display:block; }
+        .form-group input, .form-group select, .form-group textarea { width:100%; padding:10px 12px; border:2px solid #eee; border-radius:10px; font-family:'Poppins'; font-size:.88rem; outline:none; transition:.2s; background:#fafafa; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--accent); background:white; box-shadow:0 0 0 3px rgba(233,30,140,.08); }
+        .form-group textarea { min-height:60px; resize:vertical; }
+        .discount-row { display:flex; align-items:center; gap:8px; margin:8px 0; }
+        .discount-row label { font-size:.8rem; font-weight:600; white-space:nowrap; }
+        .discount-row input { flex:1; }
+        .pix-box { margin-top:12px; padding:14px; border:2px solid #00C897; border-radius:12px; background:#f0fffa; display:none; }
+        .pix-box.show { display:block; }
+        .pix-title { font-weight:800; color:#008f6b; display:flex; gap:6px; margin-bottom:8px; font-size:.9rem; }
+        #cartPixQrCode { display:flex; justify-content:center; background:white; padding:8px; border-radius:10px; width:max-content; margin:8px auto; }
+        .pix-key-line { display:flex; gap:6px; }
+        .pix-key-line input { flex:1; padding:8px; border:1px solid #ddd; border-radius:8px; font-size:.85rem; font-family:'SF Mono',Consolas,monospace; letter-spacing:.5px; background:#fff; word-break:break-all; -webkit-user-select:text; user-select:text; }
+        .btn-pix-copy { padding:8px 12px; border:none; border-radius:8px; background:#00C897; color:white; font-weight:700; cursor:pointer; font-size:.8rem; }
+        .order-png-card { position:fixed; left:-9999px; top:0; width:420px; background:#ffffff; color:#1a1a2e; font-family:'Poppins',sans-serif; padding:24px; box-sizing:border-box; text-align:left; }
+        .order-png-head { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+        .order-png-logo { width:56px; height:56px; border-radius:50%; object-fit:cover; }
+        .order-png-company { font-size:1.05rem; font-weight:800; line-height:1.2; }
+        .order-png-sub { font-size:.7rem; color:#888; font-weight:500; letter-spacing:1px; text-transform:uppercase; }
+        .order-png-title { font-size:1.3rem; font-weight:900; text-align:center; color:#E91E8C; margin-bottom:12px; letter-spacing:1px; }
+        .order-png-data div { font-size:.85rem; margin-bottom:5px; }
+        .order-png-table { width:100%; border-collapse:collapse; margin:12px 0; font-size:.8rem; }
+        .order-png-table th { background:#f5f5f5; padding:7px 8px; text-align:left; border-bottom:2px solid #ddd; }
+        .order-png-table td { padding:6px 8px; border-bottom:1px solid #eee; }
+        .order-png-summary { font-size:.85rem; margin-top:10px; }
+        .order-png-summary > div { display:flex; justify-content:space-between; padding:3px 0; }
+        .order-png-total { display:flex; justify-content:space-between; font-weight:900; font-size:1.05rem; border-top:2px solid #1a1a2e; margin-top:6px; padding-top:6px; }
+        .order-png-pix { margin-top:14px; border:2px solid #00C897; border-radius:12px; padding:12px; background:#f0fffa; display:flex; gap:12px; align-items:center; }
+        .order-png-footer { margin-top:14px; font-size:.65rem; color:#999; text-align:center; border-top:1px solid #eee; padding-top:8px; }
+        .cart-footer { padding:14px 16px; border-top:2px solid #f0f0f0; background:white; flex-shrink:0; box-shadow:0 -8px 20px rgba(0,0,0,.06); }
+        .cart-actions { display:flex; gap:8px; }
+        .btn-clear-cart { background:#f2f2f2; color:#666; border:none; padding:12px 14px; border-radius:50px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; transition:.2s; }
+        .btn-clear-cart:hover { background:#ffe0e0; color:#d33; }
+        .btn-checkout { flex:1; background:var(--gradient-1); color:white; border:none; padding:12px 18px; border-radius:50px; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 14px rgba(233,30,140,.3); transition:.2s; font-family:'Poppins'; }
+        .btn-checkout:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(233,30,140,.4); }
+        .btn-checkout:disabled { opacity:.5; cursor:not-allowed; transform:none; }
         /* Review e PIX modais */
-        .review-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); backdrop-filter: blur(4px); z-index: 11000; display: none; align-items: center; justify-content: center; padding: 15px; }
+        .review-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); backdrop-filter: blur(4px); z-index: 11000; display: none; align-items: center; justify-content: center; padding: 12px; }
         .review-overlay.open { display: flex; }
-        .review-modal { background: white; width: 560px; max-width: 100%; max-height: 90vh; border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 80px rgba(0,0,0,.3); animation: popIn .25s ease; }
-        @keyframes popIn { from { transform: scale(.95) translateY(10px); opacity:0 } to { transform: scale(1) translateY(0); opacity:1 } }
-        .review-header { padding: 18px 22px; background: var(--gradient-1); color: white; display: flex; justify-content: space-between; align-items: center; }
-        .review-header h3 { font-size: 1.1rem; font-weight: 800; display:flex; align-items:center; gap:10px; }
-        .review-close { background: rgba(255,255,255,.2); border: none; color: white; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.1rem; }
-        .review-body { flex:1; overflow-y:auto; padding: 18px 22px; overscroll-behavior: contain; }
-        .review-section { margin-bottom: 16px; }
-        .review-section-title { font-weight: 800; font-size: .95rem; margin-bottom: 8px; color: var(--dark); display:flex; gap:8px; align-items:center; }
-        .review-item { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px dashed #eee; font-size:.9rem; }
-        .review-item:last-child { border: none; }
-        .review-total-box { background:#fff8f0; border:2px solid #FFE0CC; border-radius:12px; padding:14px; }
-        .review-total-line { display:flex; justify-content:space-between; margin:4px 0; font-size:.9rem; }
-        .review-total-line.total { font-weight:900; font-size:1.15rem; color: var(--accent); border-top:2px solid #FFE0CC; padding-top:8px; margin-top:8px; }
-        .review-footer { padding: 14px 22px; border-top:1px solid #eee; display:flex; gap:10px; background:#fafafa; }
+        .review-modal { background: white; width: 560px; max-width: 100%; max-height: 92vh; max-height: 92dvh; border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 80px rgba(0,0,0,.35); animation: popIn .25s ease; }
+        @keyframes popIn { from { transform: scale(.96) translateY(8px); opacity:0 } to { transform: scale(1) translateY(0); opacity:1 } }
+        .review-header { padding: 16px 20px; background: var(--gradient-1); color: white; display: flex; justify-content: space-between; align-items: center; flex-shrink:0; }
+        .review-header h3 { font-size: 1.05rem; font-weight: 800; display:flex; align-items:center; gap:8px; }
+        .review-close { background: rgba(255,255,255,.22); border: none; color: white; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; }
+        .review-body { flex:1; overflow-y:auto; padding: 16px 18px; overscroll-behavior: contain; }
+        .review-section { margin-bottom: 14px; }
+        .review-section-title { font-weight: 800; font-size: .88rem; margin-bottom: 6px; color: var(--dark); display:flex; gap:6px; align-items:center; }
+        .review-item { display:flex; justify-content:space-between; padding:7px 0; border-bottom:1px dashed #eee; font-size:.88rem; gap:10px; }
+        .review-total-box { background:#fff8f0; border:2px solid #FFE0CC; border-radius:12px; padding:12px; }
+        .review-total-line { display:flex; justify-content:space-between; margin:3px 0; font-size:.88rem; }
+        .review-total-line.total { font-weight:900; font-size:1.1rem; color: var(--accent); border-top:2px solid #FFE0CC; padding-top:8px; margin-top:8px; }
+        .review-footer { padding: 12px 16px; border-top:1px solid #eee; display:flex; gap:10px; background:#fafafa; flex-shrink:0; }
         .btn-review-cancel { flex:1; background:#f0f0f0; border:none; padding:12px; border-radius:50px; font-weight:700; cursor:pointer; font-family:'Poppins'; }
         .btn-review-confirm { flex:2; background:var(--gradient-1); color:white; border:none; padding:12px; border-radius:50px; font-weight:800; cursor:pointer; font-family:'Poppins'; display:flex; align-items:center; justify-content:center; gap:8px; }
         .pix-modal-box { text-align:center; }
-        .pix-qr-wrap { background:white; padding:12px; border-radius:16px; display:inline-block; margin:14px auto; box-shadow:0 4px 20px rgba(0,0,0,.08); border:2px solid #00C897; }
-        .pix-copy-area { background:#f1fffb; border:2px solid #00C897; border-radius:12px; padding:12px; margin-top:12px; }
-        .pix-copy-input { width:100%; padding:10px; border:1px solid #cde; border-radius:8px; font-size:.7rem; word-break:break-all; background:white; margin-bottom:8px; }
-        .pix-info { font-size:.85rem; color:#555; background:#f8f8f8; padding:10px; border-radius:8px; margin:8px 0; }
+        .pix-qr-wrap { background:white; padding:12px; border-radius:16px; display:inline-block; margin:12px auto; box-shadow:0 4px 20px rgba(0,0,0,.08); border:2px solid #00C897; }
+        .pix-copy-area { background:#f1fffb; border:2px solid #00C897; border-radius:12px; padding:12px; margin-top:10px; text-align:left; }
+        .pix-copy-input { width:100%; padding:10px; border:1px solid #cde; border-radius:8px; font-size:.85rem; word-break:break-all; background:white; margin-bottom:8px; font-family:'SF Mono',Consolas,monospace; letter-spacing:.3px; line-height:1.4; -webkit-user-select:text; user-select:text; }
+        .pix-info { font-size:.82rem; color:#444; background:#f8f8f8; padding:10px; border-radius:10px; margin:8px 0; line-height:1.4; text-align:left; }
 
-        .cart-header { padding: 20px; background: var(--gradient-1); color: white; display: flex; justify-content: space-between; align-items: center; }
-        .cart-header h3 { font-size: 1.2rem; font-weight: 700; display: flex; align-items: center; gap: 10px; }
-        .cart-close { background: rgba(255,255,255,0.2); border: none; color: white; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; }
-        .cart-items { flex: 1; overflow-y: auto; padding: 20px; }
-        .cart-item { display: flex; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee; align-items: center; }
-        .cart-item-img { width: 60px; height: 60px; background: #f5f5f5; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; overflow: hidden; flex-shrink: 0; }
-        .cart-item-img img { width: 100%; height: 100%; object-fit: cover; }
-        .cart-item-info { flex: 1; }
-        .cart-item-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 5px; }
-        .cart-item-price { color: var(--accent); font-weight: 700; font-size: 0.85rem; }
-        .cart-item-remove { background: none; border: none; color: #dc3545; cursor: pointer; font-size: 1.2rem; padding: 8px; border-radius: 50%; transition: all 0.2s; }
-        .cart-item-remove:hover { background: #ffe5e5; transform: scale(1.1); }
-        .cart-empty { text-align: center; padding: 40px 20px; color: #999; }
-        .cart-empty i { font-size: 3rem; margin-bottom: 15px; color: #ddd; }
-        .cart-footer { padding: 20px; border-top: 2px solid #f0f0f0; }
-        .discount-row { display:flex; align-items:center; gap:10px; margin:10px 0; }
-        .discount-row label { font-size:.85rem; font-weight:600; color:#555; white-space:nowrap; }
-        .discount-row input { flex:1; padding:9px 12px; border:2px solid #eee; border-radius:9px; font-family:'Poppins',sans-serif; outline:none; }
-        .discount-row input:focus { border-color:var(--accent); }
-        .summary-line { display:flex; justify-content:space-between; margin:5px 0; font-size:.9rem; color:#666; }
-        .pix-box { margin-top:15px; padding:16px; border:2px solid #00C897; border-radius:14px; background:#f1fffb; display:none; }
-        .pix-box.show { display:block; }
-        .pix-title { font-weight:800; color:#008f6b; display:flex; align-items:center; gap:8px; margin-bottom:10px; }
-        #pixQrCode { display:flex; justify-content:center; background:white; padding:10px; border-radius:10px; width:max-content; margin:10px auto; }
-        .pix-key-line { display:flex; gap:8px; align-items:center; }
-        .pix-key-line input { flex:1; padding:9px; border:1px solid #ddd; border-radius:8px; font-size:.75rem; background:white; }
-        .btn-pix-copy { padding:9px 12px; border:none; border-radius:8px; background:#00C897; color:white; font-weight:700; cursor:pointer; }
-        .order-png-card { position:fixed; left:-100000px; top:0; width:760px; background:white; padding:34px; border-radius:20px; box-shadow:0 10px 40px rgba(0,0,0,.12); font-family:'Poppins',sans-serif; color:#1A1A2E; }
-        .order-png-head { display:flex; align-items:center; gap:18px; border-bottom:3px solid #FF6B35; padding-bottom:18px; margin-bottom:20px; }
-        .order-png-logo { width:78px; height:78px; border-radius:50%; object-fit:cover; border:4px solid #fff; box-shadow:0 3px 12px rgba(0,0,0,.15); }
-        .order-png-company { font-size:25px; font-weight:900; }
-        .order-png-sub { color:#777; font-size:13px; }
-        .order-png-title { font-size:22px; font-weight:900; margin-bottom:14px; }
-        .order-png-data { background:#f8f8f8; border-radius:12px; padding:15px; margin-bottom:18px; font-size:13px; }
-        .order-png-data div { margin:4px 0; }
-        .order-png-table { width:100%; border-collapse:collapse; font-size:13px; margin-bottom:16px; }
-        .order-png-table th,.order-png-table td { padding:9px 7px; border-bottom:1px solid #eee; text-align:left; }
-        .order-png-table th:last-child,.order-png-table td:last-child { text-align:right; }
-        .order-png-summary { margin-left:auto; width:330px; font-size:14px; }
-        .order-png-summary div { display:flex; justify-content:space-between; padding:5px 0; }
-        .order-png-total { margin-top:7px; padding-top:10px; border-top:2px solid #FF6B35; font-size:21px; font-weight:900; }
-        .order-png-pix { margin-top:20px; padding:15px; border:2px solid #00C897; border-radius:12px; background:#f1fffb; display:flex; gap:18px; align-items:center; }
-        .order-png-pix img { width:130px; height:130px; background:#fff; padding:7px; }
-        .order-png-footer { margin-top:20px; color:#777; font-size:11px; text-align:center; }
-        .cart-total { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 1.1rem; font-weight: 700; }
-        .cart-total span:last-child { color: var(--accent); font-size: 1.3rem; }
-        .cart-actions { display: flex; gap: 10px; margin-bottom: 15px; }
-        .btn-clear-cart { flex: 1; background: #f0f0f0; color: #666; border: none; padding: 12px; border-radius: 50px; font-weight: 600; font-size: 0.9rem; cursor: pointer; font-family: 'Poppins', sans-serif; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-clear-cart:hover { background: #dc3545; color: white; }
-        .btn-checkout { flex: 2; background: var(--gradient-1); color: white; border: none; padding: 12px; border-radius: 50px; font-weight: 700; font-size: 0.9rem; cursor: pointer; font-family: 'Poppins', sans-serif; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-checkout:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
 
         .account-panel { position: fixed; top: 0; right: -550px; width: 520px; max-width: 100%; height: 100vh; background: white; box-shadow: -10px 0 40px rgba(0,0,0,0.15); z-index: 10000; transition: right 0.4s; display: flex; flex-direction: column; }
         .account-panel.open { right: 0; }
@@ -811,75 +826,87 @@
 
     <div class="overlay" id="overlay" onclick="closeAllPanels()"></div>
 
-    <div class="cart-modal" id="cartModal">
+        <div class="cart-modal" id="cartModal">
         <div class="cart-header">
-            <h3><i class="fas fa-shopping-cart"></i> Meu Carrinho</h3>
-            <button class="cart-close" onclick="toggleCart()"><i class="fas fa-times"></i></button>
+            <h3><i class="fas fa-shopping-bag"></i> Meu Carrinho <span id="cartHeaderCount" style="background:rgba(255,255,255,.3);padding:2px 8px;border-radius:12px;font-size:.78rem;margin-left:6px;">0</span></h3>
+            <button class="cart-close" onclick="toggleCart()" aria-label="Fechar"><i class="fas fa-times"></i></button>
         </div>
-        <div class="cart-checkout-data" id="cartCheckoutData" style="padding:14px 18px 0;">
-            <div class="form-section-title" style="margin-bottom:10px;"><i class="fas fa-user"></i> Antes de fazer o pedido, crie sua conta</div>
-            <div class="form-group"><label>Nome Completo *</label><input type="text" id="cartCustomerName" placeholder="Seu nome completo"></div>
-            <div class="form-group"><label>Telefone/WhatsApp *</label><input type="tel" id="cartCustomerPhone" placeholder="(75) 99999-9999"></div>
-            <div class="form-group"><label>Cidade *</label><input type="text" id="cartCustomerCity" placeholder="Cidade - BA"></div>
-            <div class="form-group"><label>Endereço para entrega *</label><input type="text" id="cartCustomerAddress" placeholder="Rua, número, bairro, complemento"></div>
-            <div class="form-group"><label>Pagamento</label>
-                <select id="cartPayment" onchange="toggleCartPixPayment()">
-                    <option value="Dinheiro">💵 Dinheiro</option>
-                    <option value="Cartão de Crédito">💳 Cartão de Crédito</option>
-                    <option value="Cartão de Débito">💳 Cartão de Débito</option>
-                    <option value="PIX">📱 PIX</option>
-                </select>
+        <div class="cart-progress">
+            <div class="cart-progress-step active"><i class="fas fa-basket-shopping"></i> Itens</div>
+            <div class="cart-progress-step" id="stepEntrega"><i class="fas fa-location-dot"></i> Entrega</div>
+            <div class="cart-progress-step" id="stepPag"><i class="fas fa-credit-card"></i> Pagamento</div>
+        </div>
+        <div class="cart-scroll" id="cartScroll">
+            <div class="cart-items" id="cartItems">
+                <div class="cart-empty">
+                    <i class="fas fa-basket-shopping"></i>
+                    <p>Seu carrinho está vazio</p>
+                    <small>Toque em Adicionar nos produtos</small>
+                </div>
             </div>
-            <div class="form-group" id="cartChangeGroup" style="display:none;"><label>Troco para quanto? (se precisar)</label><input type="text" id="cartChange" placeholder="Ex: R$ 100,00 - só aparece se Dinheiro"></div>
-            <div class="form-group"><label>Observações (opcional)</label><textarea id="cartNotes" placeholder="Alguma observação sobre o pedido?"></textarea></div>
-            <div id="cartPixBox" class="pix-box" style="display:none;"><div class="pix-title"><i class="fas fa-qrcode"></i> Pague com PIX</div><div id="cartPixQrCode"></div><div style="font-size:.8rem;color:#555;text-align:center;margin-bottom:8px;">75981236160 • Edimundo Pereira - Santander</div><div class="pix-key-line"><input id="cartPixCopyPaste" readonly><button class="btn-pix-copy" onclick="copyCartPixCode()"><i class="fas fa-copy"></i> Copiar</button></div></div>
-        </div>
-        <div class="cart-items" id="cartItems">
-            <div class="cart-empty">
-                <i class="fas fa-shopping-basket"></i>
-                <p>Seu carrinho está vazio</p>
+            <div class="cart-summary" id="cartSummaryBox" style="display:none;">
+                <div class="summary-line"><span>Subtotal (<span id="summaryQty">0</span> itens)</span><span id="cartSubtotal">R$ 0,00</span></div>
+                <div class="discount-row">
+                    <label for="cartDiscount"><i class="fas fa-tag"></i> Desconto R$</label>
+                    <input type="number" id="cartDiscount" min="0" step="0.01" value="0" placeholder="0,00" oninput="updateCart()">
+                </div>
+                <div class="cart-total"><span>Total</span><span id="cartTotal">R$ 0,00</span></div>
+            </div>
+            <div class="cart-section" id="cartCheckoutData">
+                <div class="cart-section-title"><i class="fas fa-truck-fast"></i> Onde entregar?</div>
+                <div class="form-group"><label>Nome Completo *</label><input type="text" id="cartCustomerName" placeholder="Ex: João Silva" autocomplete="name"></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                    <div class="form-group"><label>WhatsApp *</label><input type="tel" id="cartCustomerPhone" placeholder="(75) 9 9999-9999" autocomplete="tel"></div>
+                    <div class="form-group"><label>Cidade *</label><input type="text" id="cartCustomerCity" placeholder="Feira de Santana - BA"></div>
+                </div>
+                <div class="form-group"><label>Endereço completo *</label><input type="text" id="cartCustomerAddress" placeholder="Rua, número, bairro, referência"></div>
+
+                <div class="cart-section-title" style="margin-top:14px;"><i class="fas fa-wallet"></i> Como vai pagar? *</div>
+                <div class="form-group">
+                    <select id="cartPayment" onchange="toggleCartPixPayment()" style="font-weight:700;">
+                        <option value="PIX">📱 PIX - QR Code automático</option>
+                        <option value="Dinheiro">💵 Dinheiro</option>
+                        <option value="Cartão de Crédito">💳 Cartão de Crédito na entrega</option>
+                        <option value="Cartão de Débito">💳 Cartão de Débito na entrega</option>
+                    </select>
+                </div>
+                <div class="form-group" id="cartChangeGroup" style="display:none;background:#FFF8E1;border:1px solid #FFE082;border-radius:10px;padding:10px;">
+                    <label style="color:#F57F17;"><i class="fas fa-coins"></i> Troco para quanto?</label>
+                    <input type="text" id="cartChange" placeholder="Ex: 50,00" oninput="calcTroco()" inputmode="decimal">
+                    <div id="trocoCalculado" style="margin-top:6px;font-weight:800;color:#2E7D32;display:none;font-size:.85rem;"></div>
+                </div>
+                <div class="form-group"><label>Observações (opcional)</label><textarea id="cartNotes" placeholder="Ex: Deixar na portaria"></textarea></div>
             </div>
         </div>
         <div class="cart-footer">
-            <div class="summary-line"><span>Subtotal:</span><span id="cartSubtotal">R$ 0,00</span></div>
-            <div class="discount-row">
-                <label for="cartDiscount">Desconto:</label>
-                <input type="number" id="cartDiscount" min="0" step="0.01" value="0" placeholder="0,00" oninput="updateCart()">
-            </div>
-            <div class="cart-total">
-                <span>Total:</span>
-                <span id="cartTotal">R$ 0,00</span>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:.8rem;color:#666;">
+                <span><i class="fas fa-lock"></i> Compra 100% segura</span>
+                <span id="cartFooterItems">0 itens</span>
             </div>
             <div class="cart-actions">
-                <button class="btn-clear-cart" onclick="clearCart()">
-                    <i class="fas fa-trash-alt"></i> Limpar
-                </button>
-                <button class="btn-checkout" onclick="submitCartOrder()">
-                    <i class="fas fa-check-circle"></i> Fazer Pedido
-                </button>
+                <button class="btn-clear-cart" onclick="clearCart()" title="Limpar"><i class="fas fa-trash-can"></i></button>
+                <button class="btn-clear-cart" onclick="toggleCart()" style="flex:1;"><i class="fas fa-plus"></i> Continuar</button>
+                <button class="btn-checkout" id="btnCheckout" onclick="submitCartOrder()"><i class="fas fa-arrow-right"></i> <span id="btnCheckoutText">Conferir pedido</span></button>
             </div>
         </div>
     </div>
 
-    
-    <!-- MODAL DE CONFERÊNCIA DO PEDIDO -->
+    <!-- MODAL DE CONFERÊNCIA -->
     <div class="review-overlay" id="cartReviewOverlay" onclick="if(event.target===this) closeCartReview()">
         <div class="review-modal">
             <div class="review-header">
                 <h3><i class="fas fa-clipboard-check"></i> Confira seu pedido</h3>
                 <button class="review-close" onclick="closeCartReview()"><i class="fas fa-times"></i></button>
             </div>
-            <div class="review-body" id="cartReviewBody">
-                <!-- preenchido via JS -->
-            </div>
+            <div class="review-body" id="cartReviewBody"></div>
             <div class="review-footer">
                 <button class="btn-review-cancel" onclick="closeCartReview()"><i class="fas fa-arrow-left"></i> Voltar</button>
-                <button class="btn-review-confirm" id="btnConfirmReview" onclick="confirmCartReview()"><i class="fas fa-check"></i> Confirmar e continuar</button>
+                <button class="btn-review-confirm" id="btnConfirmReview" onclick="confirmCartReview()"><i class="fas fa-check"></i> Confirmar</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL PIX AUTOMÁTICO -->
+    <!-- MODAL PIX -->
     <div class="review-overlay" id="pixOverlay" onclick="if(event.target===this) closePixModal()">
         <div class="review-modal" style="max-width:460px;">
             <div class="review-header" style="background:linear-gradient(135deg,#00C897 0%, #00B4D8 100%);">
@@ -887,23 +914,24 @@
                 <button class="review-close" onclick="closePixModal()"><i class="fas fa-times"></i></button>
             </div>
             <div class="review-body pix-modal-box">
-                <div class="pix-info"><strong>Chave PIX (Telefone):</strong> 75981236160<br><strong>Nome:</strong> Edimundo Pereira - Santander<br><strong>Valor:</strong> <span id="pixModalTotal">R$ 0,00</span></div>
+                <div class="pix-info"><strong>Chave PIX:</strong> <span id="pixModalKey">75981236160 • Edimundo Pereira • Santander</span><br><strong>Valor:</strong> <span id="pixModalTotal">R$ 0,00</span></div>
                 <div class="pix-qr-wrap"><div id="pixModalQrCode"></div></div>
                 <div class="pix-copy-area">
                     <div style="font-weight:800;font-size:.85rem;margin-bottom:6px;color:#008f6b;">PIX Copia e Cola</div>
                     <textarea id="pixModalCopyPaste" class="pix-copy-input" rows="4" readonly></textarea>
                     <button class="btn-review-confirm" style="width:100%;background:#00C897;" onclick="copyPixModalCode()"><i class="fas fa-copy"></i> Copiar código PIX</button>
-                    <div style="font-size:.75rem;color:#666;margin-top:8px;">Após pagar, clique em Finalizar Pedido. Seu pedido será enviado via WhatsApp com o comprovante.</div>
+                    <div style="font-size:.72rem;color:#666;margin-top:8px;">Após pagar, clique em Finalizar. O pedido vai pro WhatsApp com o comprovante.</div>
                 </div>
             </div>
             <div class="review-footer">
                 <button class="btn-review-cancel" onclick="closePixModal()">Voltar</button>
-                <button class="btn-review-confirm" style="background:linear-gradient(135deg,#00C897 0%, #00B4D8 100%);" onclick="finalConfirmPixAndOrder()"><i class="fab fa-whatsapp"></i> Já paguei / Finalizar Pedido</button>
+                <button class="btn-review-confirm" style="background:linear-gradient(135deg,#00C897 0%, #00B4D8 100%);" onclick="finalConfirmPixAndOrder()"><i class="fab fa-whatsapp"></i> Já paguei / Finalizar</button>
             </div>
         </div>
     </div>
 
-<div class="account-panel" id="accountPanel">
+    <div class="account-panel"
+ id="accountPanel">
         <div class="account-header">
             <h3><i class="fas fa-user-circle"></i> Minha Conta</h3>
             <button class="account-close" onclick="toggleAccount()"><i class="fas fa-times"></i></button>
@@ -946,7 +974,7 @@
                     <div id="pixOrderBox" class="pix-box">
                         <div class="pix-title"><i class="fas fa-qrcode"></i> Pague com PIX</div>
                         <div id="pixQrCode"></div>
-                        <div style="font-size:.8rem;color:#555;text-align:center;margin-bottom:8px;">Edimundo Pereira • Santander</div>
+                        <div id="pixBeneficiary" style="font-size:.8rem;color:#555;text-align:center;margin-bottom:8px;">Edimundo Pereira • Santander</div>
                         <div class="pix-key-line">
                             <input id="pixCopyPaste" readonly>
                             <button class="btn-pix-copy" onclick="copyPixCode()"><i class="fas fa-copy"></i> Copiar</button>
@@ -1004,7 +1032,7 @@
         </div>
     </div>
 
-    <div class="order-png-card" id="orderPngCard">
+    <div class="order-png-card" id="orderPngCard" style="position:fixed;left:-9999px;top:0;width:420px;z-index:-1;" aria-hidden="true">
         <div class="order-png-head">
             <img id="pngLogo" class="order-png-logo" src="logo-ouxe.png" alt="Logo">
             <div><div id="pngCompanyName" class="order-png-company">Ouxe Mini Mercado</div><div class="order-png-sub">Formulário de Pedido • Compra Online</div></div>
@@ -1727,42 +1755,12 @@
             try { localStorage.setItem('ouze_products', JSON.stringify(products)); } catch(e) { console.warn('LocalStorage cheio'); }
         }
 
-        function isUserRegistered() {
-            try {
-                const data = JSON.parse(localStorage.getItem('ouze_user_data')||'null');
-                return data && data.name && data.phone && data.city && data.address;
-            } catch(e) { return false; }
-        }
-
-        function getUserData() {
-            try { return JSON.parse(localStorage.getItem('ouze_user_data')||'null'); } catch(e){ return null; }
-        }
-
         function renderProducts() {
-            const registered = isUserRegistered();
             Object.keys(products).forEach(category => {
                 const containerId = `${category}-scroll`;
                 const container = document.getElementById(containerId);
                 if (!container) return;
-                container.innerHTML = products[category].map(product => {
-                    if (!registered) {
-                        return `
-                    <div class="product-card product-locked" data-category="${category}" data-id="${product.id}">
-                        <div class="product-img">
-                            ${product.image ? `<img src="${product.image}" alt="${product.name}">` : (product.emoji || '📦')}
-                        </div>
-                        <div class="product-name">${product.name}</div>
-                        <div style="margin:10px 0;padding:8px;background:#FFF3E0;border-radius:8px;text-align:center;">
-                            <div style="font-size:.72rem;color:#E65100;font-weight:700;"><i class="fas fa-lock"></i> Preço sob consulta</div>
-                            <div style="font-size:.68rem;color:#888;margin-top:2px;">Faça cadastro para pedir</div>
-                        </div>
-                        <button class="btn-add-cart-primo" style="background:linear-gradient(135deg,#7B2FBE,#E91E8C);" onclick="openCadastroGate()">
-                            <i class="fas fa-user-plus"></i> Cadastre-se
-                        </button>
-                    </div>
-                `;
-                    } else {
-                        return `
+                container.innerHTML = products[category].map(product => `
                     <div class="product-card" data-category="${category}" data-id="${product.id}">
                         <div class="product-img">
                             ${product.image ? `<img src="${product.image}" alt="${product.name}">` : (product.emoji || '')}
@@ -1788,52 +1786,9 @@
                             <i class="fas fa-cart-plus"></i> Add
                         </button>
                     </div>
-                `;
-                    }
-                }).join('');
+                `).join('');
             });
-            // Atualiza carrinho para refletir cadastro
-            updateCartUserMigrated();
         }
-
-        function openCadastroGate() {
-            showToast('🔒 Faça seu cadastro para ver preços e pedir!');
-            toggleAccount();
-            setTimeout(()=>{ switchTab('dados', document.querySelectorAll('.account-tab')[1]); }, 100);
-        }
-
-        function updateCartUserMigrated() {
-            const data = getUserData();
-            const box = document.getElementById('cartUserMigratedBox');
-            const formOld = document.getElementById('cartLegacyForm');
-            if (!box) return;
-            if (data && data.name) {
-                box.innerHTML = `
-                    <div style="display:flex;gap:10px;align-items:center;background:#E8F5E9;border:1px solid #A5D6A7;border-radius:12px;padding:10px 12px;">
-                        <div style="width:36px;height:36px;background:#2E7D32;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;"><i class="fas fa-check"></i></div>
-                        <div style="flex:1;">
-                            <div style="font-weight:800;font-size:.88rem;color:#2E7D32;">Entrega para ${data.name}</div>
-                            <div style="font-size:.78rem;color:#555;">${data.city} • ${data.address.substring(0,40)}${data.address.length>40?'...':''}</div>
-                            <div style="font-size:.72rem;color:#888;">${data.phone}</div>
-                        </div>
-                        <button onclick="openCadastroGate()" style="background:white;border:1px solid #A5D6A7;padding:6px 10px;border-radius:20px;font-size:.72rem;font-weight:700;cursor:pointer;color:#2E7D32;">Alterar</button>
-                    </div>
-                `;
-                box.style.display='block';
-                if (formOld) formOld.style.display='none';
-            } else {
-                box.innerHTML = `
-                    <div style="background:#FFF3E0;border:1px solid #FFCC80;border-radius:12px;padding:12px;text-align:center;">
-                        <div style="font-weight:800;color:#E65100;font-size:.85rem;"><i class="fas fa-lock"></i> Cadastro necessário para finalizar</div>
-                        <div style="font-size:.75rem;color:#666;margin:6px 0;">Faça seu cadastro para pedir com preço liberado</div>
-                        <button onclick="openCadastroGate()" style="background:linear-gradient(135deg,#FF6B35,#E91E8C);color:white;border:none;padding:8px 14px;border-radius:20px;font-weight:800;cursor:pointer;font-size:.8rem;"><i class="fas fa-user-plus"></i> Fazer cadastro agora</button>
-                    </div>
-                `;
-                box.style.display='block';
-                if (formOld) formOld.style.display='none';
-            }
-        }
-
 
         function setQty(btn, value) {
             const card = btn.closest('.product-card');
@@ -1944,84 +1899,77 @@
             const subtotal = orderItems.reduce((sum,item)=>sum + item.price * item.qty,0);
             orderDiscount = Math.min(Math.max(parseFloat(document.getElementById('orderDiscount')?.value) || 0,0), subtotal);
             const total = Math.max(0, subtotal - orderDiscount);
-            const pixPayload = payment === 'PIX' ? generatePixPayload(total) : '';
-            let message = `🛒 *NOVO PEDIDO - OUXE MINI MERCADO*\n\n`;
-            message += `👤 *Cliente:* ${name}\n📱 *Telefone:* ${phone}\n🏙️ *Cidade:* ${city}\n📍 *Endereço:* ${address}\n`;
-            message += `💳 *Pagamento:* ${payment}\n`;
-            if (payment === 'PIX') message += `🔑 *PIX:* 75981236160 - Edimundo Pereira (Santander)\n`;
-            if (change) message += `💵 *Troco para:* ${change}\n`;
-            message += `\n📦 *ITENS DO PEDIDO:*\n━━━━━━━━━━━━━━━━━━\n`;
-            orderItems.forEach((item,i)=>{ const sub=item.price*item.qty; message += `${i+1}. ${item.qty}x ${item.name}\n   R$ ${item.price.toFixed(2).replace('.',',')} × ${item.qty} = R$ ${sub.toFixed(2).replace('.',',')}\n`; });
-            message += `━━━━━━━━━━━━━━━━━━\n💵 *Subtotal:* R$ ${subtotal.toFixed(2).replace('.',',')}\n`;
-            if (orderDiscount > 0) message += `🏷️ *Desconto:* R$ ${orderDiscount.toFixed(2).replace('.',',')}\n`;
-            message += `💰 *TOTAL: R$ ${total.toFixed(2).replace('.',',')}*\n`;
-            if (notes) message += `\n📝 *Observações:* ${notes}\n`;
-            if (payment === 'PIX') message += `\n📲 *PIX Copia e Cola:* ${pixPayload}\n`;
-            message += `\n✅ Pedido enviado pelo site Ouxe Mini Mercado`;
-            const shared = await generateOrderPNG({name,phone,city,address,payment,change,notes,subtotal,discount:orderDiscount,total,pixPayload});
+            const pixPayload = payment === 'PIX' ? geraPixPayload(total) : '';
+            const shared = await enviarPedidoWhatsApp({name,phone,city,address,payment,change,notes,subtotal,discount:orderDiscount,total,pixPayload});
             if (!shared) {
-                const encoded = encodeURIComponent(message);
+                // sem compartilhamento nativo: baixa o PNG e orienta o cliente a anexar na conversa
                 const digits = getWhatsappDigits();
-                window.open(`https://api.whatsapp.com/send?phone=${digits}&text=${encoded}`, '_blank');
-                showToast('✅ PNG gerado e WhatsApp aberto com o pedido!');
+                window.open('https://api.whatsapp.com/send?phone=' + digits, '_blank');
+                showToast('📲 Abra a conversa no WhatsApp e anexe a imagem do pedido (já baixada)!');
             } else {
-                showToast('✅ PNG compartilhado. Selecione WhatsApp para enviar ao cliente.');
+                showToast('✅ Pedido aberto para envio! Selecione o WhatsApp na lista.');
             }
         }
 
-        async function generateOrderPNG(data) {
-            try {
-                const cfg = JSON.parse(localStorage.getItem('ouze_store_config') || '{}');
-                const card = document.getElementById('orderPngCard');
-                document.getElementById('pngCompanyName').textContent = cfg.companyName || `${cfg.brandName || 'Ouxe'} ${cfg.subName || 'Mini Mercado'}`;
-                document.getElementById('pngCustomer').textContent = data.name;
-                document.getElementById('pngPhone').textContent = data.phone;
-                document.getElementById('pngCity').textContent = data.city;
-                document.getElementById('pngAddress').textContent = data.address;
-                document.getElementById('pngPayment').textContent = data.payment;
-                document.getElementById('pngItems').innerHTML = orderItems.map(item => `<tr><td>${item.qty}x ${item.name}</td><td>R$ ${(item.price*item.qty).toFixed(2).replace('.',',')}</td></tr>`).join('');
-                document.getElementById('pngSubtotal').textContent = `R$ ${data.subtotal.toFixed(2).replace('.',',')}`;
-                document.getElementById('pngDiscount').textContent = `R$ ${data.discount.toFixed(2).replace('.',',')}`;
-                document.getElementById('pngTotal').textContent = `R$ ${data.total.toFixed(2).replace('.',',')}`;
-                document.getElementById('pngLogo').src = cfg.logoImage || document.getElementById('headerLogoImg').src;
-                document.getElementById('pngNotes').textContent = data.notes ? `Observações: ${data.notes}` : '';
-                const pixWrap=document.getElementById('pngPixWrap');
-                if(data.payment==='PIX'){
-                    pixWrap.style.display='flex';
-                    document.getElementById('pngPixKey').textContent='PIX: 75981236160 • Edimundo Pereira • Santander';
-                    const qr=document.getElementById('pngPixQr'); qr.innerHTML='';
-                    if(window.QRCode) new QRCode(qr,{text:data.pixPayload,width:130,height:130,correctLevel:QRCode.CorrectLevel.M});
-                } else pixWrap.style.display='none';
-                if (window.html2canvas) {
-                    await new Promise(r=>setTimeout(r,250));
-                    const canvas=await html2canvas(card,{backgroundColor:'#ffffff',scale:2,useCORS:true});
-                    const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));
-                    if (blob) {
-                        const file=new File([blob],'pedido-ouxemercado.png',{type:'image/png'});
-                        if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
-                            try { await navigator.share({title:'Pedido Ouxe Mini Mercado',text:'Pedido de compra',files:[file]}); return true; }
-                            catch(e) { /* usuário cancelou o compartilhamento; segue para WhatsApp */ }
-                        }
-                        const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='pedido-ouxemercado.png'; a.click();
-                        setTimeout(()=>URL.revokeObjectURL(a.href),2000);
-                    }
-                }
-                return false;
-            } catch(e) { console.warn('Não foi possível gerar o PNG:',e); return false; }
+        /* Gera o PNG do pedido (card fica fora da tela, invisível ao usuário) */
+        async function renderizarPedidoPNG(data) {
+            const cfg = JSON.parse(localStorage.getItem('ouze_store_config') || '{}');
+            const card = document.getElementById('orderPngCard');
+            document.getElementById('pngCompanyName').textContent = cfg.companyName || `${cfg.brandName || 'Ouxe'} ${cfg.subName || 'Mini Mercado'}`;
+            document.getElementById('pngCustomer').textContent = data.name;
+            document.getElementById('pngPhone').textContent = data.phone;
+            document.getElementById('pngCity').textContent = data.city;
+            document.getElementById('pngAddress').textContent = data.address;
+            document.getElementById('pngPayment').textContent = data.payment;
+            document.getElementById('pngItems').innerHTML = orderItems.map(item => `<tr><td>${item.qty}x ${item.name}</td><td>R$ ${(item.price*item.qty).toFixed(2).replace('.',',')}</td></tr>`).join('');
+            document.getElementById('pngSubtotal').textContent = `R$ ${data.subtotal.toFixed(2).replace('.',',')}`;
+            document.getElementById('pngDiscount').textContent = `R$ ${data.discount.toFixed(2).replace('.',',')}`;
+            document.getElementById('pngTotal').textContent = `R$ ${data.total.toFixed(2).replace('.',',')}`;
+            document.getElementById('pngLogo').src = cfg.logoImage || document.getElementById('headerLogoImg').src;
+            document.getElementById('pngNotes').textContent = data.notes ? `Observações: ${data.notes}` : '';
+            const pixWrap=document.getElementById('pngPixWrap');
+            if(data.payment==='PIX'){
+                pixWrap.style.display='flex';
+                document.getElementById('pngPixKey').textContent='PIX: ' + (cfg.pixKey||'75981236160') + ' • ' + (cfg.pixName||'Edimundo Pereira') + ' • ' + (cfg.pixBank||'Santander');
+                const qr=document.getElementById('pngPixQr'); qr.innerHTML='';
+                if(window.QRCode) new QRCode(qr,{text:data.pixPayload,width:150,height:150,colorDark:'#1A1A2E',colorLight:'#FFFFFF',correctLevel:QRCode.CorrectLevel.L});
+            } else pixWrap.style.display='none';
+            await new Promise(r=>setTimeout(r,350));
+            if (!window.html2canvas) throw new Error('html2canvas não carregado');
+            const canvas=await html2canvas(card,{backgroundColor:'#ffffff',scale:2,useCORS:true,logging:false});
+            return await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));
         }
 
-        function generatePixPayload(amount) {
-            // Forçado conforme solicitado: 75981236160 - Edimundo Pereira - Santander
-            const cfg = JSON.parse(localStorage.getItem('ouze_store_config') || '{}');
-            // garante que a chave pedida seja usada se não houver config
-            const key = (cfg.pixKey && cfg.pixKey.trim() ? cfg.pixKey : '75981236160').trim() || '75981236160';
-            const rawName = cfg.pixName || 'Edimundo Pereira';
-            const name = rawName.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().substring(0,25);
-            const city = (cfg.pixCity || 'Feira de Santana').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().substring(0,15);
-            const merchant = tlv('00','br.gov.bcb.pix') + tlv('01',key);
-            const mai = tlv('26',merchant);
-            const payload = tlv('00','01') + tlv('01','12') + mai + tlv('52','0000') + tlv('53','986') + tlv('54',amount.toFixed(2)) + tlv('58','BR') + tlv('59',name) + tlv('60',city) + tlv('62',tlv('05','PEDIDO OUXE')) + '6304';
-            return payload + crc16(payload);
+        /* Envia o pedido pelo WhatsApp SOMENTE como imagem PNG (sem texto) */
+        async function enviarPedidoWhatsApp(data) {
+            try {
+                const blob = await renderizarPedidoPNG(data);
+                if (!blob) return false;
+                const file=new File([blob],'pedido-ouxemercado.png',{type:'image/png'});
+                // 1) compartilhamento nativo (celular): abre a gaveta de apps com o WhatsApp para enviar a foto
+                if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
+                    try { await navigator.share({title:'Pedido Ouxe Mini Mercado',files:[file]}); return true; }
+                    catch(e) { /* cancelado; cai para o download + abertura do WhatsApp */ }
+                }
+                // 2) fallback: baixa o PNG e abre a conversa do WhatsApp para o cliente anexar a foto
+                try {
+                    const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='pedido-ouxemercado.png'; a.click();
+                    setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+                } catch(e) { /* sem download disponível */ }
+                return false;
+            } catch(e) { console.warn('Falha ao gerar/enviar o PNG do pedido:',e); return false; }
+        }
+
+        /* ---------- PIX corrigido (BR Code / EMV MPM - Banco Central) ---------- */
+        function validaCPF(cpf){
+            cpf=String(cpf).replace(/\D/g,'');
+            if(cpf.length!==11||/^(.)\1{10}$/.test(cpf))return false;
+            let s1=0,s2=0;
+            for(let i=0;i<9;i++)s1+=(10-i)*+cpf[i];
+            let r1=(s1*10)%11; if(r1===10)r1=0;
+            for(let i=0;i<10;i++)s2+=(11-i)*+cpf[i];
+            let r2=(s2*10)%11; if(r2===10)r2=0;
+            return r1===+cpf[9]&&r2===+cpf[10];
         }
         function tlv(id,value){ return id + String(value.length).padStart(2,'0') + value; }
         function crc16(str){
@@ -2032,25 +1980,79 @@
             }
             return crc.toString(16).toUpperCase().padStart(4,'0');
         }
+        function geraPixPayload(amount){
+            const cfg = JSON.parse(localStorage.getItem('ouze_store_config') || '{}');
+            const key = (cfg.pixKey && String(cfg.pixKey).trim() ? cfg.pixKey : '75981236160').trim();
+            if(!key||!/^[\da-zA-Z@.+_-]{4,}$/.test(key)) { console.warn('Chave Pix inválida na config, usando padrão'); }
+            const rawName = cfg.pixName || 'Edimundo Pereira';
+            const name = rawName.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9 ]/g,' ').replace(/\s+/g,' ').trim().toUpperCase().substring(0,25);
+            const city = (cfg.pixCity || 'Feira de Santana').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9 ]/g,' ').replace(/\s+/g,' ').trim().toUpperCase().substring(0,15);
+            let txid = String(cfg.pixTxid || 'PEDIDO OUXE').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9]/g,'').toLowerCase().substring(0,25);
+            if(!txid) txid = 'pedidooxe';
+            let value = Number(amount);
+            if(!isFinite(value)||value<0) value = 0;
+            value = Math.round(value*100)/100;
+            const merchant = tlv('00','br.gov.bcb.pix') + tlv('01',key);
+            const mai = tlv('26',merchant);
+            let payload = tlv('00','01') + tlv('01','12') + mai + tlv('52','0000') + tlv('53','986');
+            if(value>0) payload += tlv('54',value.toFixed(2));
+            payload += tlv('58','BR') + tlv('59',name) + tlv('60',city) + tlv('62',tlv('05',txid)) + '6304';
+            return payload + crc16(payload);
+        }
+        function payloadPixValido(payload){
+            if(!payload||typeof payload!=='string') return false;
+            payload = payload.trim();
+            if(!payload.startsWith('000201')) return false;
+            const base = payload.slice(0,-4);
+            return crc16(base) === payload.slice(-4).toUpperCase();
+        }
         function togglePixPayment(){
             const isPix=document.getElementById('orderPayment')?.value==='PIX';
             const box=document.getElementById('pixOrderBox');
             if(!box) return;
             box.classList.toggle('show',isPix && orderItems.length>0);
             if(isPix && orderItems.length>0){
+                const cfgPix = JSON.parse(localStorage.getItem('ouze_store_config') || '{}');
                 const subtotal=orderItems.reduce((s,i)=>s+i.price*i.qty,0);
                 const discount=Math.min(Math.max(parseFloat(document.getElementById('orderDiscount')?.value)||orderDiscount||0,0),subtotal);
                 const total=Math.max(0,subtotal-discount);
-                const payload=generatePixPayload(total);
+                const lbl=document.getElementById('pixBeneficiary');
+                if(lbl){
+                    const bName=(cfgPix.pixName||'Edimundo Pereira').trim();
+                    const bBank=(cfgPix.pixBank||'Santander').trim();
+                    lbl.textContent = bName + ' • ' + bBank;
+                }
+                const payload=geraPixPayload(total);
                 document.getElementById('pixCopyPaste').value=payload;
                 const qr=document.getElementById('pixQrCode'); qr.innerHTML='';
-                if(window.QRCode) new QRCode(qr,{text:payload,width:190,height:190,correctLevel:QRCode.CorrectLevel.M});
+                if(window.QRCode) new QRCode(qr,{text:payload,width:190,height:190,colorDark:'#1A1A2E',colorLight:'#FFFFFF',correctLevel:QRCode.CorrectLevel.L});
             }
         }
         async function copyPixCode(){
             const input=document.getElementById('pixCopyPaste');
-            try { await navigator.clipboard.writeText(input.value); showToast('✅ PIX Copia e Cola copiado!'); }
-            catch(e){ input.select(); document.execCommand('copy'); showToast('✅ PIX Copia e Cola copiado!'); }
+            const texto=String(input.value).trim();
+            if(!texto){ showToast('⚠️ Nenhum código Pix gerado'); return; }
+            let copiado=false;
+            // tenta a API moderna do clipboard (HTTPS e mobile)
+            try { if(navigator.clipboard&&navigator.clipboard.writeText){ await navigator.clipboard.writeText(texto); copiado=true; } }
+            catch(e){ /* continua para o fallback */ }
+            // fallback: seleciona e copia (funciona em HTTP e apps antigos)
+            if(!copiado){
+                try{
+                    input.removeAttribute('readonly'); input.disabled=false;
+                    input.focus(); input.select(); input.setSelectionRange(0,99999);
+                    copiado = document.execCommand('copy');
+                    input.setAttribute('readonly','');
+                    window.getSelection()?.removeAllRanges();
+                }catch(e){ copiado=false; }
+            }
+            if(copiado){
+                showToast('✅ PIX Copia e Cola copiado! Cole no app do banco');
+                navigator.vibrate?.(100);
+            } else {
+                input.select(); input.setSelectionRange(0,99999);
+                showToast('📋 Toque e segure no código e escolha "Copiar"');
+            }
         }
 
         function savePixConfig(){
@@ -2060,7 +2062,15 @@
             config.pixBank=document.getElementById('configPixBank').value.trim() || 'Santander';
             config.pixCity=document.getElementById('configPixCity').value.trim() || 'Feira de Santana';
             localStorage.setItem('ouze_store_config',JSON.stringify(config));
-            showToast('✅ Dados do PIX salvos!');
+            // valida o formato da chave cadastrada
+            const k=config.pixKey;
+            const isCPF=/^\d{11}$/.test(k);
+            const isCPFValido=isCPF?validaCPF(k):false;
+            if(isCPF&&!isCPFValido){
+                showToast('⚠️ A chave CPF ' + k + ' NÃO passa na validação matemática de CPF. Confira no app do banco a chave exata cadastrada!');
+            } else {
+                showToast('✅ Dados do PIX salvos!');
+            }
             if(document.getElementById('orderPayment')?.value==='PIX') togglePixPayment();
         }
 
@@ -2071,12 +2081,8 @@
             const address = document.getElementById('orderAddress').value.trim();
             if (!name || !phone || !city || !address) { showToast('⚠️ Preencha todos os campos obrigatórios!'); return; }
             localStorage.setItem('ouze_user_data', JSON.stringify({ name, phone, city, address }));
-            showToast('✅ Cadastro feito! Preços liberados!');
-            renderProducts();
-            updateCartUserMigrated();
-            updateCart();
+            showToast('✅ Dados salvos com sucesso!');
             switchTab('pedido', document.querySelectorAll('.account-tab')[0]);
-            setTimeout(()=>{ toggleAccount(); }, 800);
         }
 
         function loadUserData() {
@@ -2104,40 +2110,47 @@
 
         function toggleCartPixPayment() {
             const payment = document.getElementById('cartPayment')?.value;
-            const isPix = payment === 'PIX';
             const isDinheiro = payment === 'Dinheiro';
-            const box = document.getElementById('cartPixBox');
             const changeGroup = document.getElementById('cartChangeGroup');
-            if (box) box.style.display = 'none'; // PIX só aparece após conferência, no modal próprio
             if (changeGroup) changeGroup.style.display = isDinheiro ? 'block' : 'none';
             if (!isDinheiro) {
-                const changeInput = document.getElementById('cartChange');
-                if (changeInput) changeInput.value = '';
+                const ci = document.getElementById('cartChange');
+                if (ci) ci.value = '';
+                const tc = document.getElementById('trocoCalculado');
+                if (tc) tc.style.display='none';
             }
+            const stepPag = document.getElementById('stepPag');
+            if (stepPag) stepPag.classList.toggle('active', !!payment);
+            calcTroco();
         }
 
-        function updateCartPixCode() {
+        function calcTroco() {
+            const input = document.getElementById('cartChange');
+            const div = document.getElementById('trocoCalculado');
+            if (!input || !div) return;
+            const raw = input.value.replace(/[^0-9,\.]/g,'').replace(',','.').trim();
+            const val = parseFloat(raw);
             const subtotal = cart.reduce((s,i)=>s+i.price*i.qty,0);
             const discount = Math.min(Math.max(parseFloat(document.getElementById('cartDiscount')?.value)||0,0),subtotal);
             const total = Math.max(0, subtotal-discount);
-            const payload = generatePixPayload(total);
-            const input = document.getElementById('cartPixCopyPaste');
-            if (input) input.value = payload;
-            const qr = document.getElementById('cartPixQrCode');
-            if (qr) {
-                qr.innerHTML = '';
-                if (window.QRCode) new QRCode(qr,{text:payload,width:190,height:190,correctLevel:QRCode.CorrectLevel.M});
+            if (!isNaN(val) && val>0) {
+                const troco = val - total;
+                if (troco >=0) {
+                    div.innerHTML = `💰 Troco: R$ ${troco.toFixed(2).replace('.',',')} (de R$ ${val.toFixed(2).replace('.',',')})`;
+                    div.style.display='block';
+                } else {
+                    div.innerHTML = `<span style="color:#d32f2f;">⚠️ Valor R$ ${val.toFixed(2).replace('.',',')} menor que total R$ ${total.toFixed(2).replace('.',',')}</span>`;
+                    div.style.display='block';
+                }
+            } else {
+                div.style.display='none';
             }
         }
 
-        async function copyCartPixCode() {
-            const input = document.getElementById('cartPixCopyPaste');
-            if (!input) return;
-            try { await navigator.clipboard.writeText(input.value); showToast('✅ PIX Copia e Cola copiado!'); }
-            catch(e) { input.select(); document.execCommand('copy'); showToast('✅ PIX Copia e Cola copiado!'); }
-        }
+        function updateCartPixCode() {} // legado
 
-        // NOVO FLUXO: Carrinho -> Conferência -> PIX (se escolhido) -> Finalizar
+        async function copyCartPixCode() {}
+
         let pendingCartOrder = null;
 
         function submitCartOrder() {
@@ -2147,7 +2160,8 @@
             const city = document.getElementById('cartCustomerCity').value.trim();
             const address = document.getElementById('cartCustomerAddress').value.trim();
             if (!name || !phone || !city || !address) {
-                showToast('⚠️ Preencha nome, telefone, cidade e endereço!');
+                showToast('⚠️ Preencha nome, WhatsApp, cidade e endereço!');
+                document.getElementById('cartScroll')?.scrollTo({top: 1000, behavior:'smooth'});
                 return;
             }
             const payment = document.getElementById('cartPayment').value;
@@ -2158,14 +2172,10 @@
             const total = Math.max(0, subtotal-discount);
 
             if (payment === 'Dinheiro' && changeVal) {
-                const changeNum = parseFloat(changeVal.replace('R$','').replace(',','.').trim());
-                if (!isNaN(changeNum) && changeNum < total) {
-                    showToast('⚠️ Troco menor que o total!');
-                    return;
-                }
+                const v = parseFloat(changeVal.replace(/[^0-9,\.]/g,'').replace(',','.'));
+                if (!isNaN(v) && v < total) { showToast('⚠️ Troco menor que total!'); return; }
             }
 
-            // Salva rascunho para uso após conferência
             pendingCartOrder = { name, phone, city, address, payment, changeVal, notes, subtotal, discount, total, items: cart.map(i=>({...i})) };
             showCartReview();
         }
@@ -2176,34 +2186,32 @@
             const body = document.getElementById('cartReviewBody');
             const isPix = o.payment === 'PIX';
             const btnConfirm = document.getElementById('btnConfirmReview');
-            btnConfirm.innerHTML = isPix ? '<i class="fas fa-qrcode"></i> Confirmar e gerar PIX' : '<i class="fab fa-whatsapp"></i> Confirmar e finalizar pedido';
+            btnConfirm.innerHTML = isPix ? '<i class="fas fa-qrcode"></i> Gerar PIX' : '<i class="fab fa-whatsapp"></i> Enviar pedido';
             
             body.innerHTML = `
                 <div class="review-section">
-                    <div class="review-section-title"><i class="fas fa-user"></i> Dados de entrega</div>
-                    <div style="font-size:.9rem;line-height:1.6;background:#f8f8f8;padding:12px;border-radius:10px;">
+                    <div class="review-section-title"><i class="fas fa-user"></i> Entrega</div>
+                    <div style="font-size:.88rem;line-height:1.5;background:#f8f8f8;padding:10px;border-radius:10px;">
                         <div><strong>${o.name}</strong> • ${o.phone}</div>
-                        <div>${o.city}</div>
-                        <div>${o.address}</div>
+                        <div>${o.city} - ${o.address}</div>
                     </div>
                 </div>
                 <div class="review-section">
-                    <div class="review-section-title"><i class="fas fa-shopping-basket"></i> Itens (${o.items.length})</div>
+                    <div class="review-section-title"><i class="fas fa-basket-shopping"></i> Itens (${o.items.length})</div>
                     ${o.items.map(it=>`<div class="review-item"><span>${it.qty}x ${it.name}</span><strong>R$ ${(it.price*it.qty).toFixed(2).replace('.',',')}</strong></div>`).join('')}
                 </div>
                 <div class="review-section">
                     <div class="review-section-title"><i class="fas fa-credit-card"></i> Pagamento</div>
-                    <div style="font-size:.9rem;background:#f8f8f8;padding:10px;border-radius:10px;">
+                    <div style="font-size:.85rem;background:#f8f8f8;padding:8px;border-radius:8px;">
                         <div><strong>${o.payment}</strong></div>
-                        ${o.payment==='Dinheiro' && o.changeVal ? `<div>Troco para: <strong>${o.changeVal}</strong> ${!isNaN(parseFloat(o.changeVal.replace(',','.')))?`• Troco: R$ ${(parseFloat(o.changeVal.replace('R$','').replace(',','.'))-o.total).toFixed(2).replace('.',',')}`:''}</div>` : ''}
-                        ${o.notes ? `<div style="margin-top:6px;">Obs: ${o.notes}</div>` : ''}
-                        ${isPix ? '<div style="margin-top:8px;color:#00A67D;font-weight:700;"><i class="fas fa-info-circle"></i> Ao confirmar, vamos gerar seu QR Code PIX automaticamente: 75981236160 - Edimundo Pereira - Santander</div>' : ''}
+                        ${o.payment==='Dinheiro' && o.changeVal ? `<div>Troco para: ${o.changeVal}</div>` : ''}
+                        ${o.notes ? `<div style="margin-top:4px;">Obs: ${o.notes}</div>` : ''}
                     </div>
                 </div>
                 <div class="review-total-box">
-                    <div class="review-total-line"><span>Subtotal:</span><span>R$ ${o.subtotal.toFixed(2).replace('.',',')}</span></div>
-                    ${o.discount>0?`<div class="review-total-line"><span>Desconto:</span><span>- R$ ${o.discount.toFixed(2).replace('.',',')}</span></div>`:''}
-                    <div class="review-total-line total"><span>Total:</span><span>R$ ${o.total.toFixed(2).replace('.',',')}</span></div>
+                    <div class="review-total-line"><span>Subtotal</span><span>R$ ${o.subtotal.toFixed(2).replace('.',',')}</span></div>
+                    ${o.discount>0?`<div class="review-total-line"><span>Desconto</span><span>- R$ ${o.discount.toFixed(2).replace('.',',')}</span></div>`:''}
+                    <div class="review-total-line total"><span>Total</span><span>R$ ${o.total.toFixed(2).replace('.',',')}</span></div>
                 </div>
             `;
             document.getElementById('cartReviewOverlay').classList.add('open');
@@ -2228,59 +2236,55 @@
         }
 
         function showPixModal(total) {
-            const payload = generatePixPayload(total);
-            const totalStr = `R$ ${total.toFixed(2).replace('.',',')}`;
-            document.getElementById('pixModalTotal').textContent = totalStr;
+            const payload = geraPixPayload(total);
+            document.getElementById('pixModalTotal').textContent = `R$ ${total.toFixed(2).replace('.',',')}`;
             document.getElementById('pixModalCopyPaste').value = payload;
-            
-            // Salva config fixa garantida
             const cfg = JSON.parse(localStorage.getItem('ouze_store_config')||'{}');
-            cfg.pixKey = '75981236160';
-            cfg.pixName = 'Edimundo Pereira';
-            cfg.pixBank = 'Santander';
-            localStorage.setItem('ouze_store_config', JSON.stringify(cfg));
-
+            document.getElementById('pixModalKey').textContent = (cfg.pixKey||'75981236160') + ' • ' + (cfg.pixName||'Edimundo Pereira') + ' • ' + (cfg.pixBank||'Santander');
             const qrDiv = document.getElementById('pixModalQrCode');
             qrDiv.innerHTML = '';
-            if (window.QRCode) new QRCode(qrDiv, {text: payload, width: 200, height: 200, correctLevel: QRCode.CorrectLevel.M});
-
-            // Atualiza também o box antigo do carrinho se existir
-            const oldQr = document.getElementById('cartPixQrCode');
-            if (oldQr) {
-                oldQr.innerHTML = '';
-                if (window.QRCode) new QRCode(oldQr, {text: payload, width: 190, height: 190, correctLevel: QRCode.CorrectLevel.M});
-            }
-            const oldInput = document.getElementById('cartPixCopyPaste');
-            if (oldInput) oldInput.value = payload;
-
+            if (window.QRCode) new QRCode(qrDiv, {text: payload, width: 200, height: 200, colorDark: '#1A1A2E', colorLight: '#FFFFFF', correctLevel: QRCode.CorrectLevel.L});
             document.getElementById('pixOverlay').classList.add('open');
             document.body.classList.add('modal-open');
         }
 
         function closePixModal() {
             document.getElementById('pixOverlay').classList.remove('open');
-            // volta para conferência se ainda tiver pendente
-            if (pendingCartOrder && document.getElementById('cartModal').classList.contains('open')) {
-                // mantém body lock
-            } else if (!document.getElementById('cartModal').classList.contains('open')) {
+            if (!document.getElementById('cartModal').classList.contains('open') && !document.getElementById('cartReviewOverlay').classList.contains('open')) {
                 document.body.classList.remove('modal-open');
             }
         }
 
         async function copyPixModalCode() {
             const input = document.getElementById('pixModalCopyPaste');
-            try { await navigator.clipboard.writeText(input.value); showToast('✅ Código PIX copiado!'); }
-            catch(e){ input.select(); document.execCommand('copy'); showToast('✅ Código PIX copiado!'); }
+            const texto = String(input.value).trim();
+            if (!texto) { showToast('⚠️ Nenhum código Pix gerado'); return; }
+            let copiado = false;
+            try { if (navigator.clipboard && navigator.clipboard.writeText) { await navigator.clipboard.writeText(texto); copiado = true; } }
+            catch(e) { /* continua para o fallback */ }
+            if (!copiado) {
+                try {
+                    input.removeAttribute('readonly'); input.disabled = false;
+                    input.focus(); input.select(); input.setSelectionRange(0, 99999);
+                    copiado = document.execCommand('copy');
+                    input.setAttribute('readonly', '');
+                    window.getSelection()?.removeAllRanges();
+                } catch(e) { copiado = false; }
+            }
+            if (copiado) {
+                showToast('✅ Código PIX copiado! Cole no app do banco');
+                navigator.vibrate?.(100);
+            } else {
+                input.select(); input.setSelectionRange(0, 99999);
+                showToast('📋 Toque e segure no código e escolha "Copiar"');
+            }
         }
 
-        async function finalConfirmPixAndOrder() {
-            await executeFinalOrder();
-        }
+        async function finalConfirmPixAndOrder() { await executeFinalOrder(); }
 
         async function executeFinalOrder() {
             if (!pendingCartOrder) return;
             const o = pendingCartOrder;
-            // Sincroniza com account
             localStorage.setItem('ouze_user_data', JSON.stringify({name:o.name,phone:o.phone,city:o.city,address:o.address}));
             try {
                 document.getElementById('orderName').value=o.name;
@@ -2294,24 +2298,19 @@
             } catch(e){}
             orderItems = o.items.map(i=>({...i}));
             orderDiscount = o.discount;
-
-            // Fecha modais de review/pix antes de abrir whatsapp
             closePixModal();
             closeCartReview();
             document.getElementById('cartModal').classList.remove('open');
             document.getElementById('overlay').classList.remove('open');
             document.body.classList.remove('modal-open');
-
             await submitOrder();
-
             cart = [];
-            const discInput = document.getElementById('cartDiscount');
-            if (discInput) discInput.value='0';
+            const disc = document.getElementById('cartDiscount');
+            if (disc) disc.value='0';
             updateCart();
             pendingCartOrder = null;
             showToast('✅ Pedido enviado!');
         }
-        
 
         function goToOrderForm() {
             if (cart.length === 0) { showToast('⚠️ Carrinho vazio!'); return; }
@@ -2331,6 +2330,14 @@
             showToast('✅ Itens movidos para o pedido!');
         }
 
+        function changeCartQty(index, delta) {
+            if (!cart[index]) return;
+            const newQty = cart[index].qty + delta;
+            if (newQty <= 0) { removeFromCart(index); return; }
+            cart[index].qty = newQty;
+            updateCart();
+        }
+
         function updateCart() {
             const cartCount = document.getElementById('cartCount');
             const cartItems = document.getElementById('cartItems');
@@ -2339,48 +2346,74 @@
             const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
             const discount = Math.min(Math.max(parseFloat(document.getElementById('cartDiscount')?.value) || 0, 0), subtotal);
             const totalPrice = Math.max(0, subtotal - discount);
-            cartCount.textContent = totalItems;
+            if (cartCount) cartCount.textContent = totalItems;
+            const headerCount = document.getElementById('cartHeaderCount');
+            if (headerCount) headerCount.textContent = totalItems;
+            const footerItems = document.getElementById('cartFooterItems');
+            if (footerItems) footerItems.textContent = `${totalItems} ${totalItems===1?'item':'itens'}`;
             const subEl = document.getElementById('cartSubtotal');
             if (subEl) subEl.textContent = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
-            cartTotal.textContent = `R$ ${totalPrice.toFixed(2).replace('.', ',')}`;
-            // Atualiza modal de revisão se estiver aberto
+            if (cartTotal) cartTotal.textContent = `R$ ${totalPrice.toFixed(2).replace('.', ',')}`;
+            const summaryQty = document.getElementById('summaryQty');
+            if (summaryQty) summaryQty.textContent = totalItems;
+            const summaryBox = document.getElementById('cartSummaryBox');
+            if (summaryBox) summaryBox.style.display = cart.length ? 'block' : 'none';
+            const btnCheckout = document.getElementById('btnCheckout');
+            if (btnCheckout) btnCheckout.disabled = cart.length===0;
+            const btnText = document.getElementById('btnCheckoutText');
+            if (btnText) btnText.textContent = totalItems ? `Conferir • R$ ${totalPrice.toFixed(2).replace('.', ',')}` : 'Conferir pedido';
+            const stepEntrega = document.getElementById('stepEntrega');
+            if (stepEntrega) stepEntrega.classList.toggle('active', totalItems>0);
             if (pendingCartOrder) {
                 pendingCartOrder.subtotal = subtotal;
                 pendingCartOrder.discount = discount;
                 pendingCartOrder.total = totalPrice;
                 pendingCartOrder.items = cart.map(i=>({...i}));
                 const totalEl = document.getElementById('pixModalTotal');
-                if (totalEl && document.getElementById('pixOverlay').classList.contains('open')) {
+                if (totalEl && document.getElementById('pixOverlay')?.classList.contains('open')) {
                     totalEl.textContent = `R$ ${totalPrice.toFixed(2).replace('.', ',')}`;
                 }
             }
-
             if (cart.length === 0) {
-                cartItems.innerHTML = `<div class="cart-empty"><i class="fas fa-shopping-basket"></i><p>Seu carrinho está vazio</p></div>`;
+                cartItems.innerHTML = `<div class="cart-empty"><i class="fas fa-basket-shopping"></i><p>Seu carrinho está vazio</p><small>Toque em Adicionar nos produtos</small></div>`;
             } else {
                 cartItems.innerHTML = cart.map((item, index) => `
-                    <div class="cart-item">
+                    <div class="cart-item-card">
                         <div class="cart-item-img">${item.image ? `<img src="${item.image}" alt="${item.name}">` : (item.emoji || '📦')}</div>
                         <div class="cart-item-info">
-                            <div class="cart-item-name">${item.name}</div>
-                            <div class="cart-item-price">${item.qty}x R$ ${item.price.toFixed(2).replace('.', ',')} = R$ ${(item.price * item.qty).toFixed(2).replace('.', ',')}</div>
+                            <div class="cart-item-top">
+                                <div class="cart-item-name">${item.name}</div>
+                                <button class="cart-item-remove" onclick="removeFromCart(${index})" title="Remover"><i class="fas fa-trash"></i></button>
+                            </div>
+                            <div class="cart-item-bottom">
+                                <div class="cart-qty-controls">
+                                    <button class="qty-btn" onclick="changeCartQty(${index}, -1)"><i class="fas fa-minus"></i></button>
+                                    <span class="qty-value">${item.qty}</span>
+                                    <button class="qty-btn" onclick="changeCartQty(${index}, 1)"><i class="fas fa-plus"></i></button>
+                                </div>
+                                <div class="cart-item-price-box">
+                                    <div class="cart-item-unit">${item.qty} x R$ ${item.price.toFixed(2).replace('.',',')}</div>
+                                    <div class="cart-item-total">R$ ${(item.price * item.qty).toFixed(2).replace('.',',')}</div>
+                                </div>
+                            </div>
                         </div>
-                        <button class="cart-item-remove" onclick="removeFromCart(${index})" title="Remover item"><i class="fas fa-times"></i></button>
                     </div>
                 `).join('');
             }
+            calcTroco();
         }
 
         function removeFromCart(index) {
             const item = cart[index];
+            if (!item) return;
             cart.splice(index, 1);
             updateCart();
-            showToast(`️ ${item.name.substring(0, 20)}... removido`);
+            showToast(`🗑️ ${item.name.substring(0, 20)} removido`);
         }
 
         function clearCart() {
             if (cart.length === 0) { showToast('⚠️ Carrinho já está vazio!'); return; }
-            if (confirm('⚠️ Tem certeza que deseja LIMPAR TODO o carrinho?')) { cart = []; updateCart(); showToast('🗑️ Carrinho limpo com sucesso!'); }
+            if (confirm('Limpar todo o carrinho?')) { cart = []; updateCart(); showToast('🗑️ Carrinho limpo!'); }
         }
 
         function toggleCart(e) {
@@ -2388,21 +2421,22 @@
             const cartModal = document.getElementById('cartModal');
             const accountPanel = document.getElementById('accountPanel');
             const overlay = document.getElementById('overlay');
-            if (cartModal.classList.contains('open')) { 
-                cartModal.classList.remove('open'); 
-                overlay.classList.remove('open'); 
+            if (cartModal.classList.contains('open')) {
+                cartModal.classList.remove('open');
+                overlay.classList.remove('open');
                 document.body.classList.remove('modal-open');
-            } else { 
-                accountPanel.classList.remove('open'); 
-                cartModal.classList.add('open'); 
-                overlay.classList.add('open'); 
+            } else {
+                accountPanel.classList.remove('open');
+                cartModal.classList.add('open');
+                overlay.classList.add('open');
                 document.body.classList.add('modal-open');
-                loadCartCustomerData(); 
-                toggleCartPixPayment(); 
+                loadCartCustomerData();
+                toggleCartPixPayment();
             }
         }
 
         function toggleAccount(e) {
+
             if (e) e.preventDefault();
             const cartModal = document.getElementById('cartModal');
             const accountPanel = document.getElementById('accountPanel');
