@@ -7,7 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js">        renderClientLoginCard();
+</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -467,7 +468,94 @@
         .cat-icon-item .btn-upload { padding:6px 12px; background:var(--accent); color:white; border:none; border-radius:6px; cursor:pointer; font-size:0.75rem; font-weight:600; }
         .cat-icon-item .btn-remove { padding:6px 8px; background:#ff4d4d; color:white; border:none; border-radius:6px; cursor:pointer; font-size:0.75rem; }
 
-        </style>
+        
+        .client-login-card { background: linear-gradient(135deg, #f8f9ff 0%, #fff0f6 100%); border: 1px solid #f0d4e5; border-radius: 14px; padding: 14px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); }
+        .client-login-title { font-size: 0.85rem; font-weight: 700; color: #333; margin-bottom: 8px; }
+        .client-login-title .discount-badge { background: linear-gradient(135deg, #00C897, #00B4D8); color: white; font-size: 0.7rem; padding: 2px 8px; border-radius: 20px; margin-left: 6px; font-weight: 700; }
+        .client-login-btns { display: flex; flex-direction: column; gap: 7px; }
+        .btn-google { background: white; border: 1px solid #dadce0; border-radius: 24px; padding: 9px 14px; font-size: 0.85rem; font-weight: 600; color: #3c4043; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Poppins', sans-serif; transition: box-shadow 0.2s; }
+        .btn-google:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+        .btn-email-login { background: var(--gradient-1); color: white; border: none; border-radius: 24px; padding: 9px 14px; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: 'Poppins', sans-serif; }
+        .btn-anon { background: transparent; border: 1px solid #ccc; border-radius: 24px; padding: 7px 14px; font-size: 0.8rem; color: #666; cursor: pointer; font-family: 'Poppins', sans-serif; }
+        .client-welcome { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: linear-gradient(135deg, #e6fcf2 0%, #e8f7ff 100%); border-radius: 12px; padding: 10px 14px; }
+        .client-welcome-info { font-size: 0.82rem; color: #333; }
+        .client-welcome-info .cw-name { font-weight: 700; color: #111; }
+        .client-welcome-info .cw-tag { font-size: 0.7rem; color: #008f6b; font-weight: 600; margin-top: 2px; }
+        .btn-logout { background: #fff; border: 1px solid #ddd; border-radius: 20px; padding: 5px 12px; font-size: 0.75rem; cursor: pointer; color: #666; }
+
+        .client-login-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.45); z-index: 20000; display: none; align-items: center; justify-content: center; }
+        .client-login-modal.open { display: flex; }
+        .client-login-box { background: white; border-radius: 16px; padding: 22px; width: 340px; max-width: 90%; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+        .client-login-box h4 { margin: 0 0 4px 0; font-size: 1rem; }
+
+        .catalog-export-box { background: linear-gradient(135deg, #f0f4ff 0%, #e8f8f3 100%); border: 1px solid #d4e7ff; border-radius: 14px; padding: 18px; margin-bottom: 10px; }
+        .btn-admin-export { background: white; border: 2px solid var(--gradient-1-end, #e91e8c); color: #333; border-radius: 10px; padding: 11px 16px; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: 'Poppins', sans-serif; display: flex; align-items: center; gap: 7px; transition: all 0.2s; }
+        .btn-admin-export:hover { background: var(--gradient-1-end, #e91e8c); color: white; transform: translateY(-1px); box-shadow: 0 3px 10px rgba(233,30,140,0.3); }
+
+        .cat-icon-nav { width: 24px; height: 24px; object-fit: cover; border-radius: 6px; margin-right: 8px; vertical-align: middle; background: white; border: 1px solid #eee; }
+
+        /* ROBOZINHO OUXE - PNG FLOW */
+        
+        #obrigadoOverlay{position:fixed;inset:0;background:transparent !important;backdrop-filter:none !important;z-index:999999;display:none;pointer-events:none;}
+        #obrigadoOverlay.show{display:block !important;pointer-events:auto;}
+        #obrigadoOverlay.show::before{content:'';position:fixed;inset:0;background:rgba(0,0,0,0.15);pointer-events:none;}
+        #roboStage{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:1000000;}
+        .robo-container{position:fixed;bottom:0;left:-500px;width:320px;height:440px;will-change:transform, left;filter:drop-shadow(0 20px 30px rgba(0,0,0,0.4));z-index:1000001;pointer-events:none;}
+        .robo-container.andando{animation: roboAndaLivre 6.5s linear forwards;}
+        #robozinhoImg{width:100%;height:100%;object-fit:contain;object-position:center bottom;background:transparent;animation: roboPassos 0.28s ease-in-out infinite alternate, roboBalanço 0.56s ease-in-out infinite alternate;}
+        .robo-sombra{position:absolute;bottom:5px;left:50%;width:180px;height:22px;background:radial-gradient(ellipse, rgba(0,0,0,0.35) 0%, transparent 70%);border-radius:50%;transform:translateX(-50%);animation: sombraAnda 0.28s ease-in-out infinite alternate;z-index:-1;}
+        .balao-fala{position:absolute;top:-20px;left:240px;background:#fff;color:#1A1A2E;padding:12px 20px;border-radius:22px 22px 22px 4px;font-weight:800;font-size:1.1rem;box-shadow:0 8px 25px rgba(0,0,0,0.25);opacity:0;transform:scale(0);white-space:nowrap;border:3px solid #FF6B35;z-index:10;}
+        .balao-fala.show{animation: balaoCartoon 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;}
+        .balao-fala::after{content:'';position:absolute;bottom:-10px;left:15px;width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-top:12px solid #fff;filter:drop-shadow(0 2px 0 #FF6B35);}
+        .obrigado-texto-cartoon{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#FF6B35,#E91E8C);color:#fff;padding:10px 24px;border-radius:30px;font-weight:700;font-size:.9rem;box-shadow:0 8px 20px rgba(0,0,0,0.3);z-index:1000002;opacity:0;pointer-events:none;}
+        .obrigado-texto-cartoon.show{animation: textoSubindo 0.5s ease forwards;}
+
+        @keyframes roboAndaLivre{
+            0%{left:-400px;transform:translateY(0) rotate(0deg) scaleX(1);}
+            5%{left:-300px;transform:translateY(-8px) rotate(-2deg) scaleX(1);}
+            10%{left:-200px;transform:translateY(0) rotate(2deg) scaleX(1);}
+            15%{left:-100px;transform:translateY(-8px) rotate(-2deg) scaleX(1);}
+            20%{left:0px;transform:translateY(0) rotate(2deg) scaleX(1);}
+            25%{left:10%;transform:translateY(-8px) rotate(-1deg) scaleX(1);}
+            30%{left:20%;transform:translateY(0) rotate(1deg) scaleX(1);}
+            35%{left:30%;transform:translateY(-10px) rotate(-1deg) scale(1.05);}
+            45%{left:42%;transform:translateY(0) rotate(0deg) scale(1.08);}
+            55%{left:48%;transform:translateY(-6px) rotate(1deg) scale(1.08);}
+            65%{left:55%;transform:translateY(0) rotate(-1deg) scale(1.05);}
+            75%{left:70%;transform:translateY(-8px) rotate(2deg) scale(1);}
+            85%{left:85%;transform:translateY(0) rotate(-2deg) scale(1);}
+            95%{left:105%;transform:translateY(-5px) rotate(2deg) scale(1);}
+            100%{left:130%;transform:translateY(0) rotate(0deg) scale(0.9);}
+        }
+        @keyframes roboPassos{
+            0%{transform:translateY(0) rotate(-2deg) scaleY(1);}
+            100%{transform:translateY(-14px) rotate(2deg) scaleY(0.98);}
+        }
+        @keyframes roboBalanço{
+            0%{transform:translateX(-3px) rotate(-3deg);}
+            100%{transform:translateX(3px) rotate(3deg);}
+        }
+        @keyframes sombraAnda{
+            0%{transform:translateX(-50%) scale(1,0.8);opacity:0.3;}
+            100%{transform:translateX(-50%) scale(0.7,0.5);opacity:0.15;}
+        }
+        @keyframes balaoCartoon{
+            0%{opacity:0;transform:scale(0) rotate(-15deg) translateY(20px);}
+            60%{opacity:1;transform:scale(1.2) rotate(3deg) translateY(-5px);}
+            80%{transform:scale(0.95) rotate(-1deg);}
+            100%{opacity:1;transform:scale(1) rotate(0deg) translateY(0);}
+        }
+        @keyframes textoSubindo{
+            0%{opacity:0;transform:translateX(-50%) translateY(20px);}
+            100%{opacity:1;transform:translateX(-50%) translateY(0);}
+        }
+        @keyframes popObrigado{0%{transform:scale(0) rotate(-10deg);opacity:0}60%{transform:scale(1.2) rotate(3deg);opacity:1}100%{transform:scale(1) rotate(0deg);opacity:1}} @keyframes giraRobo{0%{transform:rotateY(0)}100%{transform:rotateY(360deg)}}
+        100%{transform:rotateY(360deg)}}
+        
+        @keyframes popTxt{0%{transform:scale(0)}100%{transform:scale(1)}}
+        .obrigado-texto{background:linear-gradient(135deg,#FF6B35,#E91E8C);color:#fff;padding:14px 32px;border-radius:50px;font-weight:800;font-size:1.4rem;margin-top:18px;animation:popTxt .5s 1s both}
+
+</style>
 </head>
 <body>
 
@@ -937,16 +1025,36 @@
             <button class="account-close" onclick="toggleAccount()"><i class="fas fa-times"></i></button>
         </div>
         <div class="account-body">
+            <div id="clientLoginCard" style="margin-bottom:14px;"></div>
+            <div class="client-login-modal" id="clientLoginModal">
+                <div class="client-login-box">
+                    <button class="account-close" onclick="closeClientLogin()"><i class="fas fa-times"></i></button>
+                    <h4 id="clientLoginTitle">Entrar na sua conta</h4>
+                    <p id="clientLoginSub" style="font-size:.8rem;color:#666;margin-bottom:14px;">Entre com seu e-mail para ganhar 5% de desconto na primeira compra</p>
+                    <div id="clientLoginEmailForm" style="display:none;">
+                        <div class="form-group" style="margin-bottom:10px;">
+                            <label>Seu e-mail</label>
+                            <input type="email" id="clientEmailInput" placeholder="seu@email.com" autocomplete="email">
+                        </div>
+                        <div class="form-group" style="margin-bottom:10px;">
+                            <label>Nome (como quer ser chamado)</label>
+                            <input type="text" id="clientNameInput" placeholder="Seu nome" autocomplete="name">
+                        </div>
+                        <button class="btn-email-login" style="width:100%;" onclick="doClientLogin()">ENTRAR</button>
+                        <button class="btn-anon" style="width:100%;margin-top:8px;" onclick="closeClientLogin()">Voltar</button>
+                    </div>
+                </div>
+            </div>
             <div class="account-tabs">
-                <button class="account-tab active" onclick="switchTab('pedido', this)">
-                    <i class="fas fa-shopping-basket"></i> Meu Pedido
-                </button>
-                <button class="account-tab" onclick="switchTab('dados', this)">
+                <button class="account-tab active" onclick="switchTab('dados', this)">
                     <i class="fas fa-user"></i> Meus Dados
+                </button>
+                <button class="account-tab" onclick="switchTab('pedido', this)">
+                    <i class="fas fa-shopping-basket"></i> Meu Pedido
                 </button>
             </div>
 
-            <div class="tab-content active" id="tab-pedido">
+            <div class="tab-content" id="tab-pedido">
                 <div class="form-card">
                     <div class="form-section-title"><i class="fas fa-shopping-basket"></i> Itens do Pedido</div>
                     <div class="order-items-list" id="orderItemsList">
@@ -965,6 +1073,17 @@
                         <span class="value" id="orderTotal">R$ 0,00</span>
                     </div>
                 </div>
+                <div class="form-card">
+                    <div class="form-section-title"><i class="fas fa-history"></i> Histórico de Compras</div>
+                    <div class="order-items-list" id="purchaseHistoryList" style="max-height:260px;">
+                        <div class="order-empty">
+                            <i class="fas fa-receipt"></i>
+                            <p>Nenhum pedido realizado</p>
+                            <p style="font-size: 0.75rem; margin-top: 5px;">Seus pedidos aparecem aqui automaticamente</p>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="form-card">
                     <div class="form-section-title"><i class="fas fa-clipboard-list"></i> Finalizar Pedido</div>
                     <div class="form-group">
@@ -986,7 +1105,7 @@
                 </div>
             </div>
 
-            <div class="tab-content" id="tab-dados">
+            <div class="tab-content active" id="tab-dados">
                 <div class="form-card">
                     <div class="form-section-title"><i class="fas fa-user"></i> Dados Pessoais</div>
                     <div class="form-group">
@@ -1044,6 +1163,7 @@
             <div><strong>Cidade:</strong> <span id="pngCity"></span></div>
             <div><strong>Entrega:</strong> <span id="pngAddress"></span></div>
             <div><strong>Pagamento:</strong> <span id="pngPayment"></span></div>
+            <div><strong>Data/Hora:</strong> <span id="pngDateTime"></span></div>
         </div>
         <table class="order-png-table"><thead><tr><th>Produto / Quantidade</th><th>Subtotal</th></tr></thead><tbody id="pngItems"></tbody></table>
         <div class="order-png-summary">
@@ -1173,6 +1293,27 @@
                                     <i class="fas fa-info-circle"></i> Preencha os campos ao lado para ver o produto em tempo real
                                 </p>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="admin-products-list">
+                        <h3><i class="fas fa-download"></i> Gerar Catálogo</h3>
+                        <div class="catalog-export-box">
+                            <p style="font-size:.85rem;color:#666;margin:0 0 12px;">Baixe o catálogo completo do site com <b>fotos, nomes e preços</b> de todos os produtos:</p>
+                            <div style="display:flex;flex-wrap:wrap;gap:10px;">
+                                <button class="btn-admin-export" onclick="exportarCatálogoPDF()">
+                                    <i class="fas fa-file-pdf"></i> Baixar em PDF (com fotos)
+                                </button>
+                                <button class="btn-admin-export" onclick="exportarCatálogoJSON()">
+                                    <i class="fas fa-file-code"></i> Baixar em JSON (para atualizar o site)
+                                </button>
+                                <button class="btn-admin-export" onclick="exportarCatálogoHTML()">
+                                    <i class="fas fa-file-code"></i> Baixar em HTML (página completa)
+                                </button>
+                            </div>
+                            <p style="font-size:.78rem;color:#999;margin:12px 0 0;">
+                                💡 Dica: use o JSON para atualizar o <b>produtos.json</b> do site e manter seus produtos salvos no GitHub.
+                            </p>
                         </div>
                     </div>
 
@@ -1413,6 +1554,341 @@
     </div>
 
     <script>
+
+        function rebuildCategoryMenu() {
+            // menu superior (nav)
+            const nav = document.querySelector('nav.nav');
+            if (nav) {
+                const div = nav.querySelector('.container');
+                let navHtml = '<a href="#" class="active">Início</a>';
+                Object.keys(products).forEach(cat => {
+                    if (!products[cat].length) return;
+                    navHtml += `<a href="#${cat}" class="nav-cat-link">${categoryNames[cat] || cat.toUpperCase()}</a>`;
+                });
+                div.innerHTML = navHtml;
+            }
+            // menu horizontal de categorias (.categories-scroll)
+            const catScroll = document.querySelector('.categories-scroll');
+            if (catScroll) {
+                const div = catScroll.querySelector('.container');
+                let itemsHtml = '';
+                Object.keys(products).forEach(cat => {
+                    if (!products[cat].length) return;
+                    const iconUrl = categoryIconsData[cat] || '';
+                    const iconHtml = iconUrl
+                        ? `<img src="${iconUrl}" class="cat-icon-nav" alt="${cat}">`
+                        : `<i class="fas fa-shopping-basket"></i>`;
+                    itemsHtml += `<a href="#${cat}" class="cat-item">${iconHtml} ${categoryNames[cat] || cat.toUpperCase()}</a>`;
+                });
+                div.innerHTML = itemsHtml;
+            }
+        }
+
+
+
+        // ================= GERADOR DE CATÁLOGO (Admin) =================
+        function coletarTodosProdutos() {
+            const catNames = { carnes: 'Carne & Cia', bebidas: 'Bebidas', frios: 'Frios e Laticínios', biscoitos: 'Biscoitos', chocolate: 'Chocolate', zeroLactose: 'Zero Lactose', diet: 'Diet e Light', higiene: 'Higiene e Perfumaria' };
+            const cfg = JSON.parse(localStorage.getItem('ouze_store_config') || '{}');
+            const storeName = (cfg.companyName || `${(cfg.brandName || 'Ouxe').trim()} ${(cfg.subName || 'Mini Mercado').trim()}`).trim();
+            return { storeName, catNames, products: products, geradoEm: new Date().toLocaleString('pt-BR') };
+        }
+
+        function catalogHtmlPage(data) {
+            let sections = '';
+            Object.keys(data.products).forEach(cat => {
+                const itens = data.products[cat];
+                if (!itens.length) return;
+                sections += `<h2 style="font-size:1.3rem;margin:28px 0 14px;color:#333;border-bottom:3px solid #e91e8c;padding-bottom:6px;">${data.catNames[cat]} <span style="color:#888;font-size:.9rem;">(${itens.length})</span></h2>`;
+                sections += `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;">`;
+                itens.forEach(p => {
+                    const img = p.image
+                        ? `<img src="${p.image}" style="width:100%;height:130px;object-fit:cover;border-radius:10px;background:#f5f5f5;">`
+                        : `<div style="width:100%;height:130px;border-radius:10px;background:#f5f5f5;display:flex;align-items:center;justify-content:center;font-size:2.6rem;">${p.emoji || '🛒'}</div>`;
+                    sections += `<div style="border:1px solid #eee;border-radius:12px;padding:12px;background:white;">
+                        ${img}
+                        <div style="font-size:.92rem;font-weight:600;color:#222;margin-top:8px;min-height:38px;">${p.name}</div>
+                        <div style="font-size:1rem;font-weight:700;color:#008f6b;margin-top:6px;">R$ ${p.price.toFixed(2).replace('.', ',')} <span style="font-size:.75rem;color:#888;font-weight:400;">/${p.unit}</span></div>
+                    </div>`;
+                });
+                sections += `</div>`;
+            });
+            const total = Object.values(data.products).flat().length;
+            return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Catálogo — ${data.storeName}</title>
+<style>body{font-family:'Segoe UI',Tahoma,sans-serif;margin:0;padding:24px;background:#fafafa;color:#333;}
+header{text-align:center;margin-bottom:8px;}h1{margin:0;font-size:1.8rem;}
+.sub{color:#777;font-size:.9rem;}@media print{body{padding:0;background:white;}}</style></head>
+<body><header><h1>🛒 ${data.storeName}</h1><div class="sub">Catálogo de Produtos • ${total} itens • Gerado em ${data.geradoEm}</div></header>
+${sections}
+<footer style="margin-top:40px;text-align:center;color:#aaa;font-size:.8rem;">${data.storeName} • Catálogo gerado automaticamente pelo painel administrativo</footer>
+
+<div id="obrigadoOverlay" onclick="this.classList.remove('show')">
+  <div id="roboStage" style="display:flex;align-items:center;justify-content:center;position:fixed;inset:0;">
+    <div class="obrigado-simples" id="obrigadoSimples" style="background:linear-gradient(135deg,#FF6B35 0%, #E91E8C 100%);color:white;padding:28px 48px;border-radius:60px;font-weight:900;font-size:2rem;box-shadow:0 20px 60px rgba(233,30,140,0.4);transform:scale(0);opacity:0;text-align:center;animation:none;">
+      Obrigado! 💖 😊
+    </div>
+  </div>
+  <div class="obrigado-texto-cartoon" id="textoCartoon" style="display:none;">Gerando seu pedido em PNG...</div>
+</div>
+
+</body></html>`;
+        }
+
+        function exportarCatálogoHTML() {
+            const data = coletarTodosProdutos();
+            const content = catalogHtmlPage(data);
+            const blob = new Blob([content], { type: 'text/html' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `catalogo-${data.storeName.toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 30)}.html`;
+            document.body.appendChild(a); a.click(); a.remove();
+            setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+            showToast('✅ Catálogo em HTML baixado!');
+        }
+
+        function exportarCatálogoJSON() {
+            const data = coletarTodosProdutos();
+            const content = JSON.stringify(data.products, null, 2);
+            const blob = new Blob([content], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `produtos-catalogo.json`;
+            document.body.appendChild(a); a.click(); a.remove();
+            setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+            const n = Object.values(data.products).flat().length;
+            showToast(`✅ Catálogo em JSON baixado! (${n} produtos) — substitua o produtos.json do site por este arquivo.`);
+        }
+
+        function exportarCatálogoPDF() {
+            const data = coletarTodosProdutos();
+            const content = catalogHtmlPage(data);
+            const iframe = document.createElement('iframe');
+            iframe.style.cssText = 'position:fixed;right:-9999px;bottom:-9999px;width:1px;height:1px;';
+            document.body.appendChild(iframe);
+            const doc = iframe.contentDocument;
+            doc.open(); doc.write(content); doc.close();
+            setTimeout(() => {
+                try { iframe.contentWindow.focus(); iframe.contentWindow.print(); }
+                catch(e) { console.warn('Impressão não suportada:', e); }
+                setTimeout(() => iframe.remove(), 2000);
+            }, 700);
+            showToast('🖨️ Janela de impressão aberta! Escolha "Salvar como PDF" para gerar o catálogo em PDF.');
+        }
+
+
+        // ================= SISTEMA DE CONTA DO CLIENTE =================
+        // Login por e-mail (Google ou manual) + desconto 5% na 1ª compra + histórico automático
+        const CLIENT_EMAIL_KEY = 'ouze_client_email';
+        const CLIENT_NAME_KEY = 'ouze_client_name';
+        const CLIENT_ACCOUNTS_KEY = 'ouze_client_accounts';  // {email: {name, loginMethod, createdAt, discountUsed, orders:[{date,total,status}]}}
+
+        function getClientAccounts() {
+            try { return JSON.parse(localStorage.getItem(CLIENT_ACCOUNTS_KEY)) || {}; } catch(e) { return {}; }
+        }
+        function saveClientAccounts(accts) {
+            try { localStorage.setItem(CLIENT_ACCOUNTS_KEY, JSON.stringify(accts)); } catch(e) {}
+        }
+        function getCurrentClientEmail() {
+            return localStorage.getItem(CLIENT_EMAIL_KEY) || '';
+        }
+        function getClientAccount(email) {
+            return getClientAccounts()[normalizeEmail(email)] || null;
+        }
+        function normalizeEmail(email) {
+            return (email || '').trim().toLowerCase();
+        }
+
+        // renderiza o card da Minha Conta conforme estado de login
+        function renderClientLoginCard() {
+            const card = document.getElementById('clientLoginCard');
+            if (!card) return;
+            const email = getCurrentClientEmail();
+            const acct = email ? getClientAccount(email) : null;
+            if (!email || !acct) {
+                card.innerHTML = `
+                    <div class="client-login-card">
+                        <div class="client-login-title">Entrar para comprar com desconto<span class="discount-badge">5% na 1ª compra</span></div>
+                        <div class="client-login-btns">
+                            <button class="btn-google" onclick="clientLoginGoogle()">
+                                <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.9 32.4 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 8 3l5.7-5.7C34 6 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 13 24 13c3.1 0 5.8 1.2 8 3l5.7-5.7C34 6 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.3 35.2 26.7 36 24 36c-5.3 0-9.8-3.6-11.3-8.5l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.1-4.1 5.6l6.2 5.2C41.6 35.9 44 30.3 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>
+                                Entrar com Google
+                            </button>
+                            <button class="btn-email-login" onclick="openClientEmailLogin()">
+                                <i class="fas fa-envelope"></i> Entrar com e-mail
+                            </button>
+                            <button class="btn-anon" onclick="clientLoginAnonymous()">
+                                Continuar sem cadastro
+                            </button>
+                        </div>
+                    </div>`;
+                return;
+            }
+            const firstOrder = !acct.orders || acct.orders.length === 0;
+            const discTag = firstOrder ? '<div class="cw-tag">🎁 Você tem 5% de desconto na primeira compra!</div>' : '<div class="cw-tag">Desconto da 1ª compra já utilizado</div>';
+            card.innerHTML = `
+                <div class="client-welcome">
+                    <div class="client-welcome-info">
+                        <div class="cw-name"><i class="fas fa-user-check"></i> ${escHtml(acct.name || acct.email)}</div>
+                        <div style="font-size:.72rem;color:#777;">${escHtml(acct.email)}</div>
+                        ${discTag}
+                    </div>
+                    <button class="btn-logout" onclick="clientLogout()">Sair</button>
+                </div>`;
+        }
+
+        function escHtml(s) {
+            return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
+
+        function openClientEmailLogin() {
+            document.getElementById('clientLoginTitle').textContent = 'Entrar com e-mail';
+            document.getElementById('clientLoginSub').textContent = 'Se for sua primeira compra, você ganha 5% de desconto automaticamente';
+            document.getElementById('clientLoginEmailForm').style.display = 'block';
+            document.getElementById('clientLoginModal').classList.add('open');
+            document.getElementById('clientEmailInput').focus();
+        }
+        function closeClientLogin() {
+            document.getElementById('clientLoginModal').classList.remove('open');
+            document.getElementById('clientLoginEmailForm').style.display = 'none';
+        }
+
+        function doClientLogin() {
+            const email = normalizeEmail(document.getElementById('clientEmailInput').value);
+            let name = document.getElementById('clientNameInput').value.trim();
+            if (!email || !email.includes('@')) { showToast('⚠️ Informe um e-mail válido!'); return; }
+            const accts = getClientAccounts();
+            if (!accts[email]) {
+                accts[email] = { name: name, email: email, loginMethod: 'email', createdAt: new Date().toISOString(), discountUsed: false, orders: [] };
+                showToast('✅ Conta criada! Você ganhou 5% de desconto na primeira compra');
+            } else if (name) {
+                accts[email].name = name;
+            }
+            saveClientAccounts(accts);
+            localStorage.setItem(CLIENT_EMAIL_KEY, email);
+            localStorage.setItem(CLIENT_NAME_KEY, accts[email].name || email);
+            closeClientLogin();
+            renderClientLoginCard();
+            applyFirstPurchaseDiscount();
+            if (document.getElementById('orderName')) document.getElementById('orderName').value = accts[email].name || '';
+            renderPurchaseHistory();
+            showToast('✅ Bem-vindo(a)! Desconto da 1ª compra aplicado automaticamente');
+        }
+
+        function clientLoginGoogle() {
+            // Google Account Chooser: abre a janela oficial de contas do Google;
+            // ao escolher a conta, o usuário informa o e-mail da conta Google.
+            document.getElementById('clientLoginTitle').textContent = 'Entrar com Google';
+            document.getElementById('clientLoginSub').textContent = 'Informe o e-mail da sua conta Google (ex: conta@gmail.com) para ganhar 5% na 1ª compra';
+            document.getElementById('clientLoginEmailForm').style.display = 'block';
+            document.getElementById('clientEmailInput').placeholder = 'sua.conta@gmail.com';
+            document.getElementById('clientLoginModal').classList.add('open');
+            document.getElementById('clientEmailInput').focus();
+            document.getElementById('clientLoginEmailForm').dataset.method = 'google';
+        }
+
+        // sobrescreve doClientLogin para usar o método google quando aberto por esse botão
+        const _origDoClientLogin = doClientLogin;
+        doClientLogin = function() {
+            const email = normalizeEmail(document.getElementById('clientEmailInput').value);
+            let name = document.getElementById('clientNameInput').value.trim();
+            if (!email || !email.includes('@')) { showToast('⚠️ Informe um e-mail válido!'); return; }
+            const method = document.getElementById('clientLoginEmailForm').dataset.method === 'google' ? 'google' : 'email';
+            const accts = getClientAccounts();
+            const firstTime = !accts[email];
+            if (firstTime) {
+                accts[email] = { name: name, email: email, loginMethod: method, createdAt: new Date().toISOString(), discountUsed: false, orders: [] };
+            } else if (name) {
+                accts[email].name = name;
+            }
+            saveClientAccounts(accts);
+            localStorage.setItem(CLIENT_EMAIL_KEY, email);
+            localStorage.setItem(CLIENT_NAME_KEY, accts[email].name || email);
+            closeClientLogin();
+            renderClientLoginCard();
+            applyFirstPurchaseDiscount();
+            if (document.getElementById('orderName')) document.getElementById('orderName').value = accts[email].name || '';
+            renderPurchaseHistory();
+            if (firstTime) showToast('✅ Conta Google registrada! 5% de desconto aplicado na primeira compra');
+            else showToast('✅ Bem-vindo(a) de volta!');
+        };
+
+        function clientLoginAnonymous() {
+            localStorage.removeItem(CLIENT_EMAIL_KEY);
+            localStorage.removeItem(CLIENT_NAME_KEY);
+            renderClientLoginCard();
+            showToast('🛒 Você está navegando como visitante');
+        }
+
+        function clientLogout() {
+            localStorage.removeItem(CLIENT_EMAIL_KEY);
+            localStorage.removeItem(CLIENT_NAME_KEY);
+            renderClientLoginCard();
+            showToast('👋 Você saiu da conta');
+        }
+
+        // --- Desconto 5% automático na primeira compra (por e-mail cadastrado) ---
+        function applyFirstPurchaseDiscount() {
+            const email = getCurrentClientEmail();
+            const discInput = document.getElementById('orderDiscount');
+            if (!email || !discInput) return;
+            const acct = getClientAccount(email);
+            if (!acct) return;
+            if (!acct.discountUsed && (!acct.orders || acct.orders.length === 0)) {
+                // 5% sobre o subtotal atual do pedido
+                const subtotal = calcOrderSubtotal();
+                const disc = Math.round(subtotal * 0.05 * 100) / 100;
+                if (disc > 0) {
+                    discInput.value = disc.toFixed(2);
+                    orderDiscount = disc;
+                    renderOrderItems();
+                }
+            }
+        }
+
+        function calcOrderSubtotal() {
+            try {
+                // orderItems é a fonte da verdade do pedido (o carrinho é limpo ao mover os itens)
+                if (orderItems && orderItems.length) return orderItems.reduce((s, it) => s + (it.price || 0) * (it.qty || 1), 0);
+                return cart.reduce((s, it) => s + (it.price || 0) * (it.qty || 1), 0);
+            } catch(e) { return 0; }
+        }
+
+        // --- Histórico de compras automático ---
+        function renderPurchaseHistory() {
+            const list = document.getElementById('purchaseHistoryList');
+            if (!list) return;
+            const email = getCurrentClientEmail();
+            const acct = email ? getClientAccount(email) : null;
+            const orders = (acct && acct.orders) ? acct.orders.slice().reverse() : [];
+            if (orders.length === 0) {
+                list.innerHTML = `<div class="order-empty"><i class="fas fa-receipt"></i><p>Nenhum pedido realizado</p><p style="font-size: 0.75rem; margin-top: 5px;">Seus pedidos aparecem aqui automaticamente</p></div>`;
+                return;
+            }
+            list.innerHTML = orders.map(o => `
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid #f0f0f0;font-size:.8rem;">
+                    <div>
+                        <div style="font-weight:600;">#${o.id || '—'} • ${o.date || ''}</div>
+                        <div style="color:#777;font-size:.75rem;">${escHtml((o.items || 0) + ' itens')} • ${o.payment || 'PIX'}</div>
+                    </div>
+                    <div style="font-weight:700;color:#008f6b;">${o.total || 'R$ 0,00'}</div>
+                </div>`).join('');
+        }
+
+        function addToPurchaseHistory(orderRecord) {
+            const email = getCurrentClientEmail();
+            if (!email) return; // visitante: sem histórico
+            const accts = getClientAccounts();
+            const key = normalizeEmail(email);
+            if (!accts[key]) return;
+            if (!accts[key].orders) accts[key].orders = [];
+            accts[key].orders.push(orderRecord);
+            accts[key].discountUsed = true; // primeira compra realizada, desconto já usado
+            saveClientAccounts(accts);
+            renderPurchaseHistory();
+            renderClientLoginCard();
+        }
+
         const defaultProducts = {
             carnes: [
                 { id: 1, name: "Filé de Peito Frango Seara Bandeja 1kg", price: 24.49, unit: "un", emoji: "" },
@@ -1528,7 +2004,26 @@
             ]
         };
 
+        // Catálogo salvo no GitHub (produtos.json) — não se perde ao atualizar o site
+        // Carrega do arquivo; se falhar, usa o localStorage; se vazio, usa o catálogo padrão embutido
         let products = JSON.parse(localStorage.getItem('ouze_products')) || defaultProducts;
+        (async function loadProductsFromGitHub() {
+            try {
+                const res = await fetch('produtos.json?t=' + Date.now());
+                if (res.ok) {
+                    const data = await res.json();
+                    const cats = data.categories || data;
+                    if (cats && Object.keys(cats).length) {
+                        // produtos.json = fonte da verdade: persiste localmente para uso offline
+                        localStorage.setItem('ouze_products', JSON.stringify(cats));
+                        products = cats;
+                        if (typeof renderProducts === 'function') renderProducts();
+                        if (typeof renderAdminProducts === 'function') renderAdminProducts();
+                        console.log('Catálogo carregado do produtos.json:', Object.values(cats).flat().length, 'produtos');
+                    }
+                }
+            } catch(e) { console.warn('Produtos.json indisponível, usando catálogo local:', e.message); }
+        })();
         let cart = [];
         let orderItems = [];
         let orderDiscount = 0;
@@ -1543,6 +2038,17 @@
 
         
         // === GERENCIAMENTO DE ÍCONES DE CATEGORIA (novo) ===
+        const categoryNames = {
+            carnes: 'CARNE & CIA',
+            bebidas: 'BEBIDAS',
+            frios: 'FRIOS E LATICÍNIOS',
+            biscoitos: 'BISCOITOS',
+            chocolate: 'CHOCOLATE',
+            zeroLactose: 'ZERO LACTOSE',
+            diet: 'DIET E LIGHT',
+            higiene: 'HIGIENE E PERFUMARIA'
+        };
+
         let categoryIconsData = JSON.parse(localStorage.getItem('ouze_category_icons') || '{}');
 
         function resizeImageToIcon(file, maxSize = 128) {
@@ -1604,6 +2110,7 @@
                 localStorage.setItem('ouze_category_icons', JSON.stringify(categoryIconsData));
                 renderCategoryIconsAdmin();
                 injectCategoryIcons();
+                rebuildCategoryMenu();
                 showToast('✅ Ícone de ' + categoryNames[category] + ' atualizado!');
             } catch(e){
                 showToast('❌ Erro ao processar imagem');
@@ -1616,6 +2123,7 @@
             localStorage.setItem('ouze_category_icons', JSON.stringify(categoryIconsData));
             renderCategoryIconsAdmin();
             injectCategoryIcons();
+            rebuildCategoryMenu();
             showToast('🗑️ Ícone removido');
         }
 
@@ -1628,11 +2136,11 @@
         }
 
         function injectCategoryIcons() {
+            // títulos das seções de produtos
             document.querySelectorAll('.products-section').forEach(function(sec){
                 const id = sec.id;
                 const h2 = sec.querySelector('h2');
                 if(!h2) return;
-                // remove antigo se existir
                 const old = h2.querySelector('.cat-icon-img');
                 if(old) old.remove();
                 const iconUrl = categoryIconsData[id];
@@ -1644,18 +2152,53 @@
                     h2.prepend(img);
                 }
             });
+            // ícones dos menus (nav superior e menu horizontal de categorias)
+            document.querySelectorAll('a.nav-cat-link, .categories-scroll .cat-item').forEach(function(link){
+                const href = link.getAttribute('href') || '';
+                const cat = href.replace('#', '');
+                if(!cat || !categoryIconsData[cat]) return;
+                // remove ícone antigo
+                const oldNav = link.querySelector('.cat-icon-nav');
+                if(oldNav) oldNav.remove();
+                const oldIcon = link.querySelector('i.fas');
+                if(oldIcon) oldIcon.remove();
+                const img = document.createElement('img');
+                img.src = categoryIconsData[cat];
+                img.className = 'cat-icon-nav';
+                img.alt = cat;
+                link.prepend(img);
+            });
         }
 
-        const categoryNames = {
-            carnes: 'CARNE & CIA',
-            bebidas: 'BEBIDAS',
-            frios: 'FRIOS E LATICÍNIOS',
-            biscoitos: 'BISCOITOS',
-            chocolate: 'CHOCOLATE',
-            zeroLactose: 'ZERO LACTOSE',
-            diet: 'DIET E LIGHT',
-            higiene: 'HIGIENE E PERFUMARIA'
-        };
+        function rebuildCategoryMenu() {
+            // menu superior (nav)
+            const nav = document.querySelector('nav.nav');
+            if (nav) {
+                const div = nav.querySelector('.container');
+                let navHtml = '<a href="#" class="active">Início</a>';
+                Object.keys(products).forEach(cat => {
+                    if (!products[cat].length) return;
+                    navHtml += '<a href="#' + cat + '" class="nav-cat-link">' + (categoryNames[cat] || cat.toUpperCase()) + '</a>';
+                });
+                div.innerHTML = navHtml;
+            }
+            // menu horizontal de categorias (.categories-scroll)
+            const catScroll = document.querySelector('.categories-scroll');
+            if (catScroll) {
+                const div = catScroll.querySelector('.container');
+                let itemsHtml = '';
+                Object.keys(products).forEach(cat => {
+                    if (!products[cat].length) return;
+                    const iconUrl = categoryIconsData[cat] || '';
+                    const iconHtml = iconUrl
+                        ? '<img src="' + iconUrl + '" class="cat-icon-nav" alt="' + cat + '">'
+                        : '<i class="fas fa-shopping-basket"></i>';
+                    itemsHtml += '<a href="#' + cat + '" class="cat-item">' + iconHtml + ' ' + (categoryNames[cat] || cat.toUpperCase()) + '</a>';
+                });
+                div.innerHTML = itemsHtml;
+            }
+        }
+
 
         
         function getWhatsappDigits() {
@@ -1669,9 +2212,9 @@
         }
         function updateWhatsappLinks() {
             const digits = getWhatsappDigits();
-            const link = 'https://api.whatsapp.com/send?phone=' + digits;
+            const link = 'https://wa.me/' + digits;
             document.querySelectorAll('a.js-whatsapp-link, a.whatsapp-float, a.btn-whatsapp').forEach(function(a){
-                if(a.href.includes('api.whatsapp.com') && !a.href.includes('text=')) a.href = link;
+                if((a.href.includes('api.whatsapp.com') || a.href.includes('wa.me/')) && !a.href.includes('text=')) a.href = link;
             });
             const floatBtn = document.querySelector('.whatsapp-float');
             if(floatBtn && !floatBtn.href.includes('text=')) floatBtn.href = link;
@@ -1720,6 +2263,8 @@
             } catch(e) {}
             updateWhatsappLinks();
             loadCategoryIcons();
+        rebuildCategoryMenu();
+        renderClientLoginCard();
             loadBanners();
         }
 
@@ -1898,30 +2443,67 @@
             if (orderItems.length === 0) { showToast('⚠️ Adicione itens ao pedido!'); return; }
             const subtotal = orderItems.reduce((sum,item)=>sum + item.price * item.qty,0);
             orderDiscount = Math.min(Math.max(parseFloat(document.getElementById('orderDiscount')?.value) || 0,0), subtotal);
+            const formEmail = getCurrentClientEmail();
+            if (formEmail && orderDiscount === 0) {
+                const formAcct = getClientAccount(formEmail);
+                if (formAcct && !formAcct.discountUsed && (!formAcct.orders || formAcct.orders.length === 0)) {
+                    orderDiscount = Math.round(subtotal * 0.05 * 100) / 100;
+                    const di = document.getElementById('orderDiscount');
+                    if (di) di.value = orderDiscount.toFixed(2);
+                }
+            }
             const total = Math.max(0, subtotal - orderDiscount);
             const pixPayload = payment === 'PIX' ? geraPixPayload(total) : '';
-            const shared = await enviarPedidoWhatsApp({name,phone,city,address,payment,change,notes,subtotal,discount:orderDiscount,total,pixPayload});
-            if (!shared) {
-                // sem compartilhamento nativo: baixa o PNG e orienta o cliente a anexar na conversa
-                const digits = getWhatsappDigits();
-                window.open('https://api.whatsapp.com/send?phone=' + digits, '_blank');
-                showToast('📲 Abra a conversa no WhatsApp e anexe a imagem do pedido (já baixada)!');
-            } else {
-                showToast('✅ Pedido aberto para envio! Selecione o WhatsApp na lista.');
+            const clientEmail = getCurrentClientEmail();
+            const orderRecord = {
+                id: 'PED' + Date.now().toString().slice(-6),
+                date: new Date().toLocaleString('pt-BR'),
+                items: orderItems.reduce((s, it) => s + it.qty, 0),
+                payment: payment,
+                total: 'R$ ' + total.toFixed(2).replace('.', ','),
+                subtotal: subtotal,
+                discount: orderDiscount
+            };
+            if (clientEmail) {
+                addToPurchaseHistory(orderRecord);
+                try {
+                    const accts = getClientAccounts();
+                    const key = normalizeEmail(clientEmail);
+                    if (accts[key]) { accts[key].discountUsed = true; saveClientAccounts(accts); }
+                } catch(e) {}
             }
+            setTimeout(() => { try { cart = []; orderItems = []; orderDiscount = 0; renderOrderItems(); renderCart(); } catch(e) {} }, 800);
+
+            // ENVIA SOMENTE IMAGEM - sem abrir wa.me com texto antes
+            await enviarPedidoWhatsApp({name,phone,city,address,payment,change,notes,subtotal,discount:orderDiscount,total,pixPayload, items: orderItems.map(i=>({...i})), dateTime: new Date()});
         }
 
         /* Gera o PNG do pedido (card fica fora da tela, invisível ao usuário) */
         async function renderizarPedidoPNG(data) {
             const cfg = JSON.parse(localStorage.getItem('ouze_store_config') || '{}');
             const card = document.getElementById('orderPngCard');
-            document.getElementById('pngCompanyName').textContent = cfg.companyName || `${cfg.brandName || 'Ouxe'} ${cfg.subName || 'Mini Mercado'}`;
+            // Garante que o card fique invisível fora da tela durante a captura
+            const prevStyle = {position: card.style.position, left: card.style.left, top: card.style.top, zIndex: card.style.zIndex};
+            card.style.position = 'fixed';
+            card.style.left = '-9999px';
+            card.style.top = '0';
+            card.style.zIndex = '-1';
+            card.style.display = 'block';
+            
+            document.getElementById('pngCompanyName').textContent = cfg.companyName || `${(cfg.brandName || 'Ouxe').trim()} ${(cfg.subName || 'Mini Mercado').trim()}`;
             document.getElementById('pngCustomer').textContent = data.name;
             document.getElementById('pngPhone').textContent = data.phone;
             document.getElementById('pngCity').textContent = data.city;
             document.getElementById('pngAddress').textContent = data.address;
             document.getElementById('pngPayment').textContent = data.payment;
-            document.getElementById('pngItems').innerHTML = orderItems.map(item => `<tr><td>${item.qty}x ${item.name}</td><td>R$ ${(item.price*item.qty).toFixed(2).replace('.',',')}</td></tr>`).join('');
+            // Data e hora do pedido
+            const agora = data.dateTime || new Date();
+            const dt = (agora instanceof Date) ? agora : new Date(agora);
+            const dataHoraFormatada = dt.toLocaleDateString('pt-BR') + ' às ' + dt.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+            const elDateTime = document.getElementById('pngDateTime');
+            if(elDateTime) elDateTime.textContent = dataHoraFormatada;
+            const itensParaPng = (data.items && data.items.length ? data.items : (typeof orderItems !== 'undefined' ? orderItems : []));
+            document.getElementById('pngItems').innerHTML = itensParaPng.map(item => `<tr><td>${item.qty}x ${item.name}</td><td>R$ ${(item.price*item.qty).toFixed(2).replace('.',',')}</td></tr>`).join('');
             document.getElementById('pngSubtotal').textContent = `R$ ${data.subtotal.toFixed(2).replace('.',',')}`;
             document.getElementById('pngDiscount').textContent = `R$ ${data.discount.toFixed(2).replace('.',',')}`;
             document.getElementById('pngTotal').textContent = `R$ ${data.total.toFixed(2).replace('.',',')}`;
@@ -1934,30 +2516,187 @@
                 const qr=document.getElementById('pngPixQr'); qr.innerHTML='';
                 if(window.QRCode) new QRCode(qr,{text:data.pixPayload,width:150,height:150,colorDark:'#1A1A2E',colorLight:'#FFFFFF',correctLevel:QRCode.CorrectLevel.L});
             } else pixWrap.style.display='none';
-            await new Promise(r=>setTimeout(r,350));
+            await new Promise(r=>setTimeout(r,400));
             if (!window.html2canvas) throw new Error('html2canvas não carregado');
             const canvas=await html2canvas(card,{backgroundColor:'#ffffff',scale:2,useCORS:true,logging:false});
+            // restaura
+            card.style.position = prevStyle.position;
+            card.style.left = prevStyle.left;
+            card.style.top = prevStyle.top;
+            card.style.zIndex = prevStyle.zIndex;
             return await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));
         }
 
-        /* Envia o pedido pelo WhatsApp SOMENTE como imagem PNG (sem texto) */
-        async function enviarPedidoWhatsApp(data) {
+        /* URLs de abertura do WhatsApp - CORRIGIDO com wa.me e texto */
+        function getStoreWhatsappUrl(text) {
+            // Número fixo solicitado: 5575981236160
+            let digits = getWhatsappDigits();
+            if(!digits || digits.length < 10) digits = '5575981236160';
+            const base = 'https://wa.me/' + digits;
+            if (!text) return base;
+            return base + '?text=' + encodeURIComponent(text);
+        }
+
+        function buildCartWhatsAppMessage(data) {
+            // data pode vir de pendingCartOrder ou do parâmetro
+            const src = data || window.pendingCartOrder || {};
+            const name = src.name || document.getElementById('cartCustomerName')?.value.trim() || getClientName() || 'Cliente';
+            const phone = src.phone || document.getElementById('cartCustomerPhone')?.value.trim() || '';
+            const city = src.city || document.getElementById('cartCustomerCity')?.value.trim() || '';
+            const address = src.address || document.getElementById('cartCustomerAddress')?.value.trim() || '';
+            const payment = src.payment || document.getElementById('cartPayment')?.value || '';
+            const notes = src.notes || document.getElementById('cartNotes')?.value.trim() || '';
+            const items = src.items || window.cart || [];
+            const subtotal = src.subtotal || items.reduce((s,i)=>s+i.price*i.qty,0);
+            const discount = src.discount || 0;
+            const total = src.total || Math.max(0, subtotal - discount);
+
+            let msg = `*NOVO PEDIDO - OUXE MINI MERCADO*%0A`;
+            msg = `*NOVO PEDIDO - OUXE MINI MERCADO*\n`;
+            let txt = `*NOVO PEDIDO - OUXE MINI MERCADO*\n`;
+            txt += `--------------------------\n`;
+            txt += `*Cliente:* ${name}\n`;
+            txt += `*WhatsApp:* ${phone}\n`;
+            if(city) txt += `*Cidade:* ${city}\n`;
+            if(address) txt += `*Endereço:* ${address}\n`;
+            txt += `--------------------------\n\n`;
+            txt += `*ITENS:*\n`;
+            items.forEach((it,i)=>{
+                txt += `${i+1}. ${it.name} - ${it.qty}x R$ ${it.price.toFixed(2).replace('.',',')} = R$ ${(it.qty*it.price).toFixed(2).replace('.',',')}\n`;
+            });
+            txt += `\n*Subtotal:* R$ ${subtotal.toFixed(2).replace('.',',')}\n`;
+            if(discount>0) txt += `*Desconto:* R$ ${discount.toFixed(2).replace('.',',')}\n`;
+            txt += `*TOTAL:* R$ ${total.toFixed(2).replace('.',',')}\n`;
+            if(payment) txt += `*Pagamento:* ${payment}\n`;
+            if(src.changeVal) txt += `*Troco para:* ${src.changeVal}\n`;
+            if(notes) txt += `*Obs:* ${notes}\n`;
+            txt += `\n_Pedido gerado pelo site_`;
+            return txt;
+        }
+
+        function abrirWhatsAppAgora() {
+            // AGORA SOMENTE IMAGEM - abre conversa SEM texto
+            const url = getStoreWhatsappUrl();
+            let abriu = false;
             try {
-                const blob = await renderizarPedidoPNG(data);
-                if (!blob) return false;
-                const file=new File([blob],'pedido-ouxemercado.png',{type:'image/png'});
-                // 1) compartilhamento nativo (celular): abre a gaveta de apps com o WhatsApp para enviar a foto
-                if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
-                    try { await navigator.share({title:'Pedido Ouxe Mini Mercado',files:[file]}); return true; }
-                    catch(e) { /* cancelado; cai para o download + abertura do WhatsApp */ }
-                }
-                // 2) fallback: baixa o PNG e abre a conversa do WhatsApp para o cliente anexar a foto
+                const w = window.open(url, '_blank', 'noopener,noreferrer');
+                if (w) { try { w.focus(); } catch(e) {} abriu = !!w; }
+            } catch(e) { abriu = false; }
+            if (!abriu) {
                 try {
-                    const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='pedido-ouxemercado.png'; a.click();
-                    setTimeout(()=>URL.revokeObjectURL(a.href),3000);
-                } catch(e) { /* sem download disponível */ }
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.target = '_blank';
+                    a.rel = 'noopener noreferrer';
+                    a.style.cssText = 'position:fixed;right:-9999px;';
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    abriu = true;
+                } catch(e) { abriu = false; }
+            }
+            if (!abriu) {
+                try { window.location.href = url; abriu = true; } catch(e) { abriu = false; }
+            }
+            return abriu;
+        }
+
+        /* Envia o pedido pelo WhatsApp SOMENTE como imagem PNG (sem texto).
+           IMPORTANTE: a abertura do WhatsApp já deve ter ocorrido no clique
+           (abrirWhatsAppAgora); aqui apenas reabrimos a conversa ao final, se o
+           PNG não puder ser compartilhado nativamente, para garantir que o usuário
+           consiga anexar a foto na conversa. */
+                async function enviarPedidoWhatsApp(data) {
+            const dados = data || window.pendingCartOrder || {};
+            let pngBlob = null;
+            try {
+                pngBlob = await renderizarPedidoPNG(dados);
+            } catch(ePng) {
+                console.warn('Erro PNG', ePng);
+                showToast('❌ Erro ao gerar imagem');
                 return false;
-            } catch(e) { console.warn('Falha ao gerar/enviar o PNG do pedido:',e); return false; }
+            }
+
+            if (!pngBlob) {
+                showToast('❌ Falha na imagem');
+                return false;
+            }
+
+            const file = new File([pngBlob], 'pedido-ouxe-' + Date.now() + '.png', {type:'image/png'});
+
+            // VERIFICA SE NAVEGADOR SUPORTA ENVIO DE ARQUIVO PARA WHATSAPP
+            // No celular Android/iOS isso abre direto a lista com WhatsApp e envia SÓ A IMAGEM
+            if (navigator.canShare && navigator.canShare({files:[file]})) {
+                try {
+                    // AQUI ENVIA SOMENTE IMAGEM - sem texto, como você pediu
+                    await navigator.share({
+                        files: [file]
+                    });
+                    showToast('✅ Imagem enviada para o WhatsApp!');
+                    return true;
+                } catch(err) {
+                    if (err.name === 'AbortError') {
+                        showToast('⚠️ Envio cancelado');
+                        return false;
+                    }
+                    console.warn('Share falhou, tentando fallback', err);
+                }
+            }
+
+            // Se chegou aqui é DESKTOP ou navegador que não suporta arquivo no share
+            // No PC o wa.me NÃO CONSEGUE enviar imagem, então precisamos mostrar botão que mantém o gesto
+            const blobUrl = URL.createObjectURL(pngBlob);
+            
+            // Remove modal antigo se existir
+            document.getElementById('waImageModal')?.remove();
+            
+            const modal = document.createElement('div');
+            modal.id = 'waImageModal';
+            modal.innerHTML = `
+                <div style="position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:99999;display:flex;align-items:center;justify-content:center;padding:15px;">
+                    <div style="background:white;border-radius:20px;max-width:380px;width:100%;overflow:hidden;animation:slideUp .3s ease;">
+                        <div style="padding:18px;background:linear-gradient(135deg,#25D366 0%, #128C7E 100%);color:white;text-align:center;">
+                            <div style="font-size:2rem;margin-bottom:5px;"><i class="fab fa-whatsapp"></i></div>
+                            <h3 style="margin:0;font-size:1.15rem;font-weight:800;">Enviar para WhatsApp</h3>
+                            <p style="margin:5px 0 0;font-size:.85rem;opacity:.95">Toque abaixo para enviar SÓ A IMAGEM</p>
+                        </div>
+                        <div style="padding:16px;">
+                            <img src="${blobUrl}" style="width:100%;border-radius:12px;border:2px solid #f0f0f0;max-height:50vh;object-fit:contain;" />
+                            <button id="btnShareWa" style="width:100%;margin-top:16px;background:#25D366;color:white;border:none;padding:16px;border-radius:14px;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;">
+                                <i class="fab fa-whatsapp" style="font-size:1.3rem"></i> ENVIAR IMAGEM NO WHATSAPP
+                            </button>
+                            <button onclick="document.getElementById('waImageModal').remove(); URL.revokeObjectURL('${blobUrl}')" style="width:100%;margin-top:10px;background:#f5f5f5;border:none;padding:12px;border-radius:12px;font-weight:600;cursor:pointer;">Fechar</button>
+                            <p style="font-size:.7rem;color:#888;text-align:center;margin-top:12px;">No celular: escolhe WhatsApp e envia só a imagem<br>No PC: baixa e anexa manualmente - wa.me não envia imagem</p>
+                        </div>
+                    </div>
+                </div>
+                <style>@keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}</style>
+            `;
+            document.body.appendChild(modal);
+
+            // O botão mantém o gesto do usuário, então o share funciona
+            document.getElementById('btnShareWa').onclick = async () => {
+                try {
+                    const freshFile = new File([pngBlob], 'pedido-ouxe.png', {type:'image/png'});
+                    if (navigator.canShare && navigator.canShare({files:[freshFile]})) {
+                        await navigator.share({files:[freshFile]});
+                        document.getElementById('waImageModal').remove();
+                        URL.revokeObjectURL(blobUrl);
+                        showToast('✅ Imagem enviada!');
+                    } else {
+                        // Fallback final: abre wa.me SEM TEXTO e baixa imagem
+                        const a = document.createElement('a');
+                        a.href = blobUrl;
+                        a.download = 'pedido-ouxe.png';
+                        a.click();
+                        window.open('https://wa.me/'+getWhatsappDigits(), '_blank');
+                        showToast('📎 Anexe a imagem que foi baixada no WhatsApp');
+                    }
+                } catch(e) {
+                    console.log('cancelado', e);
+                }
+            };
+            return false;
         }
 
         /* ---------- PIX corrigido (BR Code / EMV MPM - Banco Central) ---------- */
@@ -2081,19 +2820,24 @@
             const address = document.getElementById('orderAddress').value.trim();
             if (!name || !phone || !city || !address) { showToast('⚠️ Preencha todos os campos obrigatórios!'); return; }
             localStorage.setItem('ouze_user_data', JSON.stringify({ name, phone, city, address }));
+            // sincroniza com o nome do cliente logado (quando houver conta)
+            if (getCurrentClientEmail()) {
+                const accts = getClientAccounts();
+                const key = normalizeEmail(getCurrentClientEmail());
+                if (accts[key]) { accts[key].name = name; saveClientAccounts(accts); localStorage.setItem(CLIENT_NAME_KEY, name); renderClientLoginCard(); }
+            }
             showToast('✅ Dados salvos com sucesso!');
-            switchTab('pedido', document.querySelectorAll('.account-tab')[0]);
+            switchTab('pedido', document.querySelectorAll('.account-tab')[1]);
         }
 
         function loadUserData() {
             try {
-                const userData = JSON.parse(localStorage.getItem('ouze_user_data'));
-                if (userData) {
-                    document.getElementById('orderName').value = userData.name || '';
-                    document.getElementById('orderPhone').value = userData.phone || '';
-                    document.getElementById('orderCity').value = userData.city || 'Feira de Santana - BA';
-                    document.getElementById('orderAddress').value = userData.address || '';
-                }
+                const userData = JSON.parse(localStorage.getItem('ouze_user_data') || 'null');
+                // Nome e cidade cadastrados já aparecem; só o endereço fica aguardando preenchimento
+                document.getElementById('orderName').value = (userData && userData.name) || getClientName() || '';
+                document.getElementById('orderPhone').value = (userData && userData.phone) || '';
+                document.getElementById('orderCity').value = (userData && userData.city) || 'Feira de Santana - BA';
+                document.getElementById('orderAddress').value = (userData && userData.address) || '';
             } catch(e) {}
         }
 
@@ -2131,7 +2875,20 @@
             const raw = input.value.replace(/[^0-9,\.]/g,'').replace(',','.').trim();
             const val = parseFloat(raw);
             const subtotal = cart.reduce((s,i)=>s+i.price*i.qty,0);
-            const discount = Math.min(Math.max(parseFloat(document.getElementById('cartDiscount')?.value)||0,0),subtotal);
+            // Desconto automático de 5% na primeira compra (por e-mail cadastrado)
+            const cartDiscountInput = document.getElementById('cartDiscount');
+            let discount = Math.min(Math.max(parseFloat(cartDiscountInput?.value)||0,0),subtotal);
+            const clientEmail = getCurrentClientEmail();
+            if (clientEmail) {
+                const acct = getClientAccount(clientEmail);
+                if (acct && !acct.discountUsed && (!acct.orders || acct.orders.length === 0)) {
+                    const autoDisc = Math.round(subtotal * 0.05 * 100) / 100;
+                    if (autoDisc > discount) {
+                        discount = autoDisc;
+                        if (cartDiscountInput) cartDiscountInput.value = autoDisc.toFixed(2);
+                    }
+                }
+            }
             const total = Math.max(0, subtotal-discount);
             if (!isNaN(val) && val>0) {
                 const troco = val - total;
@@ -2168,7 +2925,20 @@
             const changeVal = document.getElementById('cartChange').value.trim();
             const notes = document.getElementById('cartNotes').value.trim();
             const subtotal = cart.reduce((s,i)=>s+i.price*i.qty,0);
-            const discount = Math.min(Math.max(parseFloat(document.getElementById('cartDiscount')?.value)||0,0),subtotal);
+            // Desconto automático de 5% na primeira compra (por e-mail cadastrado)
+            const cartDiscountInput = document.getElementById('cartDiscount');
+            let discount = Math.min(Math.max(parseFloat(cartDiscountInput?.value)||0,0),subtotal);
+            const clientEmail = getCurrentClientEmail();
+            if (clientEmail) {
+                const acct = getClientAccount(clientEmail);
+                if (acct && !acct.discountUsed && (!acct.orders || acct.orders.length === 0)) {
+                    const autoDisc = Math.round(subtotal * 0.05 * 100) / 100;
+                    if (autoDisc > discount) {
+                        discount = autoDisc;
+                        if (cartDiscountInput) cartDiscountInput.value = autoDisc.toFixed(2);
+                    }
+                }
+            }
             const total = Math.max(0, subtotal-discount);
 
             if (payment === 'Dinheiro' && changeVal) {
@@ -2280,7 +3050,7 @@
             }
         }
 
-        async function finalConfirmPixAndOrder() { await executeFinalOrder(); }
+        async function finalConfirmPixAndOrder() { mostrarRoboOuxe(); setTimeout(async ()=>{ await executeFinalOrder(); }, 1600); }
 
         async function executeFinalOrder() {
             if (!pendingCartOrder) return;
@@ -2303,6 +3073,8 @@
             document.getElementById('cartModal').classList.remove('open');
             document.getElementById('overlay').classList.remove('open');
             document.body.classList.remove('modal-open');
+            mostrarRoboOuxe();
+            await new Promise(r=>setTimeout(r,1600));
             await submitOrder();
             cart = [];
             const disc = document.getElementById('cartDiscount');
@@ -2312,8 +3084,17 @@
             showToast('✅ Pedido enviado!');
         }
 
+        function getClientName() {
+            try {
+                const email = getCurrentClientEmail();
+                if (!email) return '';
+                const acct = getClientAccount(email);
+                return (acct && acct.name) || localStorage.getItem(CLIENT_NAME_KEY) || '';
+            } catch(e) { return ''; }
+        }
         function goToOrderForm() {
             if (cart.length === 0) { showToast('⚠️ Carrinho vazio!'); return; }
+            loadUserData();
             cart.forEach(item => {
                 const existing = orderItems.find(o => o.id === item.id && o.category === item.category);
                 if (existing) { existing.qty += item.qty; } else { orderItems.push({ ...item }); }
@@ -2450,7 +3231,10 @@
                 accountPanel.classList.add('open'); 
                 overlay.classList.add('open'); 
                 document.body.classList.add('modal-open');
-                loadUserData(); 
+                loadUserData();
+                renderClientLoginCard();
+                renderPurchaseHistory();
+                applyFirstPurchaseDiscount();
             }
         }
 
@@ -2958,11 +3742,47 @@
             });
         }
 
+        
+        function falarObrigadoBebe(){ /* voz removida - somente obrigado visual */ }
+
+        function mostrarRoboOuxe(){
+            const ov=document.getElementById('obrigadoOverlay');
+            const simples=document.getElementById('obrigadoSimples');
+            const texto=document.getElementById('textoCartoon');
+            if(!ov) return;
+            ov.classList.add('show');
+            if(simples){
+                simples.style.animation='none';
+                void simples.offsetWidth;
+                simples.style.animation='popObrigado 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards';
+                simples.textContent='Obrigado! 💖 😊';
+            }
+            if(texto){ texto.textContent='Gerando seu pedido...'; texto.style.display='block'; }
+            setTimeout(()=>{
+                if(texto) texto.textContent='Obrigado! 💖 😊';
+            }, 500);
+            setTimeout(()=>{
+                ov.classList.remove('show');
+                if(simples) simples.style.animation='none';
+                if(texto) texto.style.display='none';
+            },3500);
+        }
+
         // Inicializar
         renderProducts();
         loadUserData();
         loadStoreConfig();
         loadCategoryIcons();
     </script>
+
+<div id="obrigadoOverlay" onclick="this.classList.remove('show')">
+  <div id="roboStage" style="display:flex;align-items:center;justify-content:center;position:fixed;inset:0;">
+    <div class="obrigado-simples" id="obrigadoSimples" style="background:linear-gradient(135deg,#FF6B35 0%, #E91E8C 100%);color:white;padding:28px 48px;border-radius:60px;font-weight:900;font-size:2rem;box-shadow:0 20px 60px rgba(233,30,140,0.4);transform:scale(0);opacity:0;text-align:center;animation:none;">
+      Obrigado! 💖 😊
+    </div>
+  </div>
+  <div class="obrigado-texto-cartoon" id="textoCartoon" style="display:none;">Gerando seu pedido em PNG...</div>
+</div>
+
 </body>
 </html>
