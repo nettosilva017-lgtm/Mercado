@@ -2008,17 +2008,18 @@ ${sections}
             ]
         };
 
-        // Catálogo salvo no GitHub (produtos.json) — não se perde ao atualizar o site
-        // Carrega do arquivo; se falhar, usa o localStorage; se vazio, usa o catálogo padrão embutido
+        // Catálogo salvo no GitHub (produtos.json) — usado só na primeira visita
+        // Depois que o admin cadastra/edita produtos, o que está salvo no navegador passa a valer
         let products = JSON.parse(localStorage.getItem('ouze_products')) || defaultProducts;
         (async function loadProductsFromGitHub() {
+            if (localStorage.getItem('ouze_products')) return; // já tem catálogo salvo (inclusive cadastros do admin) - não sobrescreve
             try {
                 const res = await fetch('produtos.json?t=' + Date.now());
                 if (res.ok) {
                     const data = await res.json();
                     const cats = data.categories || data;
                     if (cats && Object.keys(cats).length) {
-                        // produtos.json = fonte da verdade: persiste localmente para uso offline
+                        // produtos.json = catálogo inicial: persiste localmente para uso offline
                         localStorage.setItem('ouze_products', JSON.stringify(cats));
                         products = cats;
                         if (typeof renderProducts === 'function') renderProducts();
