@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ouxe Mini Mercado - Feira de Santana - BA</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#FF6B35">
+    <link rel="icon" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -2024,6 +2028,12 @@ ${sections}
                 }
             } catch(e) { console.warn('Produtos.json indisponível, usando catálogo local:', e.message); }
         })();
+        // Registra o Service Worker para permitir instalar o site como app
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(e => console.warn('SW falhou:', e));
+            });
+        }
         let cart = [];
         let orderItems = [];
         let orderDiscount = 0;
@@ -2524,7 +2534,7 @@ ${sections}
             card.style.left = prevStyle.left;
             card.style.top = prevStyle.top;
             card.style.zIndex = prevStyle.zIndex;
-            return await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));
+            return await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',0.92));
         }
 
         /* URLs de abertura do WhatsApp - CORRIGIDO com wa.me e texto */
@@ -2574,9 +2584,8 @@ ${sections}
             return txt;
         }
 
-        function abrirWhatsAppAgora() {
-            // AGORA SOMENTE IMAGEM - abre conversa SEM texto
-            const url = getStoreWhatsappUrl();
+        function abrirWhatsAppAgora(texto) {
+            const url = getStoreWhatsappUrl(texto);
             let abriu = false;
             try {
                 const w = window.open(url, '_blank', 'noopener,noreferrer');
@@ -2622,7 +2631,7 @@ ${sections}
                 return false;
             }
 
-            const file = new File([pngBlob], 'pedido-ouxe-' + Date.now() + '.png', {type:'image/png'});
+            const file = new File([pngBlob], 'pedido-ouxe-' + Date.now() + '.jpg', {type:'image/jpeg'});
 
             // VERIFICA SE NAVEGADOR SUPORTA ENVIO DE ARQUIVO PARA WHATSAPP
             // No celular Android/iOS isso abre direto a lista com WhatsApp e envia SÓ A IMAGEM
@@ -2677,7 +2686,7 @@ ${sections}
             // O botão mantém o gesto do usuário, então o share funciona
             document.getElementById('btnShareWa').onclick = async () => {
                 try {
-                    const freshFile = new File([pngBlob], 'pedido-ouxe.png', {type:'image/png'});
+                    const freshFile = new File([pngBlob], 'pedido-ouxe.jpg', {type:'image/jpeg'});
                     if (navigator.canShare && navigator.canShare({files:[freshFile]})) {
                         await navigator.share({files:[freshFile]});
                         document.getElementById('waImageModal').remove();
@@ -2687,7 +2696,7 @@ ${sections}
                         // Fallback final: abre wa.me SEM TEXTO e baixa imagem
                         const a = document.createElement('a');
                         a.href = blobUrl;
-                        a.download = 'pedido-ouxe.png';
+                        a.download = 'pedido-ouxe.jpg';
                         a.click();
                         window.open('https://wa.me/'+getWhatsappDigits(), '_blank');
                         showToast('📎 Anexe a imagem que foi baixada no WhatsApp');
