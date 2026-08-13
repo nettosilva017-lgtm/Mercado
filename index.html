@@ -2059,12 +2059,19 @@ ${sections}
                     const data = await res.json();
                     const cats = data.categories || data;
                     if (cats && Object.keys(cats).length) {
-                        // produtos.json é a FONTE DA VERDADE: atualiza local e tela
-                        localStorage.setItem('ouze_products', JSON.stringify(cats));
+                        // produtos.json é a FONTE DA VERDADE: atualiza a tela PRIMEIRO
                         products = cats;
                         if (typeof renderProducts === 'function') renderProducts();
                         if (typeof renderAdminProducts === 'function') renderAdminProducts();
                         console.log('✅ Catálogo atualizado do GitHub (produtos.json):', Object.values(cats).flat().length, 'produtos');
+                        // Tenta cachear no localStorage, mas isso é só um "atalho" — se estourar
+                        // o limite do navegador (comum com imagens em base64), não deve
+                        // impedir a tela de mostrar o catálogo completo.
+                        try {
+                            localStorage.setItem('ouze_products', JSON.stringify(cats));
+                        } catch (quotaErr) {
+                            console.warn('Não foi possível cachear no localStorage (catálogo grande demais para cache local, mas a tela já foi atualizada):', quotaErr.message);
+                        }
                     }
                 }
             } catch(e) { console.warn('Produtos.json indisponível, usando catálogo local:', e.message); }
