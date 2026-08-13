@@ -1440,6 +1440,47 @@
                     </div>
 
                     <div class="config-card">
+                        <h3><i class="fab fa-github"></i> Sincronizar Produtos para Todo Mundo</h3>
+                        <p style="font-size:.85rem;color:#666;margin:0 0 12px;">
+                            Configure uma vez e, a partir daí, todo produto cadastrado/editado/excluído aqui é salvo automaticamente no <b>produtos.json</b> do seu GitHub — assim aparece para todos os visitantes do site, não só neste navegador.
+                        </p>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>👤 Usuário/organização do GitHub</label>
+                                <input type="text" id="ghOwner" placeholder="ex: joaosilva">
+                            </div>
+                            <div class="form-group">
+                                <label>📦 Nome do repositório</label>
+                                <input type="text" id="ghRepo" placeholder="ex: ouxe-mercado">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>🌿 Branch</label>
+                                <input type="text" id="ghBranch" placeholder="main" value="main">
+                            </div>
+                            <div class="form-group">
+                                <label>📄 Caminho do arquivo</label>
+                                <input type="text" id="ghPath" placeholder="produtos.json" value="produtos.json">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>🔑 Token de Acesso Pessoal (Personal Access Token)</label>
+                            <input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+                            <p style="font-size:.75rem;color:#999;margin-top:5px;">
+                                Crie em github.com → Settings → Developer settings → Personal access tokens → Tokens (classic) → marque a permissão <b>repo</b>. Fica salvo só neste navegador.
+                            </p>
+                        </div>
+                        <button class="btn-admin success" onclick="saveGithubConfig()">
+                            <i class="fas fa-save"></i> Salvar Configuração do GitHub
+                        </button>
+                        <button class="btn-admin" style="margin-top:8px;" onclick="testarSyncGithub()">
+                            <i class="fas fa-sync"></i> Testar e Sincronizar Agora
+                        </button>
+                        <p id="ghSyncStatus" style="font-size:.8rem;margin-top:10px;"></p>
+                    </div>
+
+                    <div class="config-card">
                         <h3><i class="fas fa-icons"></i> Ícones das Categorias</h3>
                         <p style="font-size:0.85rem; color:#666; margin-bottom:15px;">Escolha uma imagem de qualquer tamanho para cada categoria. O sistema diminui automaticamente para ícone (64x64). Fica salvo e aparece no topo de cada seção.</p>
                         <div id="categoryIconsAdmin" class="category-icon-admin"></div>
@@ -2272,6 +2313,16 @@ ${sections}
                     if (config.phone === '(75) 3622-5504') { config.phone = '75981236160'; localStorage.setItem('ouze_store_config', JSON.stringify(config)); }
                 }
             } catch(e) {}
+            try {
+                const gh = JSON.parse(localStorage.getItem('ouze_github_config'));
+                if (gh) {
+                    if (document.getElementById('ghOwner')) document.getElementById('ghOwner').value = gh.owner || '';
+                    if (document.getElementById('ghRepo')) document.getElementById('ghRepo').value = gh.repo || '';
+                    if (document.getElementById('ghBranch')) document.getElementById('ghBranch').value = gh.branch || 'main';
+                    if (document.getElementById('ghPath')) document.getElementById('ghPath').value = gh.path || 'produtos.json';
+                    if (document.getElementById('ghToken')) document.getElementById('ghToken').value = gh.token || '';
+                }
+            } catch(e) {}
             updateWhatsappLinks();
             loadCategoryIcons();
         rebuildCategoryMenu();
@@ -2310,6 +2361,85 @@ ${sections}
         function saveProductsToStorage() {
             try { localStorage.setItem('ouze_products', JSON.stringify(products)); } catch(e) { console.warn('LocalStorage cheio'); }
         }
+
+        // ============ SINCRONIZAÇÃO DO CATÁLOGO COM O GITHUB (produtos.json) ============
+        // Assim, produtos cadastrados no painel aparecem para todos os visitantes do site,
+        // não só no navegador de quem cadastrou.
+        function getGithubConfig() {
+            try { return JSON.parse(localStorage.getItem('ouze_github_config')) || null; }
+            catch(e) { return null; }
+        }
+
+        function saveGithubConfig() {
+            const owner = document.getElementById('ghOwner').value.trim();
+            const repo = document.getElementById('ghRepo').value.trim();
+            const branch = document.getElementById('ghBranch').value.trim() || 'main';
+            const path = document.getElementById('ghPath').value.trim() || 'produtos.json';
+            const token = document.getElementById('ghToken').value.trim();
+            if (!owner || !repo || !token) { showToast('⚠️ Preencha usuário, repositório e token!'); return; }
+            localStorage.setItem('ouze_github_config', JSON.stringify({ owner, repo, branch, path, token }));
+            showToast('✅ Configuração do GitHub salva!');
+        }
+
+        function utf8ToBase64(str) {
+            return btoa(unescape(encodeURIComponent(str)));
+        }
+
+        // Envia o catálogo atual (`products`) para o produtos.json do repositório configurado.
+        // silent=true: não mostra toasts de erro (usado nas chamadas automáticas após salvar/editar/excluir produto)
+        async function syncProductsToGithub(silent) {
+            const cfg = getGithubConfig();
+            if (!cfg) { if (!silent) showToast('⚠️ Configure o GitHub em Configurações antes de sincronizar!'); return false; }
+            const { owner, repo, branch, path, token } = cfg;
+            const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+            try {
+                // Busca o sha atual do arquivo (necessário para atualizar um arquivo existente)
+                let sha = null;
+                const getRes = await fetch(`${apiUrl}?ref=${encodeURIComponent(branch)}`, {
+                    headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github+json' }
+                });
+                if (getRes.ok) {
+                    const info = await getRes.json();
+                    sha = info.sha;
+                } else if (getRes.status !== 404) {
+                    const err = await getRes.json().catch(()=>({}));
+                    throw new Error(err.message || `Erro ao consultar arquivo (${getRes.status})`);
+                }
+
+                const conteudo = JSON.stringify({ categories: products }, null, 2);
+                const putRes = await fetch(apiUrl, {
+                    method: 'PUT',
+                    headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: `Atualiza catálogo de produtos - ${new Date().toLocaleString('pt-BR')}`,
+                        content: utf8ToBase64(conteudo),
+                        branch,
+                        ...(sha ? { sha } : {})
+                    })
+                });
+                if (!putRes.ok) {
+                    const err = await putRes.json().catch(()=>({}));
+                    throw new Error(err.message || `Erro ao salvar (${putRes.status})`);
+                }
+                if (!silent) showToast('✅ Catálogo sincronizado no GitHub para todos verem!');
+                const status = document.getElementById('ghSyncStatus');
+                if (status) { status.style.color = '#1a9e4a'; status.textContent = '✅ Sincronizado em ' + new Date().toLocaleString('pt-BR'); }
+                return true;
+            } catch(e) {
+                console.warn('Falha ao sincronizar com GitHub:', e.message);
+                if (!silent) showToast('❌ Erro ao sincronizar: ' + e.message);
+                const status = document.getElementById('ghSyncStatus');
+                if (status) { status.style.color = '#c0392b'; status.textContent = '❌ ' + e.message; }
+                return false;
+            }
+        }
+
+        function testarSyncGithub() {
+            const status = document.getElementById('ghSyncStatus');
+            if (status) { status.style.color = '#888'; status.textContent = 'Sincronizando...'; }
+            syncProductsToGithub(false);
+        }
+        // ============ FIM SINCRONIZAÇÃO GITHUB ============
 
         function renderProducts() {
             Object.keys(products).forEach(category => {
@@ -3417,6 +3547,7 @@ ${sections}
                 showToast('✅ Produto cadastrado!');
             }
             saveProductsToStorage();
+            syncProductsToGithub(true);
             renderProducts();
             renderAdminProducts();
             clearForm();
@@ -3456,6 +3587,7 @@ ${sections}
             if (!confirm('Tem certeza que deseja excluir este produto?')) return;
             products[category] = products[category].filter(p => p.id !== productId);
             saveProductsToStorage();
+            syncProductsToGithub(true);
             renderProducts();
             renderAdminProducts();
             showToast('🗑️ Produto excluído!');

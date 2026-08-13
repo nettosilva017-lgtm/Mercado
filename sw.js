@@ -1,7 +1,7 @@
 // Service Worker - Ouxe Mini Mercado
 // Cuida do cache básico para o site funcionar offline e poder ser instalado.
 
-const CACHE_NAME = 'ouxe-mercado-v1';
+const CACHE_NAME = 'ouxe-mercado-v2';
 const CORE_ASSETS = [
   './',
   './index.html',
