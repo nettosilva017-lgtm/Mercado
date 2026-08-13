@@ -89,13 +89,6 @@
     ],
     "bebidas": [
       {
-        "id": 13,
-        "name": "Licor Cremoso Arraiá do Quiabo Sabor Chocolate 900ml",
-        "price": 26.49,
-        "unit": "un",
-        "emoji": "🍾"
-      },
-      {
         "id": 14,
         "name": "Refrigerante H2OH Limão 1,5L",
         "price": 7.99,
