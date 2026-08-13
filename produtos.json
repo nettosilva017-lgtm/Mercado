@@ -1,0 +1,790 @@
+{
+  "categories": {
+    "carnes": [
+      {
+        "id": 1,
+        "name": "Filé de Peito Frango Seara Bandeja 1kg",
+        "price": 24.49,
+        "unit": "un",
+        "emoji": null,
+        "image": null
+      },
+      {
+        "id": 2,
+        "name": "Bisteca de Porco Congelada Sadia",
+        "price": 19.89,
+        "unit": "kg",
+        "emoji": "🥩",
+        "image": null
+      },
+      {
+        "id": 3,
+        "name": "Charque Ponta Agulha",
+        "price": 59.9,
+        "unit": "kg",
+        "emoji": null,
+        "image": null
+      },
+      {
+        "id": 4,
+        "name": "Salsicha Seara a Granel",
+        "price": 8.99,
+        "unit": "kg",
+        "emoji": "🌭",
+        "image": null
+      },
+      {
+        "id": 5,
+        "name": "Filé de Peito de Frango Avivip 1kg",
+        "price": 22.49,
+        "unit": "kg",
+        "emoji": "🍗",
+        "image": null
+      },
+      {
+        "id": 6,
+        "name": "Toucinho Salgado",
+        "price": 25.75,
+        "unit": "kg",
+        "emoji": "🥓",
+        "image": null
+      },
+      {
+        "id": 7,
+        "name": "Coxinha da Asa Congelada Avivip 1kg",
+        "price": 19.75,
+        "unit": "un",
+        "emoji": "🍗",
+        "image": null
+      },
+      {
+        "id": 8,
+        "name": "Moela de Frango Congelado Avivip 1kg",
+        "price": 17.75,
+        "unit": "un",
+        "emoji": "🍗",
+        "image": null
+      },
+      {
+        "id": 9,
+        "name": "Filé de Peito de Frango Congelado Sadia 1kg",
+        "price": 23.99,
+        "unit": "un",
+        "emoji": "🍗",
+        "image": null
+      },
+      {
+        "id": 10,
+        "name": "Coxas de Frango Seara Bandeja 1kg",
+        "price": 14.89,
+        "unit": "un",
+        "emoji": "🍗",
+        "image": null
+      },
+      {
+        "id": 11,
+        "name": "Carvão Vegetal 0016",
+        "price": 6.99,
+        "unit": "un",
+        "emoji": "🔥",
+        "image": null
+      },
+      {
+        "id": 12,
+        "name": "Sobrecoxa de Frango Assa Fácil Perdigão 1,2kg",
+        "price": 25.9,
+        "unit": "un",
+        "emoji": "🍗",
+        "image": null
+      }
+    ],
+    "bebidas": [
+      {
+        "id": 13,
+        "name": "Licor Cremoso Arraiá do Quiabo Sabor Chocolate 900ml",
+        "price": 26.49,
+        "unit": "un",
+        "emoji": "🍾",
+        "image": null
+      },
+      {
+        "id": 14,
+        "name": "Refrigerante H2OH Limão 1,5L",
+        "price": 7.99,
+        "unit": "un",
+        "emoji": "🥤",
+        "image": null
+      },
+      {
+        "id": 15,
+        "name": "Licor Fino Arraiá do Quiabo Sabor Gengibre 900ml",
+        "price": 23.85,
+        "unit": "un",
+        "emoji": "🍾",
+        "image": null
+      },
+      {
+        "id": 16,
+        "name": "Água Mineral Natural Dias Dávila 500ml",
+        "price": 1.49,
+        "unit": "un",
+        "emoji": "💧",
+        "image": null
+      },
+      {
+        "id": 17,
+        "name": "Refrigerante de Guaraná FYS 350ml",
+        "price": 3.4,
+        "unit": "un",
+        "emoji": "🥤",
+        "image": null
+      },
+      {
+        "id": 18,
+        "name": "Refrigerante FYS com Suco de Laranja Pera 350ml",
+        "price": 3.4,
+        "unit": "un",
+        "emoji": "🍊",
+        "image": null
+      },
+      {
+        "id": 19,
+        "name": "Licor Fino Roque Pinto Sabor Jenipapo 900ml",
+        "price": 26.49,
+        "unit": "un",
+        "emoji": "🍾",
+        "image": null
+      },
+      {
+        "id": 20,
+        "name": "Cerveja Pilsen Skol Lata 350ml",
+        "price": 3.69,
+        "unit": "un",
+        "emoji": "🍺",
+        "image": null
+      },
+      {
+        "id": 21,
+        "name": "Aguardente de Cana Adoçada Pitú Lata 473ml",
+        "price": 7.19,
+        "unit": "un",
+        "emoji": "🥃",
+        "image": null
+      },
+      {
+        "id": 22,
+        "name": "Vinho Fino Tinto Seco Conde de Arraiolos 750ml",
+        "price": 41.75,
+        "unit": "un",
+        "emoji": "🍷",
+        "image": null
+      },
+      {
+        "id": 23,
+        "name": "Gatorade Sabor Morango e Maracujá PET 500ml",
+        "price": 6.49,
+        "unit": "un",
+        "emoji": null,
+        "image": null
+      },
+      {
+        "id": 24,
+        "name": "Refrigerante Goob Guaraná 230ml",
+        "price": 1.49,
+        "unit": "un",
+        "emoji": null,
+        "image": null
+      }
+    ],
+    "frios": [
+      {
+        "id": 25,
+        "name": "Sorvete Misto Quy Sorwetto 1kg",
+        "price": 29.9,
+        "unit": "un",
+        "emoji": "🍦",
+        "image": null
+      },
+      {
+        "id": 26,
+        "name": "Yopro 15g Danone Sabor Frutas Vermelhas 250ml",
+        "price": 8.79,
+        "unit": "un",
+        "emoji": "🍓",
+        "image": null
+      },
+      {
+        "id": 27,
+        "name": "Picolé Skimo Supremo Quy Sorwetto 55g",
+        "price": 6.0,
+        "unit": "un",
+        "emoji": "🍦",
+        "image": null
+      },
+      {
+        "id": 28,
+        "name": "Yopro Danone Morango 250ml",
+        "price": 8.79,
+        "unit": "un",
+        "emoji": "🍓",
+        "image": null
+      },
+      {
+        "id": 29,
+        "name": "Queijo Mozzarella 0 Lactose Galbani 130g",
+        "price": 12.29,
+        "unit": "un",
+        "emoji": "🧀",
+        "image": null
+      },
+      {
+        "id": 30,
+        "name": "Queijo Prato Davaca Fatiado 150g",
+        "price": 9.75,
+        "unit": "un",
+        "emoji": "🧀",
+        "image": null
+      },
+      {
+        "id": 31,
+        "name": "Iogurte Parcialmente Desnatado Nestlé com Calda de Morango 150g",
+        "price": 5.09,
+        "unit": "un",
+        "emoji": null,
+        "image": null
+      },
+      {
+        "id": 32,
+        "name": "Chandelle Duo Chocolate Dark+Branco 180g",
+        "price": 7.99,
+        "unit": "un",
+        "emoji": null,
+        "image": null
+      },
+      {
+        "id": 33,
+        "name": "Leite em Pó Ninho Integral 380g",
+        "price": 19.98,
+        "unit": "un",
+        "emoji": null,
+        "image": null
+      },
+      {
+        "id": 34,
+        "name": "Leite em Pó Molico Nestlé Desnatado 280g",
+        "price": 21.99,
+        "unit": "un",
+        "emoji": "🥛",
+        "image": null
+      },
+      {
+        "id": 35,
+        "name": "Sorvete Quy Sorwetto Sabor 3 Chocolates 2L 1kg",
+        "price": 29.9,
+        "unit": "un",
+        "emoji": "🍦",
+        "image": null
+      },
+      {
+        "id": 36,
+        "name": "Iogurte Nestlé Natural 170g",
+        "price": 5.75,
+        "unit": "un",
+        "emoji": "🥛",
+        "image": null
+      }
+    ],
+    "biscoitos": [
+      {
+        "id": 37,
+        "name": "Biscoito Doce com Leite Maltado Piraquê Chocolate com Avelã 85g",
+        "price": 2.99,
+        "unit": "un",
+        "emoji": "🍪",
+        "image": null
+      },
+      {
+        "id": 38,
+        "name": "Biscoito Recheado Treloso Morango 120g",
+        "price": 2.69,
+        "unit": "un",
+        "emoji": "🍪",
+        "image": null
+      },
+      {
+        "id": 39,
+        "name": "Biscoito Recheado Bono Nestlé Chocolate 90g",
+        "price": 2.99,
+        "unit": "un",
+        "emoji": "🍪",
+        "image": null
+      },
+      {
+        "id": 40,
+        "name": "Biscoito Recheado Richester Escureto 125g",
+        "price": 2.89,
+        "unit": "un",
+        "emoji": "🍪",
+        "image": null
+      },
+      {
+        "id": 41,
+        "name": "Biscoito Tortinha Richester Sabor Chocolate 140g",
+        "price": 3.49,
+        "unit": "un",
+        "emoji": "🍪",
+        "image": null
+      },
+      {
+        "id": 42,
+        "name": "Biscoito Recheado Oreo Chocolate 90g",
+        "price": 3.99,
+        "unit": "un",
+        "emoji": "🍪",
+        "image": null
+      },
+      {
+        "id": 43,
+        "name": "Biscoito Recheado Piraquê Supreme Chocolate Branco Maçã e Canela 80g",
+        "price": 3.79,
+        "unit": "un",
+        "emoji": "🍪",
+        "image": null
+      },
+      {
+        "id": 44,
+        "name": "Biscoito Recheado Oreo 90g",
+        "price": 3.99,
+        "unit": "un",
+        "emoji": "🍪",
+        "image": null
+      },
+      {
+        "id": 45,
+        "name": "Biscoito Bauducco Cookies Original 60g",
+        "price": 2.29,
+        "unit": "un",
+        "emoji": "🍪",
+        "image": null
+      },
+      {
+        "id": 46,
+        "name": "Biscoito Tortinha Richester Amori Sabor Limão 140g",
+        "price": 3.49,
+        "unit": "un",
+        "emoji": "🍋",
+        "image": null
+      },
+      {
+        "id": 47,
+        "name": "Cookie Alpino Nestlé Gotas de Chocolate 60g",
+        "price": 3.49,
+        "unit": "un",
+        "emoji": "🍪",
+        "image": null
+      },
+      {
+        "id": 48,
+        "name": "Biscoito Recheado Nestlé Passatempo Chocolate 130g",
+        "price": 3.29,
+        "unit": "un",
+        "emoji": "🍪",
+        "image": null
+      }
+    ],
+    "chocolate": [
+      {
+        "id": 49,
+        "name": "Chocolate ao Leite Alpino Nestlé 80g",
+        "price": 9.79,
+        "unit": "un",
+        "emoji": "🍫",
+        "image": null
+      },
+      {
+        "id": 50,
+        "name": "Chocolate Nestlé Meio Amargo Classic 80g",
+        "price": 9.79,
+        "unit": "un",
+        "emoji": null,
+        "image": null
+      },
+      {
+        "id": 51,
+        "name": "Chocolate ao Leite Lacta Bis 63g",
+        "price": 3.49,
+        "unit": "un",
+        "emoji": "🍫",
+        "image": null
+      },
+      {
+        "id": 52,
+        "name": "Chocolate ao Leite Nestlé Classic Duo 80g",
+        "price": 9.79,
+        "unit": "un",
+        "emoji": "🍫",
+        "image": null
+      },
+      {
+        "id": 53,
+        "name": "Chocolate ao Leite Nestlé Crunch 80g",
+        "price": 9.79,
+        "unit": "un",
+        "emoji": "🍫",
+        "image": null
+      },
+      {
+        "id": 54,
+        "name": "Chocolate ao Leite Nestlé Classic 150g",
+        "price": 14.99,
+        "unit": "un",
+        "emoji": null,
+        "image": null
+      },
+      {
+        "id": 55,
+        "name": "Chocolate Classic ao Leite Nestlé 80g",
+        "price": 9.79,
+        "unit": "un",
+        "emoji": "🍫",
+        "image": null
+      },
+      {
+        "id": 56,
+        "name": "Chocolate Snickers Inresistível Dark 42g",
+        "price": 4.5,
+        "unit": "un",
+        "emoji": "🍫",
+        "image": null
+      },
+      {
+        "id": 57,
+        "name": "Snickers Original 45g",
+        "price": 4.5,
+        "unit": "un",
+        "emoji": null,
+        "image": null
+      },
+      {
+        "id": 58,
+        "name": "Choco Trio Nestlé Sabor Chocolate 90g",
+        "price": 10.49,
+        "unit": "un",
+        "emoji": null,
+        "image": null
+      },
+      {
+        "id": 59,
+        "name": "Chocolate Garoto ao Leite 80g",
+        "price": 8.99,
+        "unit": "un",
+        "emoji": "🍫",
+        "image": null
+      },
+      {
+        "id": 60,
+        "name": "Granulado Decoração Dr.Oetker 70g",
+        "price": 3.49,
+        "unit": "un",
+        "emoji": "🍫",
+        "image": null
+      }
+    ],
+    "zeroLactose": [
+      {
+        "id": 61,
+        "name": "Biscoito Wafer Fabise Chocolate Sem Lactose 80g",
+        "price": 2.19,
+        "unit": "un",
+        "emoji": "🍪",
+        "image": null
+      },
+      {
+        "id": 62,
+        "name": "Creme de Leite Nestlé Zero Lactose",
+        "price": 5.49,
+        "unit": "un",
+        "emoji": "🥛",
+        "image": null
+      },
+      {
+        "id": 63,
+        "name": "Biscoito Cream Cracker Fabise",
+        "price": 4.99,
+        "unit": "un",
+        "emoji": "🍪",
+        "image": null
+      },
+      {
+        "id": 64,
+        "name": "Leite Condensado Zero Lactose Piracanjuba 395g",
+        "price": 9.49,
+        "unit": "un",
+        "emoji": null,
+        "image": null
+      },
+      {
+        "id": 65,
+        "name": "Mingau Vitalon Zero Lactose Multicereais 180g",
+        "price": 6.19,
+        "unit": "un",
+        "emoji": "🥣",
+        "image": null
+      },
+      {
+        "id": 66,
+        "name": "Doce de Leite Piracanjuba Zero Lactose 350g",
+        "price": 14.49,
+        "unit": "un",
+        "emoji": "🍮",
+        "image": null
+      },
+      {
+        "id": 67,
+        "name": "Biscoito Recheado Kidmais Fabise Chocolate Sem Lactose 115g",
+        "price": 2.29,
+        "unit": "un",
+        "emoji": "🍪",
+        "image": null
+      },
+      {
+        "id": 68,
+        "name": "Biscoito Recheado Belmar Zero Lactose Sabor Chocolate 100g",
+        "price": 2.59,
+        "unit": "un",
+        "emoji": "🍪",
+        "image": null
+      },
+      {
+        "id": 69,
+        "name": "Rosquinhas Micos Chocolate 300g",
+        "price": 4.89,
+        "unit": "un",
+        "emoji": "🍩",
+        "image": null
+      },
+      {
+        "id": 70,
+        "name": "Manteiga Davaca Zero Lactose com Sal 200g",
+        "price": 13.49,
+        "unit": "un",
+        "emoji": "🧈",
+        "image": null
+      },
+      {
+        "id": 71,
+        "name": "Bebida Láctea Italakinho UHT Chocolate Zero Lactose 200ml",
+        "price": 2.19,
+        "unit": "un",
+        "emoji": "🥛",
+        "image": null
+      },
+      {
+        "id": 72,
+        "name": "Rosquinhas Micos Sabor Coco 300g",
+        "price": 4.89,
+        "unit": "un",
+        "emoji": "🍩",
+        "image": null
+      }
+    ],
+    "diet": [
+      {
+        "id": 73,
+        "name": "Aveia em Flocos Yoki 170g",
+        "price": 4.19,
+        "unit": "un",
+        "emoji": "🌾",
+        "image": null
+      },
+      {
+        "id": 74,
+        "name": "Gelatina Lowçúcar Diet Sabor Uva 10g",
+        "price": 3.99,
+        "unit": "un",
+        "emoji": "🍇",
+        "image": null
+      },
+      {
+        "id": 75,
+        "name": "Uvas Passas La Violetera Escura 100g",
+        "price": 5.59,
+        "unit": "un",
+        "emoji": null,
+        "image": null
+      },
+      {
+        "id": 76,
+        "name": "Aveia em Flocos Finos Yoki 170g",
+        "price": 4.19,
+        "unit": "un",
+        "emoji": "🌾",
+        "image": null
+      },
+      {
+        "id": 77,
+        "name": "Gelatina Lowçúcar Diet Sabor Abacaxi 10g",
+        "price": 3.99,
+        "unit": "un",
+        "emoji": "🍍",
+        "image": null
+      },
+      {
+        "id": 78,
+        "name": "Chá de Carqueja Maratá c/10 saquinhos 10g",
+        "price": 4.19,
+        "unit": "un",
+        "emoji": "🍵",
+        "image": null
+      },
+      {
+        "id": 79,
+        "name": "Adoçante Zero-Call Stévia 80ml",
+        "price": 13.99,
+        "unit": "un",
+        "emoji": "💧",
+        "image": null
+      },
+      {
+        "id": 80,
+        "name": "Rosquinha Integral Jasmine Zero Adição de Açúcar Sabor Coco 120g",
+        "price": 12.75,
+        "unit": "un",
+        "emoji": "🍩",
+        "image": null
+      },
+      {
+        "id": 81,
+        "name": "Adoçante Linea Stevia 100% 25ml",
+        "price": 7.49,
+        "unit": "un",
+        "emoji": "💧",
+        "image": null
+      },
+      {
+        "id": 82,
+        "name": "Whey Piracanjuba Zero Lactose Sabor Café 15g 250ml",
+        "price": 7.49,
+        "unit": "un",
+        "emoji": "☕",
+        "image": null
+      },
+      {
+        "id": 83,
+        "name": "Uva Passas Nobre 100g",
+        "price": 4.49,
+        "unit": "un",
+        "emoji": "🍇",
+        "image": null
+      },
+      {
+        "id": 84,
+        "name": "Aveia em Flocos Finos Quaker 165g",
+        "price": 4.65,
+        "unit": "un",
+        "emoji": null,
+        "image": null
+      }
+    ],
+    "higiene": [
+      {
+        "id": 85,
+        "name": "Creme para Pentear Niely 3 em 1 Gold Queratina 250g",
+        "price": 9.98,
+        "unit": "un",
+        "emoji": "💇",
+        "image": null
+      },
+      {
+        "id": 86,
+        "name": "Creme de Tratamento Elseve Collagen Lifter 300g",
+        "price": 31.79,
+        "unit": "un",
+        "emoji": "💇",
+        "image": null
+      },
+      {
+        "id": 87,
+        "name": "Creme para Pentear Seda Liso Perfeito 300ml",
+        "price": 11.79,
+        "unit": "un",
+        "emoji": "💇",
+        "image": null
+      },
+      {
+        "id": 88,
+        "name": "Creme de Tratamento Skala Divino Potão 1kg",
+        "price": 11.75,
+        "unit": "un",
+        "emoji": "💆",
+        "image": null
+      },
+      {
+        "id": 89,
+        "name": "Shampoo Pantene Bambu 200ml",
+        "price": 15.39,
+        "unit": "un",
+        "emoji": "🧴",
+        "image": null
+      },
+      {
+        "id": 90,
+        "name": "Bastonete Topz 75un",
+        "price": 2.99,
+        "unit": "un",
+        "emoji": "👂",
+        "image": null
+      },
+      {
+        "id": 91,
+        "name": "Botox Plus Umidi Hair Realinhamento Térmico 250g",
+        "price": 27.55,
+        "unit": "un",
+        "emoji": "💇",
+        "image": null
+      },
+      {
+        "id": 92,
+        "name": "Absorvente Always Cobertura Seca com Abas 16un",
+        "price": 7.99,
+        "unit": "un",
+        "emoji": "🌸",
+        "image": null
+      },
+      {
+        "id": 93,
+        "name": "Hidratante Monange Iogurte com Aveia 200ml",
+        "price": 8.9,
+        "unit": "un",
+        "emoji": "🧴",
+        "image": null
+      },
+      {
+        "id": 94,
+        "name": "Seiva de Alfazema Original 118ml",
+        "price": 21.49,
+        "unit": "un",
+        "emoji": "🌸",
+        "image": null
+      },
+      {
+        "id": 95,
+        "name": "Desodorante Dove Roll-on 30ml",
+        "price": 8.45,
+        "unit": "un",
+        "emoji": null,
+        "image": null
+      },
+      {
+        "id": 96,
+        "name": "Dog Chow Purina Sabor Cordeiro com Arroz 100g",
+        "price": 3.19,
+        "unit": "un",
+        "emoji": "🐕",
+        "image": null
+      }
+    ]
+  },
+  "totalProducts": 96,
+  "updatedAt": "2026-08-12"
+}
