@@ -1,17 +1,16 @@
 // Service Worker - Ouxe Mini Mercado
-// Cuida do cache básico para o site funcionar offline e poder ser instalado.
+// CORREÇÃO v3: força limpar cache antigo e sempre buscar produtos.json novo
 
-const CACHE_NAME = 'ouxe-mercado-v2';
+const CACHE_NAME = 'ouxe-mercado-v3';
 const CORE_ASSETS = [
   './',
   './index.html',
   './manifest.json',
-  './produtos.json',
   './icon-192.png',
   './icon-512.png'
 ];
 
-// Instala e guarda os arquivos principais no cache
+// Instala e guarda os arquivos principais no cache (SEM produtos.json pra não ficar velho)
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -20,7 +19,7 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Ativa e remove caches antigos de versões anteriores
+// Ativa e remove caches antigos de versões anteriores (v2, v1...)
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((names) =>
@@ -33,17 +32,16 @@ self.addEventListener('activate', (event) => {
 });
 
 // Estratégia: network-first para produtos.json (preço/estoque sempre atualizado quando online)
-// e para o restante, cache-first com atualização em segundo plano
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   if (request.method !== 'GET') return;
 
   const url = new URL(request.url);
-  if (url.origin !== self.location.origin) return; // não intercepta CDNs externos (fontes, ícones, libs)
+  if (url.origin !== self.location.origin) return;
 
   if (url.pathname.endsWith('produtos.json')) {
     event.respondWith(
-      fetch(request)
+      fetch(request, { cache: 'no-store' })
         .then((response) => {
           const clone = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));

@@ -2049,23 +2049,22 @@ ${sections}
             ]
         };
 
-        // Catálogo salvo no GitHub (produtos.json) — usado só na primeira visita
-        // Depois que o admin cadastra/edita produtos, o que está salvo no navegador passa a valer
+        // CORREÇÃO: catálogo vem SEMPRE do GitHub (produtos.json) quando online
+        // Isso faz o produto aparecer em TODOS os dispositivos
         let products = JSON.parse(localStorage.getItem('ouze_products')) || defaultProducts;
         (async function loadProductsFromGitHub() {
-            if (localStorage.getItem('ouze_products')) return; // já tem catálogo salvo (inclusive cadastros do admin) - não sobrescreve
             try {
-                const res = await fetch('produtos.json?t=' + Date.now());
+                const res = await fetch('produtos.json?t=' + Date.now(), { cache: 'no-store' });
                 if (res.ok) {
                     const data = await res.json();
                     const cats = data.categories || data;
                     if (cats && Object.keys(cats).length) {
-                        // produtos.json = catálogo inicial: persiste localmente para uso offline
+                        // produtos.json é a FONTE DA VERDADE: atualiza local e tela
                         localStorage.setItem('ouze_products', JSON.stringify(cats));
                         products = cats;
                         if (typeof renderProducts === 'function') renderProducts();
                         if (typeof renderAdminProducts === 'function') renderAdminProducts();
-                        console.log('Catálogo carregado do produtos.json:', Object.values(cats).flat().length, 'produtos');
+                        console.log('✅ Catálogo atualizado do GitHub (produtos.json):', Object.values(cats).flat().length, 'produtos');
                     }
                 }
             } catch(e) { console.warn('Produtos.json indisponível, usando catálogo local:', e.message); }
