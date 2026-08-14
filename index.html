@@ -190,6 +190,16 @@
 
         .whatsapp-float { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.8rem; text-decoration: none; box-shadow: 0 5px 25px rgba(37, 211, 102, 0.4); z-index: 999; transition: all 0.3s; animation: pulse 2s infinite; }
         .whatsapp-float:hover { transform: scale(1.1); }
+        .install-app-float { position: fixed; bottom: 100px; right: 30px; width: 60px; height: 60px; background: linear-gradient(135deg,#FF6B35 0%, #E91E8C 100%); border-radius: 50%; display: none; align-items: center; justify-content: center; color: white; font-size: 1.6rem; text-decoration: none; box-shadow: 0 5px 25px rgba(233,30,140,0.4); z-index: 999; transition: all 0.3s; border: none; cursor: pointer; }
+        .install-app-float:hover { transform: scale(1.1); }
+        .install-app-tooltip { position: fixed; bottom: 108px; right: 96px; background: #1A1A2E; color: #fff; padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 600; white-space: nowrap; z-index: 999; display: none; }
+        .install-app-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 40000; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .install-app-modal-overlay.show { display: flex; }
+        .install-app-modal { background: #fff; border-radius: 16px; max-width: 340px; width: 100%; padding: 24px; text-align: center; }
+        .install-app-modal img { width: 64px; height: 64px; border-radius: 16px; margin-bottom: 12px; object-fit: cover; }
+        .install-app-modal h3 { margin: 0 0 10px; color: #1A1A2E; }
+        .install-app-modal p { font-size: 0.9rem; color: #555; margin: 0 0 6px; text-align: left; }
+        .install-app-modal .btn-fechar-install { margin-top: 16px; background: #f5f5f5; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; }
         @keyframes pulse { 0%, 100% { box-shadow: 0 5px 25px rgba(37, 211, 102, 0.4); } 50% { box-shadow: 0 5px 35px rgba(37, 211, 102, 0.7); } }
 
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9998; opacity: 0; visibility: hidden; transition: all 0.3s; }
@@ -923,6 +933,21 @@
     <a href="https://api.whatsapp.com/send?phone=5575981236160" class="js-whatsapp-link" class="whatsapp-float" target="_blank">
         <i class="fab fa-whatsapp"></i>
     </a>
+
+    <div class="install-app-tooltip" id="installAppTooltip">Instalar app 📲</div>
+    <button class="install-app-float" id="installAppFloatBtn" onclick="handleInstallAppClick()" title="Instalar app">
+        <i class="fas fa-download"></i>
+    </button>
+
+    <div class="install-app-modal-overlay" id="installAppModalOverlay" onclick="if(event.target===this) closeInstallAppModal()">
+        <div class="install-app-modal">
+            <img src="logo-ouxe.png" alt="Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22%23FF6B35%22/><text x=%2250%22 y=%2260%22 font-size=%2240%22 text-anchor=%22middle%22 fill=%22white%22>O</text></svg>'">
+            <h3>Instalar o app</h3>
+            <p id="installAppModalText">Pra instalar no seu celular:</p>
+            <div id="installAppModalSteps"></div>
+            <button class="btn-fechar-install" onclick="closeInstallAppModal()">Entendi</button>
+        </div>
+    </div>
 
     <div class="overlay" id="overlay" onclick="closeAllPanels()"></div>
 
@@ -2306,6 +2331,7 @@ ${sections}
                         document.getElementById('headerLogoImg').src = config.logoImage;
                         document.getElementById('footerLogoImg').src = config.logoImage;
                         document.getElementById('configLogoPreview').src = config.logoImage;
+                        updateFaviconDynamic(config.logoImage);
                     }
                     if (config.companyName) {
                         document.getElementById('footerCompanyName').textContent = config.companyName;
@@ -2452,6 +2478,102 @@ ${sections}
             const status = document.getElementById('ghSyncStatus');
             if (status) { status.style.color = '#888'; status.textContent = 'Sincronizando...'; }
             syncProductsToGithub(false);
+        }
+
+        // Envia UM arquivo qualquer (imagem, ícone, etc) para o repositório GitHub configurado,
+        // reaproveitando o mesmo usuário/repo/token já usados para o produtos.json.
+        // path: nome do arquivo na raiz do repositório (ex: 'logo-ouxe.png')
+        // base64Content: conteúdo já em base64 SEM o prefixo "data:image/...;base64,"
+        async function githubPutFile(path, base64Content, commitMessage) {
+            const cfg = getGithubConfig();
+            if (!cfg) return false;
+            const { owner, repo, branch, token } = cfg;
+            const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+            try {
+                let sha = null;
+                const getRes = await fetch(`${apiUrl}?ref=${encodeURIComponent(branch)}`, {
+                    headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github+json' }
+                });
+                if (getRes.ok) { sha = (await getRes.json()).sha; }
+                else if (getRes.status !== 404) {
+                    const err = await getRes.json().catch(()=>({}));
+                    throw new Error(err.message || `Erro ao consultar ${path} (${getRes.status})`);
+                }
+                const putRes = await fetch(apiUrl, {
+                    method: 'PUT',
+                    headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: commitMessage || `Atualiza ${path} - ${new Date().toLocaleString('pt-BR')}`,
+                        content: base64Content,
+                        branch,
+                        ...(sha ? { sha } : {})
+                    })
+                });
+                if (!putRes.ok) {
+                    const err = await putRes.json().catch(()=>({}));
+                    throw new Error(err.message || `Erro ao salvar ${path} (${putRes.status})`);
+                }
+                return true;
+            } catch(e) {
+                console.warn(`Falha ao sincronizar ${path} com GitHub:`, e.message);
+                return false;
+            }
+        }
+
+        // Gera uma versão quadrada (com fundo branco) da imagem em dataURL, no tamanho pedido.
+        // Usado para transformar a logo enviada em ícone de favicon/PWA (que precisam ser quadrados).
+        function squareIconFromDataUrl(dataUrl, size) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = size; canvas.height = size;
+                    const ctx = canvas.getContext('2d');
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, 0, size, size);
+                    const scale = Math.min(size / img.width, size / img.height) * 0.85; // margem de segurança (ícone maskable)
+                    const w = img.width * scale, h = img.height * scale;
+                    ctx.drawImage(img, (size - w) / 2, (size - h) / 2, w, h);
+                    resolve(canvas.toDataURL('image/png'));
+                };
+                img.onerror = reject;
+                img.src = dataUrl;
+            });
+        }
+
+        // Atualiza o ícone da aba do navegador (favicon) e o ícone de tela inicial (apple-touch-icon)
+        // imediatamente neste navegador, sem precisar recarregar a página.
+        function updateFaviconDynamic(src) {
+            ['icon', 'apple-touch-icon'].forEach(rel => {
+                let link = document.querySelector(`link[rel="${rel}"]`);
+                if (!link) { link = document.createElement('link'); link.rel = rel; document.head.appendChild(link); }
+                link.href = src;
+            });
+        }
+
+        // Envia a logo e os ícones (favicon/PWA) pro GitHub, pra aparecerem pra QUALQUER visitante,
+        // não só no navegador de quem cadastrou (mesma lógica do sync do produtos.json).
+        async function syncLogoAndIconsToGithub(dataUrl) {
+            const cfg = getGithubConfig();
+            if (!cfg) return; // sem GitHub configurado, fica só local mesmo (como antes)
+            try {
+                const rawBase64 = dataUrl.split(',')[1];
+                const okLogo = await githubPutFile('logo-ouxe.png', rawBase64, 'Atualiza logo da loja');
+
+                const icon192 = await squareIconFromDataUrl(dataUrl, 192);
+                const icon512 = await squareIconFromDataUrl(dataUrl, 512);
+                const okIcon192 = await githubPutFile('icon-192.png', icon192.split(',')[1], 'Atualiza favicon/ícone 192');
+                const okIcon512a = await githubPutFile('icon-512.png', icon512.split(',')[1], 'Atualiza ícone 512');
+                const okIcon512b = await githubPutFile('icon-512-maskable.png', icon512.split(',')[1], 'Atualiza ícone 512 maskable');
+
+                if (okLogo && okIcon192 && okIcon512a && okIcon512b) {
+                    showToast('✅ Logo e ícones sincronizados no GitHub para todos verem!');
+                } else {
+                    showToast('⚠️ Logo salva localmente, mas houve falha ao sincronizar algum ícone no GitHub');
+                }
+            } catch(e) {
+                console.warn('Falha ao sincronizar logo/ícones:', e);
+            }
         }
         // ============ FIM SINCRONIZAÇÃO GITHUB ============
 
@@ -3218,7 +3340,7 @@ ${sections}
             }
         }
 
-        async function finalConfirmPixAndOrder() { mostrarRoboOuxe(); setTimeout(async ()=>{ await executeFinalOrder(); }, 1600); }
+        async function finalConfirmPixAndOrder() { await executeFinalOrder(); }
 
         async function executeFinalOrder() {
             if (!pendingCartOrder) return;
@@ -3736,7 +3858,9 @@ ${sections}
                 document.getElementById('headerLogoImg').src = currentLogoData;
                 document.getElementById('footerLogoImg').src = currentLogoData;
                 document.getElementById('configLogoPreview').src = currentLogoData;
-                showToast('✅ Logo atualizado com sucesso!');
+                updateFaviconDynamic(currentLogoData);
+                showToast('✅ Logo atualizado! Sincronizando para todos os dispositivos...');
+                syncLogoAndIconsToGithub(currentLogoData);
                 currentLogoData = null;
                 document.getElementById('logoImageFile').value = '';
                 document.getElementById('logoFileInfo').style.display = 'none';
@@ -3960,6 +4084,91 @@ ${sections}
 
         
         function falarObrigadoBebe(){ /* voz removida - somente obrigado visual */ }
+
+        // ============ INSTALAR APP (PWA) ============
+        let deferredInstallPrompt = null;
+
+        function isRunningStandalone() {
+            return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        }
+
+        function isIOSDevice() {
+            return /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        }
+
+        function showInstallAppButton() {
+            if (isRunningStandalone()) return; // já instalado, não precisa mostrar
+            const btn = document.getElementById('installAppFloatBtn');
+            if (btn) btn.style.display = 'flex';
+            const tip = document.getElementById('installAppTooltip');
+            if (tip) {
+                setTimeout(() => { tip.style.display = 'block'; }, 2000);
+                setTimeout(() => { tip.style.display = 'none'; }, 7000);
+            }
+        }
+
+        function hideInstallAppButton() {
+            const btn = document.getElementById('installAppFloatBtn');
+            if (btn) btn.style.display = 'none';
+            const tip = document.getElementById('installAppTooltip');
+            if (tip) tip.style.display = 'none';
+        }
+
+        // Chrome/Edge/Android disparam esse evento quando o site pode ser instalado
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredInstallPrompt = e;
+            showInstallAppButton();
+        });
+
+        window.addEventListener('appinstalled', () => {
+            deferredInstallPrompt = null;
+            hideInstallAppButton();
+            showToast('✅ App instalado com sucesso!');
+        });
+
+        async function handleInstallAppClick() {
+            const tip = document.getElementById('installAppTooltip');
+            if (tip) tip.style.display = 'none';
+
+            if (deferredInstallPrompt) {
+                // Android / Chrome / Edge: dispara o instalador nativo do navegador
+                deferredInstallPrompt.prompt();
+                const { outcome } = await deferredInstallPrompt.userChoice;
+                if (outcome === 'accepted') showToast('✅ Instalando o app...');
+                deferredInstallPrompt = null;
+                return;
+            }
+
+            // iPhone/iPad (Safari) ou navegadores sem suporte automático: mostra passo a passo
+            const stepsEl = document.getElementById('installAppModalSteps');
+            const textEl = document.getElementById('installAppModalText');
+            if (isIOSDevice()) {
+                textEl.textContent = 'No iPhone/iPad, o app se instala pelo Safari assim:';
+                stepsEl.innerHTML = `
+                    <p>1️⃣ Toque no ícone de <strong>Compartilhar</strong> <i class="fas fa-arrow-up-from-bracket"></i> (embaixo, na barra do Safari)</p>
+                    <p>2️⃣ Escolha <strong>"Adicionar à Tela de Início"</strong></p>
+                    <p>3️⃣ Toque em <strong>"Adicionar"</strong> no canto superior direito</p>
+                `;
+            } else {
+                textEl.textContent = 'Seu navegador não liberou a instalação automática. Você ainda pode:';
+                stepsEl.innerHTML = `
+                    <p>1️⃣ Abra o menu do navegador (⋮ ou •••)</p>
+                    <p>2️⃣ Procure por <strong>"Instalar app"</strong> ou <strong>"Adicionar à tela inicial"</strong></p>
+                `;
+            }
+            document.getElementById('installAppModalOverlay').classList.add('show');
+        }
+
+        function closeInstallAppModal() {
+            document.getElementById('installAppModalOverlay').classList.remove('show');
+        }
+
+        // iOS nunca dispara beforeinstallprompt, então mostramos o botão direto (leva ao passo a passo)
+        if (isIOSDevice() && !isRunningStandalone()) {
+            window.addEventListener('load', showInstallAppButton);
+        }
+        // ============ FIM INSTALAR APP ============
 
         function mostrarRoboOuxe(){
             const ov=document.getElementById('obrigadoOverlay');
