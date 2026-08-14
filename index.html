@@ -119,7 +119,15 @@
 
         .product-card { min-width: 200px; max-width: 200px; background: white; border-radius: 12px; padding: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); transition: all 0.3s; position: relative; }
         .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.12); }
-        .product-img { width: 100%; height: 140px; background: #f8f8f8; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin-bottom: 12px; overflow: hidden; }
+        .product-img { width: 100%; height: 140px; background: #ffffff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin-bottom: 12px; overflow: hidden; position: relative; cursor: zoom-in; }
+        .product-img img { width: 100%; height: 100%; object-fit: contain; background: #ffffff; }
+        .product-img-zoom-hint { position: absolute; bottom: 4px; right: 4px; width: 22px; height: 22px; background: rgba(0,0,0,0.45); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; pointer-events: none; }
+        .img-zoom-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 30000; display: none; align-items: center; justify-content: center; padding: 24px; }
+        .img-zoom-overlay.show { display: flex; }
+        .img-zoom-box { background: #fff; border-radius: 12px; max-width: min(90vw, 500px); max-height: 90vh; overflow: hidden; position: relative; display: flex; flex-direction: column; }
+        .img-zoom-box img { width: 100%; height: auto; max-height: 70vh; object-fit: contain; background: #fff; display: block; }
+        .img-zoom-caption { padding: 12px 16px; text-align: center; font-weight: 600; color: #1A1A2E; }
+        .img-zoom-close { position: absolute; top: 8px; right: 8px; width: 34px; height: 34px; border-radius: 50%; background: rgba(0,0,0,0.55); color: #fff; border: none; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         .product-img img { width: 100%; height: 100%; object-fit: cover; }
         .product-name { font-size: 0.75rem; font-weight: 600; color: var(--dark); margin-bottom: 8px; line-height: 1.3; height: 2.6em; overflow: hidden; text-transform: uppercase; }
         .product-price { display: flex; align-items: baseline; gap: 5px; margin-bottom: 4px; }
@@ -2454,8 +2462,8 @@ ${sections}
                 if (!container) return;
                 container.innerHTML = products[category].map(product => `
                     <div class="product-card" data-category="${category}" data-id="${product.id}">
-                        <div class="product-img">
-                            ${product.image ? `<img src="${product.image}" alt="${product.name}">` : (product.emoji || '')}
+                        <div class="product-img" ${product.image ? `onclick="openImageZoom('${product.image.replace(/'/g, "\\'")}', '${product.name.replace(/'/g, "\\'")}')"` : ''}>
+                            ${product.image ? `<img src="${product.image}" alt="${product.name}"><span class="product-img-zoom-hint"><i class="fas fa-search-plus"></i></span>` : (product.emoji || '')}
                         </div>
                         <div class="product-name">${product.name}</div>
                         <div class="product-price">
@@ -2480,6 +2488,20 @@ ${sections}
                     </div>
                 `).join('');
             });
+        }
+
+        function openImageZoom(imageSrc, productName) {
+            const overlay = document.getElementById('imgZoomOverlay');
+            const img = document.getElementById('imgZoomImg');
+            const caption = document.getElementById('imgZoomCaption');
+            img.src = imageSrc;
+            img.alt = productName;
+            caption.textContent = productName;
+            overlay.classList.add('show');
+        }
+
+        function closeImageZoom() {
+            document.getElementById('imgZoomOverlay').classList.remove('show');
         }
 
         function setQty(btn, value) {
@@ -3976,6 +3998,14 @@ ${sections}
     </div>
   </div>
   <div class="obrigado-texto-cartoon" id="textoCartoon" style="display:none;">Gerando seu pedido em PNG...</div>
+</div>
+
+<div class="img-zoom-overlay" id="imgZoomOverlay" onclick="if(event.target===this) closeImageZoom()">
+    <div class="img-zoom-box">
+        <button class="img-zoom-close" onclick="closeImageZoom()"><i class="fas fa-times"></i></button>
+        <img id="imgZoomImg" src="" alt="">
+        <div class="img-zoom-caption" id="imgZoomCaption"></div>
+    </div>
 </div>
 
 </body>
