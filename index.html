@@ -3499,27 +3499,73 @@ ${sections}
             previewUnit.textContent = `/${unit}`;
         }
 
-        function handleImageUpload(event) {
+        // Redimensiona e comprime a foto do produto no próprio navegador antes de salvar,
+        // pra evitar que o produtos.json volte a ficar gigante com fotos em alta resolução.
+        function compressProductImage(file, maxDim = 500, quality = 0.65) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        let w = img.width, h = img.height;
+                        const scale = Math.min(1, maxDim / Math.max(w, h));
+                        w = Math.round(w * scale);
+                        h = Math.round(h * scale);
+                        const canvas = document.createElement('canvas');
+                        canvas.width = w;
+                        canvas.height = h;
+                        const ctx = canvas.getContext('2d');
+                        // fundo branco (fotos com transparência viram JPEG, que não tem canal alfa)
+                        ctx.fillStyle = '#ffffff';
+                        ctx.fillRect(0, 0, w, h);
+                        ctx.drawImage(img, 0, 0, w, h);
+                        resolve(canvas.toDataURL('image/jpeg', quality));
+                    };
+                    img.onerror = reject;
+                    img.src = e.target.result;
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function handleImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
             const validTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
             if (!validTypes.includes(file.type)) { showToast('⚠️ Formato inválido! Use PNG, JPG, WEBP ou GIF'); event.target.value = ''; return; }
             if (file.size > 2 * 1024 * 1024) { showToast('⚠️ Imagem muito grande! Máximo 2MB'); event.target.value = ''; return; }
             currentImageName = file.name;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                currentImageData = e.target.result;
+            try {
+                const originalKB = file.size / 1024;
+                currentImageData = await compressProductImage(file);
+                const compressedKB = (currentImageData.length * 0.75) / 1024; // base64 -> bytes aprox.
                 const preview = document.getElementById('imagePreview');
                 const fileInfo = document.getElementById('fileInfo');
                 const removeBtn = document.getElementById('removeImageBtn');
                 preview.src = currentImageData;
                 preview.classList.add('show');
-                fileInfo.textContent = `✓ ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+                fileInfo.textContent = `✓ ${file.name} (${originalKB.toFixed(0)} KB → ${compressedKB.toFixed(0)} KB comprimido)`;
                 fileInfo.style.display = 'block';
                 removeBtn.style.display = 'inline-block';
                 updatePreview();
-            };
-            reader.readAsDataURL(file);
+            } catch (err) {
+                console.warn('Falha ao comprimir imagem, usando original:', err);
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentImageData = e.target.result;
+                    const preview = document.getElementById('imagePreview');
+                    const fileInfo = document.getElementById('fileInfo');
+                    const removeBtn = document.getElementById('removeImageBtn');
+                    preview.src = currentImageData;
+                    preview.classList.add('show');
+                    fileInfo.textContent = `✓ ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+                    fileInfo.style.display = 'block';
+                    removeBtn.style.display = 'inline-block';
+                    updatePreview();
+                };
+                reader.readAsDataURL(file);
+            }
         }
 
         function removeImage(event) {
