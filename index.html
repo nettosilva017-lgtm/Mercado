@@ -61,10 +61,10 @@
         .btn-whatsapp { background: #25D366; color: white !important; padding: 10px 20px; border-radius: 50px; font-weight: 600; display: flex; align-items: center; gap: 8px; text-decoration: none; transition: transform 0.3s, box-shadow 0.3s; }
         .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4); }
 
-        .nav { background: white; border-top: 1px solid #f0f0f0; overflow-x: auto; }
-        .nav .container { display: flex; gap: 5px; padding: 0 20px; max-width: 1400px; margin: 0 auto; }
-        .nav a { padding: 15px 20px; text-decoration: none; color: var(--dark); font-weight: 500; font-size: 0.9rem; white-space: nowrap; border-bottom: 3px solid transparent; transition: all 0.3s; }
-        .nav a:hover, .nav a.active { color: var(--accent); border-bottom-color: var(--accent); }
+        .nav { background: white; border-top: 1px solid #f0f0f0; overflow-x: auto; padding: 12px 0; }
+        .nav .container { display: flex; gap: 15px; padding: 0 20px; max-width: 1400px; margin: 0 auto; }
+        .nav a { display: flex; align-items: center; gap: 10px; padding: 12px 20px; background: #f8f8f8; border-radius: 50px; text-decoration: none; color: var(--dark); font-weight: 500; font-size: 0.9rem; white-space: nowrap; border: 2px solid transparent; transition: all 0.3s; }
+        .nav a:hover, .nav a.active { background: white; border-color: var(--accent); color: var(--accent); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(233, 30, 140, 0.15); }
 
         .hero { margin: 20px auto; max-width: 1400px; padding: 0 20px; }
         .hero-slider { position: relative; height: 280px; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
@@ -648,7 +648,7 @@
             <a href="#limpeza">Limpeza</a>
             <a href="#chocolate">Chocolate</a>
             <a href="#diet">Diet e Light</a>
-            <a href="#zero-lactose">Zero Lactose</a>
+            <a href="#zeroLactose">Zero Lactose</a>
             <a href="#petshop">Petshop</a>
         </div>
     </nav>
@@ -719,7 +719,7 @@
             <a href="#congelados" class="cat-item"><i class="fas fa-snowflake"></i> Congelados</a>
             <a href="#frios" class="cat-item"><i class="fas fa-ice-cream"></i> Frios e Laticínios</a>
             <a href="#petshop" class="cat-item"><i class="fas fa-paw"></i> Petshop</a>
-            <a href="#zero-lactose" class="cat-item"><i class="fas fa-glass-milk"></i> Zero Lactose</a>
+            <a href="#zeroLactose" class="cat-item"><i class="fas fa-glass-milk"></i> Zero Lactose</a>
         </div>
     </section>
 
@@ -793,18 +793,18 @@
         <div class="products-scroll" id="chocolate-scroll"></div>
     </section>
 
-    <section class="products-section" id="zero-lactose">
+    <section class="products-section" id="zeroLactose">
         <div class="products-header">
             <h2>Zero Lactose</h2>
             <div style="display: flex; align-items: center; gap: 15px;">
                 <a href="#" class="ver-mais">Ver mais</a>
                 <div class="nav-arrows">
-                    <button class="nav-arrow" onclick="scrollProducts('zero-lactose-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
-                    <button class="nav-arrow" onclick="scrollProducts('zero-lactose-scroll', 1)"><i class="fas fa-chevron-right"></i></button>
+                    <button class="nav-arrow" onclick="scrollProducts('zeroLactose-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
+                    <button class="nav-arrow" onclick="scrollProducts('zeroLactose-scroll', 1)"><i class="fas fa-chevron-right"></i></button>
                 </div>
             </div>
         </div>
-        <div class="products-scroll" id="zero-lactose-scroll"></div>
+        <div class="products-scroll" id="zeroLactose-scroll"></div>
     </section>
 
     <section class="products-section" id="diet">
@@ -1476,9 +1476,9 @@
                     </div>
 
                     <div class="config-card">
-                        <h3><i class="fab fa-github"></i> Sincronizar Produtos para Todo Mundo</h3>
+                        <h3><i class="fab fa-github"></i> Sincronizar Produtos e Categorias para Todo Mundo</h3>
                         <p style="font-size:.85rem;color:#666;margin:0 0 12px;">
-                            Configure uma vez e, a partir daí, todo produto cadastrado/editado/excluído aqui é salvo automaticamente no <b>produtos.json</b> do seu GitHub — assim aparece para todos os visitantes do site, não só neste navegador.
+                            Configure uma vez e, a partir daí, todo produto cadastrado/editado/excluído aqui é salvo automaticamente no <b>produtos.json</b>, e toda categoria adicionada/removida é salva no <b>categorias.json</b> do seu GitHub — assim tudo aparece para todos os visitantes do site, não só neste navegador.
                         </p>
                         <div class="form-row">
                             <div class="form-group">
@@ -1518,7 +1518,7 @@
 
                     <div class="config-card">
                         <h3><i class="fas fa-layer-group"></i> Categorias</h3>
-                        <p style="font-size:0.85rem; color:#666; margin-bottom:15px;">Adicione novas categorias de produtos. Elas aparecem automaticamente no menu do site, na lista de ícones abaixo, no formulário de produtos e nos banners.</p>
+                        <p style="font-size:0.85rem; color:#666; margin-bottom:15px;">Adicione novas categorias de produtos. Elas aparecem automaticamente no menu do site, na lista de ícones abaixo, no formulário de produtos e nos banners. Se o GitHub já estiver configurado (mais abaixo), as categorias também são sincronizadas para aparecer em qualquer dispositivo — não só neste navegador.</p>
                         <div class="form-row">
                             <div class="form-group" style="flex:2;">
                                 <label>🏷️ Nome da nova categoria</label>
@@ -2100,10 +2100,35 @@ ${sections}
             ]
         };
 
-        // CORREÇÃO: catálogo vem SEMPRE do GitHub (produtos.json) quando online
-        // Isso faz o produto aparecer em TODOS os dispositivos
+        // CORREÇÃO: catálogo vem SEMPRE do GitHub (produtos.json e categorias.json) quando online
+        // Isso faz o produto/categoria aparecer em TODOS os dispositivos
         let products = JSON.parse(localStorage.getItem('ouze_products')) || defaultProducts;
-        (async function loadProductsFromGitHub() {
+
+        async function loadCategoriesFromGithub() {
+            try {
+                const res = await fetch('categorias.json?t=' + Date.now(), { cache: 'no-store' });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && typeof data === 'object') {
+                        Object.keys(data).forEach(key => {
+                            customCategories[key] = data[key];
+                            categoryNames[key] = data[key];
+                        });
+                        localStorage.setItem('ouze_custom_categories', JSON.stringify(customCategories));
+                    }
+                }
+            } catch(e) { console.warn('categorias.json indisponível, usando categorias locais:', e.message); }
+        }
+
+        (async function loadCatalogFromGitHub() {
+            // 1) categorias primeiro, pra já existir seção/nome certo antes dos produtos chegarem
+            await loadCategoriesFromGithub();
+            Object.keys(customCategories).forEach(key => ensureCategorySection(key, categoryNames[key]));
+            populateCategorySelects();
+            renderCategoryIconsAdmin();
+            renderCustomCategoriesList();
+
+            // 2) produtos
             try {
                 const res = await fetch('produtos.json?t=' + Date.now(), { cache: 'no-store' });
                 if (res.ok) {
@@ -2114,9 +2139,9 @@ ${sections}
                         products = cats;
                         Object.keys(cats).forEach(key => {
                             if (!categoryNames[key]) categoryNames[key] = key.toUpperCase();
-                            if (typeof ensureCategorySection === 'function') ensureCategorySection(key, categoryNames[key]);
+                            ensureCategorySection(key, categoryNames[key]);
                         });
-                        if (typeof populateCategorySelects === 'function') populateCategorySelects();
+                        populateCategorySelects();
                         if (typeof renderProducts === 'function') renderProducts();
                         if (typeof renderAdminProducts === 'function') renderAdminProducts();
                         console.log('✅ Catálogo atualizado do GitHub (produtos.json):', Object.values(cats).flat().length, 'produtos');
@@ -2131,6 +2156,7 @@ ${sections}
                     }
                 }
             } catch(e) { console.warn('Produtos.json indisponível, usando catálogo local:', e.message); }
+            rebuildCategoryMenu();
         })();
         // Registra o Service Worker para permitir instalar o site como app
         if ('serviceWorker' in navigator) {
@@ -2247,6 +2273,7 @@ ${sections}
             customCategories[key] = displayName;
             categoryNames[key] = displayName;
             localStorage.setItem('ouze_custom_categories', JSON.stringify(customCategories));
+            syncCategoriesToGithub(true);
 
             if (!products[key]) products[key] = [];
             saveProductsToStorage();
@@ -2276,6 +2303,7 @@ ${sections}
             localStorage.setItem('ouze_category_icons', JSON.stringify(categoryIconsData));
             saveProductsToStorage();
             syncProductsToGithub(true);
+            syncCategoriesToGithub(true);
 
             const section = document.getElementById(key);
             if (section) section.remove();
@@ -2408,14 +2436,22 @@ ${sections}
         }
 
         function rebuildCategoryMenu() {
+            // ordena as categorias em ordem alfabética pelo nome exibido
+            const catsOrdenadas = Object.keys(products).slice().sort((a, b) =>
+                (categoryNames[a] || a).localeCompare(categoryNames[b] || b, 'pt-BR')
+            );
             // menu superior (nav)
             const nav = document.querySelector('nav.nav');
             if (nav) {
                 const div = nav.querySelector('.container');
-                let navHtml = '<a href="#" class="active">Início</a>';
-                Object.keys(products).forEach(cat => {
+                let navHtml = '<a href="#" class="active"><i class="fas fa-home"></i> Início</a>';
+                catsOrdenadas.forEach(cat => {
                     if (!products[cat].length) return;
-                    navHtml += '<a href="#' + cat + '" class="nav-cat-link">' + (categoryNames[cat] || cat.toUpperCase()) + '</a>';
+                    const iconUrl = categoryIconsData[cat] || '';
+                    const iconHtml = iconUrl
+                        ? '<img src="' + iconUrl + '" class="cat-icon-nav" alt="' + cat + '">'
+                        : '<i class="fas fa-shopping-basket"></i>';
+                    navHtml += '<a href="#' + cat + '" class="nav-cat-link">' + iconHtml + ' ' + (categoryNames[cat] || cat.toUpperCase()) + '</a>';
                 });
                 div.innerHTML = navHtml;
             }
@@ -2424,7 +2460,7 @@ ${sections}
             if (catScroll) {
                 const div = catScroll.querySelector('.container');
                 let itemsHtml = '';
-                Object.keys(products).forEach(cat => {
+                catsOrdenadas.forEach(cat => {
                     if (!products[cat].length) return;
                     const iconUrl = categoryIconsData[cat] || '';
                     const iconHtml = iconUrl
@@ -2624,6 +2660,22 @@ ${sections}
             const status = document.getElementById('ghSyncStatus');
             if (status) { status.style.color = '#888'; status.textContent = 'Sincronizando...'; }
             syncProductsToGithub(false);
+            syncCategoriesToGithub(true);
+        }
+
+        // Envia as categorias adicionadas (`customCategories`) para o categorias.json do repositório,
+        // pra elas aparecerem em qualquer dispositivo (mesma lógica do produtos.json).
+        async function syncCategoriesToGithub(silent) {
+            const cfg = getGithubConfig();
+            if (!cfg) { if (!silent) showToast('⚠️ Configure o GitHub em Configurações antes de sincronizar!'); return false; }
+            const conteudo = JSON.stringify(customCategories, null, 2);
+            const ok = await githubPutFile('categorias.json', utf8ToBase64(conteudo), `Atualiza categorias - ${new Date().toLocaleString('pt-BR')}`);
+            if (ok) {
+                if (!silent) showToast('✅ Categorias sincronizadas no GitHub para todos verem!');
+            } else if (!silent) {
+                showToast('❌ Erro ao sincronizar categorias no GitHub');
+            }
+            return ok;
         }
 
         // Envia UM arquivo qualquer (imagem, ícone, etc) para o repositório GitHub configurado,
@@ -2728,7 +2780,10 @@ ${sections}
                 const containerId = `${category}-scroll`;
                 const container = document.getElementById(containerId);
                 if (!container) return;
-                container.innerHTML = products[category].map(product => `
+                const produtosOrdenados = products[category].slice().sort((a, b) =>
+                    a.name.localeCompare(b.name, 'pt-BR', { sensitivity: 'base' })
+                );
+                container.innerHTML = produtosOrdenados.map(product => `
                     <div class="product-card" data-category="${category}" data-id="${product.id}">
                         <div class="product-img" ${product.image ? `onclick="openImageZoom('${product.image.replace(/'/g, "\\'")}', '${product.name.replace(/'/g, "\\'")}')"` : ''}>
                             ${product.image ? `<img src="${product.image}" alt="${product.name}"><span class="product-img-zoom-hint"><i class="fas fa-search-plus"></i></span>` : (product.emoji || '')}
