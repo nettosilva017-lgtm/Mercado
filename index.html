@@ -2607,6 +2607,53 @@ ${sections}
             return btoa(unescape(encodeURIComponent(str)));
         }
 
+        // ---- Fila de sincronização por arquivo ----
+        // Evita que duas chamadas simultâneas (ex: auto-save + clique manual) busquem o
+        // mesmo "sha" e uma delas grave por cima usando um sha já desatualizado, o que
+        // o GitHub rejeita com o erro "<arquivo> does not match <sha>".
+        // Enfileirando por caminho, cada gravação só começa depois que a anterior terminou,
+        // então ela sempre busca o sha mais recente antes de tentar gravar.
+        const _ghSyncQueue = {};
+        function _queueGithubOp(key, fn) {
+            const prev = _ghSyncQueue[key] || Promise.resolve();
+            const run = prev.catch(() => {}).then(fn);
+            _ghSyncQueue[key] = run;
+            return run;
+        }
+
+        // Faz uma tentativa de GET sha + PUT. Se o GitHub recusar por sha desatualizado
+        // (conflito 409/422 "does not match"), busca o sha mais novo e tenta de novo
+        // automaticamente (1 nova tentativa) antes de desistir.
+        async function _githubPutWithRetry(apiUrl, branch, token, buildBody, attemptsLeft = 2) {
+            let sha = null;
+            const getRes = await fetch(`${apiUrl}?ref=${encodeURIComponent(branch)}`, {
+                headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github+json' }
+            });
+            if (getRes.ok) {
+                sha = (await getRes.json()).sha;
+            } else if (getRes.status !== 404) {
+                const err = await getRes.json().catch(() => ({}));
+                throw new Error(err.message || `Erro ao consultar arquivo (${getRes.status})`);
+            }
+
+            const putRes = await fetch(apiUrl, {
+                method: 'PUT',
+                headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
+                body: JSON.stringify(buildBody(sha))
+            });
+            if (!putRes.ok) {
+                const err = await putRes.json().catch(() => ({}));
+                const msg = err.message || `Erro ao salvar (${putRes.status})`;
+                const isShaConflict = putRes.status === 409 || putRes.status === 422 || /does not match/i.test(msg);
+                if (isShaConflict && attemptsLeft > 1) {
+                    // Sha ficou desatualizado (outra gravação aconteceu nesse meio tempo) — tenta de novo com o sha mais novo
+                    return _githubPutWithRetry(apiUrl, branch, token, buildBody, attemptsLeft - 1);
+                }
+                throw new Error(msg);
+            }
+            return true;
+        }
+
         // Envia o catálogo atual (`products`) para o produtos.json do repositório configurado.
         // silent=true: não mostra toasts de erro (usado nas chamadas automáticas após salvar/editar/excluir produto)
         async function syncProductsToGithub(silent) {
@@ -2614,46 +2661,28 @@ ${sections}
             if (!cfg) { if (!silent) showToast('⚠️ Configure o GitHub em Configurações antes de sincronizar!'); return false; }
             const { owner, repo, branch, path, token } = cfg;
             const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
-            try {
-                // Busca o sha atual do arquivo (necessário para atualizar um arquivo existente)
-                let sha = null;
-                const getRes = await fetch(`${apiUrl}?ref=${encodeURIComponent(branch)}`, {
-                    headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github+json' }
-                });
-                if (getRes.ok) {
-                    const info = await getRes.json();
-                    sha = info.sha;
-                } else if (getRes.status !== 404) {
-                    const err = await getRes.json().catch(()=>({}));
-                    throw new Error(err.message || `Erro ao consultar arquivo (${getRes.status})`);
-                }
-
-                const conteudo = JSON.stringify({ categories: products }, null, 2);
-                const putRes = await fetch(apiUrl, {
-                    method: 'PUT',
-                    headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
+            const queueKey = `${owner}/${repo}/${branch}/${path}`;
+            return _queueGithubOp(queueKey, async () => {
+                try {
+                    const conteudo = JSON.stringify({ categories: products }, null, 2);
+                    await _githubPutWithRetry(apiUrl, branch, token, (sha) => ({
                         message: `Atualiza catálogo de produtos - ${new Date().toLocaleString('pt-BR')}`,
                         content: utf8ToBase64(conteudo),
                         branch,
                         ...(sha ? { sha } : {})
-                    })
-                });
-                if (!putRes.ok) {
-                    const err = await putRes.json().catch(()=>({}));
-                    throw new Error(err.message || `Erro ao salvar (${putRes.status})`);
+                    }));
+                    if (!silent) showToast('✅ Catálogo sincronizado no GitHub para todos verem!');
+                    const status = document.getElementById('ghSyncStatus');
+                    if (status) { status.style.color = '#1a9e4a'; status.textContent = '✅ Sincronizado em ' + new Date().toLocaleString('pt-BR'); }
+                    return true;
+                } catch (e) {
+                    console.warn('Falha ao sincronizar com GitHub:', e.message);
+                    if (!silent) showToast('❌ Erro ao sincronizar: ' + e.message);
+                    const status = document.getElementById('ghSyncStatus');
+                    if (status) { status.style.color = '#c0392b'; status.textContent = '❌ ' + e.message; }
+                    return false;
                 }
-                if (!silent) showToast('✅ Catálogo sincronizado no GitHub para todos verem!');
-                const status = document.getElementById('ghSyncStatus');
-                if (status) { status.style.color = '#1a9e4a'; status.textContent = '✅ Sincronizado em ' + new Date().toLocaleString('pt-BR'); }
-                return true;
-            } catch(e) {
-                console.warn('Falha ao sincronizar com GitHub:', e.message);
-                if (!silent) showToast('❌ Erro ao sincronizar: ' + e.message);
-                const status = document.getElementById('ghSyncStatus');
-                if (status) { status.style.color = '#c0392b'; status.textContent = '❌ ' + e.message; }
-                return false;
-            }
+            });
         }
 
         function testarSyncGithub() {
@@ -2687,35 +2716,21 @@ ${sections}
             if (!cfg) return false;
             const { owner, repo, branch, token } = cfg;
             const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
-            try {
-                let sha = null;
-                const getRes = await fetch(`${apiUrl}?ref=${encodeURIComponent(branch)}`, {
-                    headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github+json' }
-                });
-                if (getRes.ok) { sha = (await getRes.json()).sha; }
-                else if (getRes.status !== 404) {
-                    const err = await getRes.json().catch(()=>({}));
-                    throw new Error(err.message || `Erro ao consultar ${path} (${getRes.status})`);
-                }
-                const putRes = await fetch(apiUrl, {
-                    method: 'PUT',
-                    headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
+            const queueKey = `${owner}/${repo}/${branch}/${path}`;
+            return _queueGithubOp(queueKey, async () => {
+                try {
+                    await _githubPutWithRetry(apiUrl, branch, token, (sha) => ({
                         message: commitMessage || `Atualiza ${path} - ${new Date().toLocaleString('pt-BR')}`,
                         content: base64Content,
                         branch,
                         ...(sha ? { sha } : {})
-                    })
-                });
-                if (!putRes.ok) {
-                    const err = await putRes.json().catch(()=>({}));
-                    throw new Error(err.message || `Erro ao salvar ${path} (${putRes.status})`);
+                    }));
+                    return true;
+                } catch (e) {
+                    console.warn(`Falha ao sincronizar ${path} com GitHub:`, e.message);
+                    return false;
                 }
-                return true;
-            } catch(e) {
-                console.warn(`Falha ao sincronizar ${path} com GitHub:`, e.message);
-                return false;
-            }
+            });
         }
 
         // Gera uma versão quadrada (com fundo branco) da imagem em dataURL, no tamanho pedido.
